@@ -1,0 +1,6 @@
+[ ] I like the Obsidian idea of pushing everything into an infinite canvas,
+    rather than imposing some predefined structuring onto the set of possibilities.
+[ ] So we start with a keyboard/fretboard/whatever playing surface, and a patch
+    for the sound engine.  Pinch to zoom shrinks the current patch/surface to its
+    representation on the infinite canvas, where push to scroll, pinch to zoom, and
+    drag to move allow you to rearrange.
