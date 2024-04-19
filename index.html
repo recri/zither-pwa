@@ -3,15 +3,19 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport"
+    content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
   <meta name="Description" content="Stringed instruments">
   <base href="/">
 
   <style>
-    html,
-    body {
+    :root {
+      --zither-app-background-color: #070707;
+    }
+    html, body {
       margin: 0;
       padding: 0;
+      font-size: calc(10px + 2vmin);
       font-family: sans-serif;
       background-color: #s232323;
     }
