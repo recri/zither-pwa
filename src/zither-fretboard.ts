@@ -1,12 +1,20 @@
 import { LitElement, html, css, unsafeCSS } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
+import { ZitherApp } from './zither-app.js';
+
 // import { Constant } from './constant.js';
 import { noteToName, mtof } from './notes.js';
-import './fretnote.js';
+import './zither-fretnote.js';
 
 @customElement('zither-fretboard')
 export class Fretboard extends LitElement {
+  // the zither app we're part of
+  @property({ type: Object }) app!: ZitherApp;
+
+  // the audio context we are running in
+  @property({ type: Object }) audioContext!: AudioContext;
+
   // the number of courses running along the fretboard
   @property({ type: Number }) courses!: number;
 
@@ -49,6 +57,42 @@ export class Fretboard extends LitElement {
     }
   `;
 
+  /* eslint-disable class-methods-use-this */
+  report_touch(tag: string, ev: TouchEvent) {
+    console.log(
+      `${tag} changed ${ev.changedTouches.length} target ${ev.targetTouches.length} touches ${ev.touches.length}`
+    );
+  }
+
+  start_handler(ev: TouchEvent) {
+    // If the user makes simultaneous touches, the browser will fire a
+    // separate touchstart event for each touch point. Thus if there are
+    // three simultaneous touches, the first touchstart event will have
+    // targetTouches length of one, the second event will have a length
+    // of two, and so on.
+    this.report_touch('st', ev);
+    // ev.preventDefault(); set touch-action: none in css instead, only in chrome
+  }
+
+  move_handler(ev: TouchEvent) {
+    // Note: if the user makes more than one "simultaneous" touches, most browsers
+    // fire at least one touchmove event and some will fire several touchmoves.
+    // Consequently, an application might want to "ignore" some touchmoves.
+    //
+    // This function sets the target element's border to "dashed" to visually
+    // indicate the target received a move event.
+    //
+    this.report_touch('mv', ev);
+    // ev.preventDefault();
+  }
+
+  end_handler(ev: TouchEvent) {
+    this.report_touch('en', ev);
+    // ev.preventDefault();
+  }
+  /* eslint-enable class-methods-use-this */
+
+  // fretboard management
   courseNumbers: Array<number> = [];
 
   fretNumbers: Array<number> = [];
@@ -169,7 +213,12 @@ export class Fretboard extends LitElement {
           height: ${this.noteHeight}px;
         }
       </style>
-      <div class="fretboard">
+      <div
+        class="fretboard"
+        @touchstart=${this.start_handler}
+        @touchmove=${this.move_handler}
+        @touchend=${this.end_handler}
+      >
         ${this.fretNumbers.map(
           fret =>
             html`<div class="fret">

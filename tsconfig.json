@@ -14,7 +14,9 @@
     "sourceMap": true,
     "inlineSources": true,
     "rootDir": "./",
-    "incremental": true
+    "incremental": true,
+    "pretty": false,
+    "allowJs": true
   },
   "include": ["**/*.ts"]
 }

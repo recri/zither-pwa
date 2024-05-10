@@ -3,36 +3,62 @@ import { property, customElement } from 'lit/decorators.js';
 
 import { Constant } from './constant.js';
 import { expandTuning } from './tuning.js';
-import './fretboard.js';
 
-//
+import type {
+  FaustPolyAudioWorkletNode,
+  FaustDspMeta,
+} from './faust/faustwasm/index.js';
+
+import './zither-splash.js';
+import './zither-fretboard.js';
+import './zither-faust.js';
+
 // The zither-app should parse the url for parameter setting
 @customElement('zither-app')
 export class ZitherApp extends LitElement {
+  /* eslint-disable no-nested-ternary */
+  static urlSearchParams: URLSearchParams = new URL(window.location.href)
+    .searchParams;
+
   static hasProp = (name: string): boolean =>
+    ZitherApp.urlSearchParams.has(name) ||
     window.localStorage.getItem(name) !== null;
 
   static getProp = (name: string, defValue: string): string =>
-    ZitherApp.hasProp(name) ? window.localStorage.getItem(name)! : defValue;
+    ZitherApp.urlSearchParams.has(name)
+      ? ZitherApp.urlSearchParams.get(name)!
+      : window.localStorage.getItem(name) !== null
+      ? window.localStorage.getItem(name)!
+      : defValue;
 
   static putProp = (name: string, value: string) =>
     window.localStorage.setItem(name, value);
 
   static getIntProp = (name: string, defValue: number): number =>
     ZitherApp.hasProp(name)
-      ? parseInt(window.localStorage.getItem(name)!, 10)
+      ? parseInt(ZitherApp.getProp(name, '')!, 10)
       : defValue;
 
   static putIntProp = (name: string, value: number) =>
-    window.localStorage.setItem(name, `${value}`);
+    ZitherApp.putProp(name, `${value}`);
 
   static getBoolProp = (name: string, defValue: boolean): boolean =>
     ZitherApp.hasProp(name)
-      ? window.localStorage.getItem(name) === 'true'
+      ? ZitherApp.getProp(name, `${defValue}`) === 'true'
       : defValue;
 
   static putBoolProp = (name: string, value: boolean) =>
-    window.localStorage.setItem(name, `${value}`);
+    ZitherApp.putProp(name, `${value}`);
+  /* eslint-enable no-nested-ternary */
+
+  @property({ type: Object }) audioContext: AudioContext;
+
+  @property({ type: String }) audioState: string;
+
+  @property({ type: Object }) audioNode: FaustPolyAudioWorkletNode | null =
+    null;
+
+  @property({ type: Object }) dspMeta: FaustDspMeta | null = null;
 
   @property({ type: Number }) courses: number = Constant.defaults.courses;
 
@@ -54,6 +80,8 @@ export class ZitherApp extends LitElement {
 
   @property({ type: Number }) height: number = 200;
 
+  @property({ type: String }) dspName: string = 'steelGuitar';
+
   static styles = css`
     :host {
       display: block;
@@ -61,6 +89,19 @@ export class ZitherApp extends LitElement {
       padding: 0px;
     }
   `;
+
+  constructor() {
+    super();
+
+    /** @type {typeof AudioContext} */
+    const AudioCtx = window.AudioContext; // || window.webkitAudioContext;
+
+    const audioContext = new AudioCtx({ latencyHint: 0.00001 }); // , echoCancellation: false, autoGainControl: false, noiseSuppression: false
+    audioContext.destination.channelInterpretation = 'discrete';
+    audioContext.suspend();
+    this.audioContext = audioContext;
+    this.audioState = this.audioContext.state;
+  }
 
   handleResize() {
     this.width = window.innerWidth;
@@ -83,36 +124,6 @@ export class ZitherApp extends LitElement {
   }
   /* eslint-enable wc/guard-super-call */
 
-  // Log events flag
-  logEvents = false;
-
-  start_handler(ev: TouchEvent) {
-    // If the user makes simultaneous touches, the browser will fire a
-    // separate touchstart event for each touch point. Thus if there are
-    // three simultaneous touches, the first touchstart event will have
-    // targetTouches length of one, the second event will have a length
-    // of two, and so on.
-    ev.preventDefault();
-    if (this.logEvents) console.log('TouchStart');
-  }
-
-  move_handler(ev: TouchEvent) {
-    // Note: if the user makes more than one "simultaneous" touches, most browsers
-    // fire at least one touchmove event and some will fire several touchmoves.
-    // Consequently, an application might want to "ignore" some touchmoves.
-    //
-    // This function sets the target element's border to "dashed" to visually
-    // indicate the target received a move event.
-    //
-    ev.preventDefault();
-    if (this.logEvents) console.log(`touchMove ${ev}`);
-  }
-
-  end_handler(ev: TouchEvent) {
-    ev.preventDefault();
-    if (this.logEvents) console.log(`${ev.type} ${ev}`);
-  }
-
   render() {
     return html`
       <style>
@@ -120,24 +131,61 @@ export class ZitherApp extends LitElement {
           width: ${this.width}px;
           height: ${this.height}px;
         }
-        zither-fretboard {
+        zither-splash {
+          position: absolute;
+          top: 0px;
+          left: 0px;
           width: ${this.width}px;
           height: ${this.height}px;
+          z-index: 2;
+        }
+        zither-fretboard {
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          width: ${this.width}px;
+          height: ${this.height}px;
+          z-index: 1;
+        }
+        zither-faust {
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          width: ${this.width}px;
+          height: ${this.height}px;
+          z-index: 0;
         }
       </style>
-      <zither-fretboard
-        .courses=${this.courses}
-        .strings=${this.strings}
-        .frets=${this.frets}
-        .nut=${this.nut}
-        .tuning=${expandTuning(this.courses, this.strings, this.tuningName)}
-        .key=${Constant.key.keys[this.keyName]}
-        .mode=${Constant.modes[this.modeName]}
-        .colors=${this.colors}
-        .width=${this.width}
-        .height=${this.height}
+
+      ${this.audioState === 'suspended'
+        ? html`<zither-splash
+            .app=${this}
+            .audioContext=${this.audioContext}
+          ></zither-splash>`
+        : html``}
+      ${this.audioState !== 'running'
+        ? html``
+        : html`<zither-fretboard
+            .app=${this}
+            .audioContext=${this.audioContext}
+            .courses=${this.courses}
+            .strings=${this.strings}
+            .frets=${this.frets}
+            .nut=${this.nut}
+            .tuning=${expandTuning(this.courses, this.strings, this.tuningName)}
+            .key=${Constant.key.keys[this.keyName]}
+            .mode=${Constant.modes[this.modeName]}
+            .colors=${this.colors}
+            .width=${this.width}
+            .height=${this.height}
+          ></zither-fretboard>`}
+
+      <zither-faust
+        .app=${this}
+        .audioContext=${this.audioContext}
+        .dspName=${this.dspName}
       >
-      </zither-fretboard>
+      </zither-faust>
     `;
   }
 }

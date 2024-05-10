@@ -1,0 +1,16 @@
+* Notes on getting faustwasm to work.
+** mono guitar failed to load because of
+  const { promises: fs } = await import("fs");
+  const { pathToFileURL } = await import("url");
+in test/out/faustwasm/index.js, but commenting out
+the imports results in a working load.
+** mono.dsp needed the same fix
+** Tried chasing the fix around the source and failed
+** Installed a new version of node.js
+* The correct faustwasm is in the github archive
+	https://github.com/grame-cncm/faustwasm
+  everything else is legacy code that might not work.
+* Chrome handles touch events in a clever way that isn't yet copied
+  by others.  They set passive: true by default and ask tht you set
+  css touch-action to specify which gestures you want to see.
+* Safari doesn't support touch events at all according to MDN.

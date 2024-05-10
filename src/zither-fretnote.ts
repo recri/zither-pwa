@@ -3,7 +3,7 @@ import { property, customElement } from 'lit/decorators.js';
 
 // import { Constant } from 'constant.js';
 
-import { Fretboard } from './fretboard.js';
+import { Fretboard } from './zither-fretboard.js';
 
 @customElement('zither-fretnote')
 export class Fretnote extends LitElement {

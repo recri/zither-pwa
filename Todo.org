@@ -4,3 +4,15 @@
     for the sound engine.  Pinch to zoom shrinks the current patch/surface to its
     representation on the infinite canvas, where push to scroll, pinch to zoom, and
     drag to move allow you to rearrange.
+[ ] Well, that's one application of the gestures.  
+[ ] A scrolling gesture can retune the fretboard, either by moving the nut up or down
+	or by scrolling to add another string.
+[ ] A pinch to zoom gesture could change the number of strings, or adjust the fret spacing.
+[ ] A scroll of a single string could tune the string 
+[ ] the position of the touch between the frets could modulate the pick position filter.
+[ ] the instantaneous velocity of the finger at contact could modulate pick direction.
+[ ] I keep thinking that a way to barre might be useful, but then I cannot see how it
+ would work.  If you tune an open chord, then any combination of notes across at a fret
+ is a chord, and you just move up and down the frets to play different chords.  You can't
+ play open strings.
+[ ] More useful would be a way to mute the strings, or selectively mute the strings.
