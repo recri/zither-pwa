@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# uses imagemagick convert to convert svg into all the rumored required sizes
+# with any luck, only one will ever be accessed for any app execution
+# assumes that icon.svg is already here, 
+# background is the background color for the maskable icon
+# icons.json gets the elements of the manifest.json icon array
+
+background="#00ff00"
+
+cat <<%% > icons.json
+    {
+      "src": "assests/icon.svg",
+      "sizes": "any",
+      "type": "image/svg"
+    },
+%%
+for x in 16 20 24 30 32 36 40 48 60 64 72 80 96 128 144 152 167 168 180 192 256 384 512 1024; do
+  convert -background "#ffffff" -density 1000 icon.svg -gravity center -resize ${x}x${x} -resize 80% -extent ${x}x${x} icon-${x}x${x}.png
+  cat <<%% >> icons.json
+    {
+      "src": "assets/icon-${x}x${x}.png",
+      "sizes": "${x}x${x}",
+      "type": "image/png"
+    },
+%%
+done
+x=128
+convert -background "#323657" -density 1000 icon.svg -gravity center -resize ${x}x${x} -resize 80% -extent ${x}x${x} maskable-${x}x${x}.png
+cat <<%% >> icons.json
+    {
+      "src": "assets/maskable-${x}x${x}.png",
+      "sizes": "${x}x${x}",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+%%
+
+##
+## make a multiresolution favicon.ico
+##
+convert icon.svg -define icon:auto-resize=152,144,128,120,114,110,72,64,57,48,32,16 favicon.ico

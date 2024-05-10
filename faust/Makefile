@@ -1,7 +1,7 @@
 FAUSTWASM= node ../../faustwasm/scripts/faust2wasm.js -poly
 TARGETDIR=../src/faust
 ASSETDIR=../assets/faust
-
+OUTTSCDIR=../out-tsc/src/faust
 FILES=	$(TARGETDIR)/eks.html \
 	$(TARGETDIR)/ks.html \
 	$(TARGETDIR)/sitar.html \
@@ -21,6 +21,8 @@ all:: clean
 	cp index.xx $(TARGETDIR)/faustwasm/index.js
 	# the typescript compiler complains about a type
 	cp index.d.xx $(TARGETDIR)/faustwasm/index.d.ts
+	# the typescript compiler doesn't copy this
+	rsync -av $(TARGETDIR)/ $(OUTTSCDIR)/
 
 clean:: ; rm -rf $(TARGETDIR)/* $(ASSETDIR)/*
 

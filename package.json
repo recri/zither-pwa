@@ -10,25 +10,15 @@
     "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore",
     "test": "tsc && wtr --coverage",
     "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\"",
-    "build": "rimraf dist && tsc && rollup -c rollup.config.js",
+    "build": "rimraf dist && tsc && rollup -c rollup.config.js && rsync -av assets/ dist/assets/",
     "start:build": "web-dev-server --root-dir dist --app-index index.html --open",
     "analyze": "cem analyze --litelement",
-    "copy-files": "rsync -a ./src/faust/ ./out-tsc/src/faust/",
     "start": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds\""
   },
   "dependencies": {
     "@grame/faustwasm": "^0.2.2",
     "@lit/task": "^1.0.0",
-    "@shren/faust-ui": "^1.1.9",
-    "@shren/fftw-js": "^0.1.10",
-    "@types/emscripten": "^1.39.11",
-    "@types/node": "^20.12.10",
-    "@webaudiomodules/api": "^2.0.0-alpha.6",
-    "@webaudiomodules/sdk": "^0.0.11",
-    "@webaudiomodules/sdk-parammgr": "^0.0.13",
-    "fs": "^0.0.1-security",
-    "lit": "^2.0.2",
-    "url": "^0.11.3"
+    "lit": "^2.0.2"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.4",

@@ -14,12 +14,15 @@ export class ZitherSplash extends LitElement {
       height: 100%;
     }
     main {
-      background: green no-repeat center / contain url('/assets/Zither.svg');
+      background: green no-repeat center / contain url('/assets/icon.svg');
       height: 100%;
       border: 1px solid black;
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+    button {
+      font-size: calc(16px + 2vmin);
     }
   `;
 

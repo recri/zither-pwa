@@ -12,6 +12,7 @@ import type {
 import './zither-splash.js';
 import './zither-fretboard.js';
 import './zither-faust.js';
+import { ZitherLog } from './zither-log.js';
 
 // The zither-app should parse the url for parameter setting
 @customElement('zither-app')
@@ -50,6 +51,8 @@ export class ZitherApp extends LitElement {
   static putBoolProp = (name: string, value: boolean) =>
     ZitherApp.putProp(name, `${value}`);
   /* eslint-enable no-nested-ternary */
+
+  @property({ type: Object }) zitherLog!: ZitherLog;
 
   @property({ type: Object }) audioContext: AudioContext;
 
@@ -124,6 +127,10 @@ export class ZitherApp extends LitElement {
   }
   /* eslint-enable wc/guard-super-call */
 
+  log(msg: string) {
+    this.zitherLog.log(msg);
+  }
+
   render() {
     return html`
       <style>
@@ -186,6 +193,7 @@ export class ZitherApp extends LitElement {
         .dspName=${this.dspName}
       >
       </zither-faust>
+      <zither-log .app=${this}></zither-log>
     `;
   }
 }

@@ -9,6 +9,10 @@ import { Fretboard } from './zither-fretboard.js';
 export class Fretnote extends LitElement {
   @property({ type: Object }) fretboard!: Fretboard;
 
+  @property({ type: Array }) freqs!: Array<number>;
+
+  @property({ type: Array }) notes!: Array<number>;
+
   @property({ type: Number }) course!: number;
 
   @property({ type: Number }) fret!: number;
@@ -41,6 +45,25 @@ export class Fretnote extends LitElement {
     }
   `;
 
+  start_handler(ev: TouchEvent) {
+    ev.preventDefault();
+    const node = this.fretboard.app.audioNode;
+    if (node) this.notes.forEach(note => node.keyOn(1, note, 64));
+  }
+
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  move_handler(ev: TouchEvent) {
+    ev.preventDefault();
+    const node = this.fretboard.app.audioNode;
+  }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
+
+  end_handler(ev: TouchEvent) {
+    ev.preventDefault();
+    const node = this.fretboard.app.audioNode;
+    if (node) this.notes.forEach(note => node.keyOff(1, note, 0));
+  }
+
   render() {
     const w = this.width;
     const h = this.height;
@@ -60,7 +83,12 @@ export class Fretnote extends LitElement {
           font: bold 20px sans-serif;
         }
       </style>
-      <svg viewbox="0 0 ${w} ${h}">
+      <svg
+        viewbox="0 0 ${w} ${h}"
+        @touchstart=${this.start_handler}
+        @touchmove=${this.move_handler}
+        @touchend=${this.end_handler}
+      >
         <path
           d="M ${i},${h / 2} Q ${i},${h - i} ${w / 2},${h - i} ${w - i},${h -
           i} ${w - i},${h / 2} ${w - i},${i} ${w / 2},${i} ${i},${i} ${i},${h /

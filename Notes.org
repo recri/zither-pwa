@@ -14,3 +14,11 @@ the imports results in a working load.
   by others.  They set passive: true by default and ask tht you set
   css touch-action to specify which gestures you want to see.
 * Safari doesn't support touch events at all according to MDN.
+  That's desktop safari, the iOS versions support touch.
+* Problems with stale service work caches.
+  Find the name of the cache:
+    self.caches.keys().then(keys => { keys.forEach(key => console.log(key)) })
+  Delete the named cache:
+    self.caches.delete('my-site-cache')
+  Found at https://stackoverflow.com/questions/45467842/how-to-clear-cache-of-service-worker
+  

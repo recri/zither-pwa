@@ -16,3 +16,9 @@
  is a chord, and you just move up and down the frets to play different chords.  You can't
  play open strings.
 [ ] More useful would be a way to mute the strings, or selectively mute the strings.
+[ ] Send each note on its own channel, so it will have its own channel messages.
+[ ] the toplevel faust directory needs to clone and set up the faustwasm application
+	and use it to do the processing.  Rather than depending on the clone that I
+	made manually.  I don't know if it depends on the faust installation, I think
+	not but I should test.
+	

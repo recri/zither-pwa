@@ -1,0 +1,10 @@
+deps
+    "@shren/faust-ui": "^1.1.9",
+    "@shren/fftw-js": "^0.1.10",
+    "@types/emscripten": "^1.39.11",
+    "@types/node": "^20.12.10",
+    "@webaudiomodules/api": "^2.0.0-alpha.6",
+    "@webaudiomodules/sdk": "^0.0.11",
+    "@webaudiomodules/sdk-parammgr": "^0.0.13",
+    "fs": "^0.0.1-security",
+    "url": "^0.11.3"

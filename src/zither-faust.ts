@@ -138,7 +138,7 @@ export class ZitherFaust extends LitElement {
         return html``;
 
       default:
-        console.log(`renderui ${ui.type} not handled`);
+        this.app.log(`renderui ${ui.type} not handled`);
         return html``;
     }
   };

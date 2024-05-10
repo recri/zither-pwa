@@ -1,12 +1,65 @@
 <!doctype html>
 <html lang="en">
 
+<!--
+// MIT License
+//
+// zither-pwa - a progressive web app that implements a musical instrument
+// Copyright (c) 2024 Roger E Critchlow Jr, Las Cruces, NM, USA
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.// 
+//
+-->
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport"
     content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
   <meta name="Description" content="Stringed instruments">
   <base href="/">
+  <link rel="icon" href="/assets/favicon.ico">
+  <link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/assets/manifest.webmanifest">
+  <meta name="theme-color" content="#070707">
+
+  <!-- The following is copied from a previous app and may be out of date -->
+  <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="Zither">
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Zither">
+  <!-- Homescreen icons -->
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="/assets/icon-167x167.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon-180x180.png">
+  <!-- Tile icon for Windows 8 (144x144 + tile color) -->
+  <meta name="msapplication-TileImage" content="/assets/icon-144x144.png">
+  <meta name="msapplication-TileColor" content="#070707">
+  <meta name="msapplication-tap-highlight" content="no">
+  <!-- Default twitter cards -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@username">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Zither">
+  <meta property="og:image" content="/assets/icon-144x144.png" />
 
   <style>
     :root {
@@ -17,7 +70,7 @@
       padding: 0;
       font-size: calc(10px + 2vmin);
       font-family: sans-serif;
-      background-color: #s232323;
+      background-color: #232323;
     }
   </style>
   <title>Zither</title>
