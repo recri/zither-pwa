@@ -83,7 +83,7 @@ export class ZitherApp extends LitElement {
 
   @property({ type: Number }) height: number = 200;
 
-  @property({ type: String }) dspName: string = 'steelGuitar';
+  @property({ type: String }) dspName: string = 'eks';
 
   static styles = css`
     :host {

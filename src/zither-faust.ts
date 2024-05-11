@@ -38,23 +38,32 @@ const createFaustNode = async (
 ) => {
   // Load DSP metadata from JSON
   /** @type {FaustDspMeta} */
-  const dspMeta = await (await fetch(`/assets/faust/${dspName}.json`)).json();
+  const { origin } = window.location;
+  // console.log(`createFaustNode origin ${origin}`);
+  const dspMeta = await (
+    await fetch(`${origin}/assets/faust/${dspName}.json`)
+  ).json();
+  // console.log(`createFaustNode dspMeta ${dspMeta}`)
 
   // Compile the DSP module from WebAssembly binary data
   const dspModule = await WebAssembly.compileStreaming(
-    await fetch(`/assets/faust/${dspName}.wasm`)
+    await fetch(`${origin}/assets/faust/${dspName}.wasm`)
   );
+  // console.log(`createFaustNode dspModule ${dspModule}`)
 
   // Try to load not so optional mixer and effect modules
   const mixerModule = await WebAssembly.compileStreaming(
-    await fetch('/assets/faust/mixerModule.wasm')
+    await fetch(`${origin}/assets/faust/mixerModule.wasm`)
   );
+  // console.log(`createFaustNode mixerModule ${mixerModule}`)
   const effectMeta = await (
-    await fetch(`/assets/faust/${dspName}_effect.json`)
+    await fetch(`${origin}/assets/faust/${dspName}_effect.json`)
   ).json();
+  // console.log(`createFaustNode effectMeta ${effectMeta}`)
   const effectModule = await WebAssembly.compileStreaming(
-    await fetch(`/assets/faust/${dspName}_effect.wasm`)
+    await fetch(`${origin}/assets/faust/${dspName}_effect.wasm`)
   );
+  // console.log(`createFaustNode effectModule ${effectModule}`)
 
   // Just doing poly for now
   const generator = new FaustPolyDspGenerator();

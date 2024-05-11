@@ -48,6 +48,7 @@ export class Fretnote extends LitElement {
   start_handler(ev: TouchEvent) {
     ev.preventDefault();
     const node = this.fretboard.app.audioNode;
+    // console.log(`fretnote start ${node}`);
     if (node) this.notes.forEach(note => node.keyOn(1, note, 64));
   }
 
@@ -61,6 +62,7 @@ export class Fretnote extends LitElement {
   end_handler(ev: TouchEvent) {
     ev.preventDefault();
     const node = this.fretboard.app.audioNode;
+    // console.log(`fretnote end ${node}`);
     if (node) this.notes.forEach(note => node.keyOff(1, note, 0));
   }
 

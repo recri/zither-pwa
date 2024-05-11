@@ -1,3 +1,4 @@
 #!/bin/sh
 #./enable-compression
+echo 'AddType application/wasm wasm' >> dist/.htaccess
 rsync -av --delete ./dist/ elf021@elf021.pairserver.com:public_html/zither.elf.org/

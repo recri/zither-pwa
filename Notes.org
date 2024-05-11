@@ -21,4 +21,8 @@ the imports results in a working load.
   Delete the named cache:
     self.caches.delete('my-site-cache')
   Found at https://stackoverflow.com/questions/45467842/how-to-clear-cache-of-service-worker
-  
+* The problem is that the pair servers are configured to serve
+  wasm as octets, needed
+  echo 'AddType application/wasm wasm' > dist/.htaccess
+  and all is forgiven.
+

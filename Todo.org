@@ -1,14 +1,10 @@
-[ ] I like the Obsidian idea of pushing everything into an infinite canvas,
-    rather than imposing some predefined structuring onto the set of possibilities.
-[ ] So we start with a keyboard/fretboard/whatever playing surface, and a patch
-    for the sound engine.  Pinch to zoom shrinks the current patch/surface to its
-    representation on the infinite canvas, where push to scroll, pinch to zoom, and
-    drag to move allow you to rearrange.
-[ ] Well, that's one application of the gestures.  
-[ ] A scrolling gesture can retune the fretboard, either by moving the nut up or down
-	or by scrolling to add another string.
-[ ] A pinch to zoom gesture could change the number of strings, or adjust the fret spacing.
-[ ] A scroll of a single string could tune the string 
+[x] turn off the logging!
+[x] default to eks
+[ ] recheck performance limits
+[ ] implement the mechanical properties page (strings, courses, frets, tunings, etc.)
+[ ] implement the audio device properties page.
+[ ] implement the audio device selection page.
+[ ] make a zither layout
 [ ] the position of the touch between the frets could modulate the pick position filter.
 [ ] the instantaneous velocity of the finger at contact could modulate pick direction.
 [ ] I keep thinking that a way to barre might be useful, but then I cannot see how it
@@ -17,8 +13,25 @@
  play open strings.
 [ ] More useful would be a way to mute the strings, or selectively mute the strings.
 [ ] Send each note on its own channel, so it will have its own channel messages.
+------------------------------------------------------------------------
+[ ] I like the Obsidian idea of pushing everything into an infinite canvas,
+    rather than imposing some predefined structuring onto the set of possibilities.
+[ ] So we start with a keyboard/fretboard/whatever playing surface, and a patch
+    for the sound engine.  Pinch to zoom shrinks the current patch/surface to its
+    representation on the infinite canvas, where push to scroll, pinch to zoom, and
+    drag to move allow you to rearrange.
+[ ] A scrolling gesture can retune the fretboard, either by moving the nut up or down
+	or by scrolling to add another string.
+[ ] A pinch to zoom gesture could change the number of strings, or adjust the fret spacing.
+[ ] A scroll of a single string could retune the string 
 [ ] the toplevel faust directory needs to clone and set up the faustwasm application
 	and use it to do the processing.  Rather than depending on the clone that I
 	made manually.  I don't know if it depends on the faust installation, I think
 	not but I should test.
-	
+[ ] The models need to be as lean as possible.  Multi notes choke the ONN tablet.
+[ ] switching on device rotation is very disruptive.
+[ ] rotating from portrait to landscape and back reduces the fretlabels to microscopic
+    in portrait.  The sizes are stable after the first two swaps.
+[ ] there's a thought about sharing the delay line between instances of the synth.
+[ ] The pixel 7a choked after a while
+
