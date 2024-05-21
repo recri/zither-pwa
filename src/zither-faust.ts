@@ -8,7 +8,7 @@ import { Task } from '@lit/task';
 
 import { ZitherApp } from './zither-app.js';
 
-import './faust-ui.js';
+import './zither-ui.js';
 
 /**
  * @typedef {import("./faust/types").FaustDspDistribution} FaustDspDistribution
@@ -125,37 +125,11 @@ export class ZitherFaust extends LitElement {
     args: () => [],
   });
 
-  renderui = (ui: any) => {
-    switch (ui.type) {
-      case 'vgroup':
-      case 'hgroup':
-      case 'tgroup':
-        return html`<faust-ui .ui="${ui}"
-          >${ui.items.map((it: any) => this.renderui(it))}</faust-ui
-        >`;
-
-      case 'nentry':
-      case 'hslider':
-      case 'vslider':
-      case 'button':
-      case 'checkbox':
-      case 'hbargraph':
-      case 'vbargraph':
-        return html`<faust-ui .ui="${ui}"></faust-ui>`;
-
-      case undefined:
-        return html``;
-
-      default:
-        this.app.log(`renderui ${ui.type} not handled`);
-        return html``;
-    }
-  };
-
   render() {
     return this._faustTask.render({
       pending: () => html`<p>Loading node...</p>`,
-      complete: ({ dspMeta }) => this.renderui(dspMeta.ui),
+      complete: ({ dspMeta }) =>
+        html`<zither-ui .ui="${dspMeta.ui}"></zither-ui>`,
       error: e => html`<p>Error: ${e}</p>`,
     });
   }

@@ -14,7 +14,6 @@ import './zither-fretboard.js';
 import './zither-faust.js';
 import { ZitherLog } from './zither-log.js';
 
-// The zither-app should parse the url for parameter setting
 @customElement('zither-app')
 export class ZitherApp extends LitElement {
   /* eslint-disable no-nested-ternary */
@@ -63,37 +62,54 @@ export class ZitherApp extends LitElement {
 
   @property({ type: Object }) dspMeta: FaustDspMeta | null = null;
 
-  @property({ type: Number }) courses: number = parseInt(
-    Constant.defaults.courses,
-    10
+  @property({ type: Number }) courses: number = ZitherApp.getIntProp(
+    'courses',
+    parseInt(Constant.defaults.courses, 10)
   );
 
-  @property({ type: Number }) strings: number = parseInt(
-    Constant.defaults.strings,
-    10
+  @property({ type: Number }) strings: number = ZitherApp.getIntProp(
+    'strings',
+    parseInt(Constant.defaults.strings, 10)
   );
 
-  @property({ type: Number }) frets: number = parseInt(
-    Constant.defaults.frets,
-    10
+  @property({ type: Number }) frets: number = ZitherApp.getIntProp(
+    'frets',
+    parseInt(Constant.defaults.frets, 10)
   );
 
-  @property({ type: Number }) nut: number = parseInt(Constant.defaults.nut, 10);
+  @property({ type: Number }) nut: number = ZitherApp.getIntProp(
+    'nut',
+    parseInt(Constant.defaults.nut, 10)
+  );
 
-  @property({ type: String }) tuningName: string = Constant.defaults.tuningName;
+  @property({ type: String }) tuningName: string = ZitherApp.getProp(
+    'tuning',
+    Constant.defaults.tuningName
+  );
 
-  @property({ type: String }) keyName: string = Constant.defaults.keyName;
+  @property({ type: String }) keyName: string = ZitherApp.getProp(
+    'key',
+    Constant.defaults.keyName
+  );
 
-  @property({ type: String }) modeName: string = Constant.defaults.modeName;
+  @property({ type: String }) modeName: string = ZitherApp.getProp(
+    'mode',
+    Constant.defaults.modeName
+  );
 
-  @property({ type: String }) paletteName: string =
-    Constant.defaults.paletteName;
+  @property({ type: String }) paletteName: string = ZitherApp.getProp(
+    'palette',
+    Constant.defaults.paletteName
+  );
+
+  @property({ type: String }) dspName: string = ZitherApp.getProp(
+    'dsp',
+    Constant.defaults.dspName
+  );
 
   @property({ type: Number }) width: number = 200;
 
   @property({ type: Number }) height: number = 200;
-
-  @property({ type: String }) dspName: string = 'eks';
 
   static styles = css`
     :host {

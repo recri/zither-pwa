@@ -404,6 +404,7 @@ const defaults: { [key: string]: string } = {
   keyName: 'C', // key of C
   modeName: 'Ionian', // C Major scale
   paletteName: 'gray',
+  dspName: 'eks',
 };
 
 export const Constant = {
