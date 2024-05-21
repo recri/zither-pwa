@@ -63,21 +63,31 @@ export class ZitherApp extends LitElement {
 
   @property({ type: Object }) dspMeta: FaustDspMeta | null = null;
 
-  @property({ type: Number }) courses: number = Constant.defaults.courses;
+  @property({ type: Number }) courses: number = parseInt(
+    Constant.defaults.courses,
+    10
+  );
 
-  @property({ type: Number }) strings: number = Constant.defaults.strings;
+  @property({ type: Number }) strings: number = parseInt(
+    Constant.defaults.strings,
+    10
+  );
 
-  @property({ type: Number }) frets: number = Constant.defaults.frets;
+  @property({ type: Number }) frets: number = parseInt(
+    Constant.defaults.frets,
+    10
+  );
 
-  @property({ type: Number }) nut: number = Constant.defaults.nut;
+  @property({ type: Number }) nut: number = parseInt(Constant.defaults.nut, 10);
 
-  @property({ type: String }) tuningName: string = Constant.defaultTuningName;
+  @property({ type: String }) tuningName: string = Constant.defaults.tuningName;
 
-  @property({ type: String }) keyName: string = Constant.defaultKeyName;
+  @property({ type: String }) keyName: string = Constant.defaults.keyName;
 
-  @property({ type: String }) modeName: string = Constant.defaultModeName;
+  @property({ type: String }) modeName: string = Constant.defaults.modeName;
 
-  @property({ type: Array }) colors: Array<string> = Constant.defaultColors;
+  @property({ type: String }) paletteName: string =
+    Constant.defaults.paletteName;
 
   @property({ type: Number }) width: number = 200;
 
@@ -182,7 +192,7 @@ export class ZitherApp extends LitElement {
             .tuning=${expandTuning(this.courses, this.strings, this.tuningName)}
             .key=${Constant.key.keys[this.keyName]}
             .mode=${Constant.modes[this.modeName]}
-            .colors=${this.colors}
+            .palette=${Constant.palettes[this.paletteName]}
             .width=${this.width}
             .height=${this.height}
           ></zither-fretboard>`}

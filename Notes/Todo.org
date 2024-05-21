@@ -45,4 +45,4 @@
 [ ] The models need to be as lean as possible.  Multi notes choke the ONN tablet.
 [ ] there's a thought about sharing the delay line between instances of the synth.
 [ ] The pixel 7a choked after a while
-
+[ ] Does the full screen API give better control over miscellaneous chrome?

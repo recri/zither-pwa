@@ -9,6 +9,7 @@ ASSETDIR=../assets/faust
 # so they can be import'ed by other source modules and
 # found for postprocessing into the rolled up dist.
 OUTTSCDIR=../out-tsc/src/faust
+INTSCDIR=../src/faust
 # the files
 FILES=	$(TMPDIR)/eks.html \
 	$(TMPDIR)/ks.html \
@@ -22,14 +23,14 @@ $(TMPDIR)/%.html: $(SRCDIR)/%.dsp
 	$(FAUSTWASM) $< $(TMPDIR)
 
 all:: $(FILES)
-
-install:: all
 	mv $(TMPDIR)/*.wasm $(TMPDIR)/*.json $(ASSETDIR)
 	rm $(TMPDIR)/*.js $(TMPDIR)/*.html
 	# my server chokes on the delivered index.js
 	cp $(SRCDIR)/index.xx $(TMPDIR)/faustwasm/index.js
 	# the typescript compiler complains about a type
 	cp $(SRCDIR)/index.d.xx $(TMPDIR)/faustwasm/index.d.ts
+	# install the $(TMPDIR)/ in the source tree
+	rsync -av $(TMPDIR)/ $(INTSCDIR)/
 	# the typescript compiler doesn't copy this
 	rsync -av $(TMPDIR)/ $(OUTTSCDIR)/
 

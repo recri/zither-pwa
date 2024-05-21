@@ -70,6 +70,8 @@ export function expandTuning(
           switch (tuningName) {
             case 'EADGBE':
               return translate(['E2', 'A2', 'D3', 'G3', 'B3', 'E4']);
+            case 'EADGCF':
+              return translate(['E2', 'A2', 'D3', 'G3', 'C4', 'F4']);
             default:
               break;
           }

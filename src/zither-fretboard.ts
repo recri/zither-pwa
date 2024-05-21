@@ -34,7 +34,7 @@ export class Fretboard extends LitElement {
   @property({ type: Number }) mode!: Array<number>;
 
   // the colors of the notes
-  @property({ type: Array }) colors!: Array<string>;
+  @property({ type: Array }) palette!: Array<string>;
 
   // the width of the screen
   @property({ type: Number }) width!: number;
@@ -111,7 +111,7 @@ export class Fretboard extends LitElement {
       // is the tonic of our key
       const isTonic: boolean = c === 0;
       // colors, might be filtered by color preferences
-      this.fillColors[c] = this.colors[c];
+      this.fillColors[c] = this.palette[c];
       /* eslint-disable no-nested-ternary */
       this.strokeColors[c] = isTonic
         ? 'white'
