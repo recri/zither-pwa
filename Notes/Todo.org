@@ -1,5 +1,9 @@
 [x] turn off the logging!
 [x] default to eks
+[x] even with eks the pixel 7a crashes the zither window when
+[ ] may want a soft touch limit, might even be able to run a test to find it, virtual
+	tapping at various rates, record successful tests in the database, record the
+	start of unsuccessful tests in the database, choose boundaries from 
 [ ] recheck performance limits
 [ ] implement the mechanical properties page (strings, courses, frets, tunings, etc.)
 [ ] implement the audio device properties page.
@@ -13,6 +17,16 @@
  play open strings.
 [ ] More useful would be a way to mute the strings, or selectively mute the strings.
 [ ] Send each note on its own channel, so it will have its own channel messages.
+    Not sure if the channel is implemented, half remember that it isn't.
+[ ] switching on device rotation is very disruptive.
+[ ] rotating from portrait to landscape and back reduces the fretlabels to microscopic
+    in portrait.  The sizes are stable after the first two swaps.
+[ ] eks - don't see why the pick position is restricted to 0.5 max, maybe it's symmetric
+    around the midpoint?
+[ ] the pm guitar models appear to use string models, bridge models, nut models, pick
+    position, direction, angle, pickup location.  I'm not seeing that they share a parameter
+    space, between the different guitars.  tweak the string stiffness.  Well work at
+    figuring it out.
 ------------------------------------------------------------------------
 [ ] I like the Obsidian idea of pushing everything into an infinite canvas,
     rather than imposing some predefined structuring onto the set of possibilities.
@@ -29,9 +43,6 @@
 	made manually.  I don't know if it depends on the faust installation, I think
 	not but I should test.
 [ ] The models need to be as lean as possible.  Multi notes choke the ONN tablet.
-[ ] switching on device rotation is very disruptive.
-[ ] rotating from portrait to landscape and back reduces the fretlabels to microscopic
-    in portrait.  The sizes are stable after the first two swaps.
 [ ] there's a thought about sharing the delay line between instances of the synth.
 [ ] The pixel 7a choked after a while
 

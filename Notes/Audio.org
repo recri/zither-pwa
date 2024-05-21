@@ -1,0 +1,38 @@
+[ ] Looking at the elec/nylon/steel guitar control panels in standalone
+    there aren't any adjustable parameters that determine the differences
+    in their sound, the differences are wired into the models.
+[ ] Making them standalone rediscovered all the wonderful things that I
+    found out while making the zither adapter, to wit dynamic fetch of
+    ./foo.js gets foo.js from the server root directory rather than from
+    the source directory of the code that does the fetch.  And the web
+    development server is relocating the code for the web site, but not
+    anything else.  And the code in faustwasm/index.js that wants to load
+    nodejs packages in case it's not running in a web browser.
+[ ] Really want to have A/B setups where strings are going through different
+    sets of synth params, and put the param controls on screen so we can
+    twiddle and test and compare.
+[ ] Should really move the shared effect to shared effect, and make it the
+    same for everybody, and make it an effect rack.
+[ ] It's really annoying that the controls for a polyphonic midi controlled
+    synth still have the freq/gain/gate controls that can't do anything.
+[ ] Okay, guitars can have multiple pickups, which means that you're getting
+    the vibrations in different phases for certain.  They claim that the
+    sound nearer the bridge is more trebly, and I suppose that could be true,
+    though I'm not sure how to get that out of the eks.  But I can get
+    multiple pickups by simply tapping the delay line at different points.
+    Then the issue becomes where and how to combine the signals.
+[ ] So we can tune the positions of pickups
+[ ] Want to know why the eks is dropping out at different times, it makes no
+    sense, there's nothing to mute the string, just a decay filter.
+[ ] Stiffness slider in geoshred, on classical acoustic, goes from twang to
+    clunk.
+[ ] Palm mute is interesting, too, very fast decay, may just be shortening the
+    decay time.
+[ ] On the profiling, might it be that running multiple worklets allocates
+    multiple cores?  So what might flop after four notes, could make it to eight
+    if the strings were split between two or more worklets?
+[ ] Looking more and more like I will only  have one audio back end with lots
+    of tweakable knobs and leave the other audio for others to explore.
+[ ] Getting a glitchy audio output from the iPad, it may have been dangling in
+    the background for a while.  Discard and restart the app always works.
+    

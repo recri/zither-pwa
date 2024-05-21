@@ -1,11 +1,17 @@
 * Generate faust instrments
-  These *.dsp files define the instruments which zither is set up to play.
+  The *.dsp in src and src/lib  define the instruments which zither is set up to play.
   More could be added.
 
   Simply typing "make" or "make all" in this directory will regenerate
   the current set of instruments.
 
+  There are five parts to the faust compiled file.dsp:
+  - file.html
+  - file.js
+  - file.json
+  - file.wasm
+  - faustwasm/index.*
+    
 Todo -
-[ ] clone the faustwasm repository to get the script and libraries
 [ ] explain what we're doing with the dsp files.
 [ ] explain why we're throwing away the html and js files.

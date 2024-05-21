@@ -1,0 +1,1 @@
+* Existing faust ui descriptor is passed as the primary information to the component.
