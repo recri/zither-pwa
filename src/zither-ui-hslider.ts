@@ -1,18 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
-import type {
-  FaustUIInputItem,
-  FaustUIItem,
-  FaustUIMeta,
-} from '@grame/faustwasm';
-
-import { ZitherUiValueComponent } from './zither-ui-value-component.js';
+import { ZitherUiInputComponent } from './ZitherUiInputComponent.js';
 
 @customElement('zither-ui-hslider')
-export class ZitherUiHslider extends ZitherUiValueComponent<FaustUIInputItem> {
+export class ZitherUiHslider extends ZitherUiInputComponent {
   static styles = css`
     :host {
       display: block;

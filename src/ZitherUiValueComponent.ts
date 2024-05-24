@@ -1,19 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-import { html, css, LitElement } from 'lit';
+import { css } from 'lit';
 import { property } from 'lit/decorators.js';
 
-import type {
-  FaustUIDescriptor,
-  FaustUIItem,
-  FaustUIMeta,
-  FaustUIGroup,
-  FaustUIInputItem,
-  FaustUIOutputItem,
-} from '@grame/faustwasm';
+import type { FaustUIMeta } from './faustwasm';
 
-import type { ZitherUi } from './zither-ui.js';
-import { ZitherUiComponent } from './zither-ui-component.js';
+import { ZitherUiComponent } from './ZitherUiComponent.js';
 
 /*
  ** Common behavior for all zither/faust ui input and
@@ -25,6 +15,7 @@ import { ZitherUiComponent } from './zither-ui-component.js';
  */
 
 export class ZitherUiValueComponent<T> extends ZitherUiComponent<T> {
+
   @property({ type: Number }) value: number = 0;
 
   @property({ type: Object }) metaObject!: FaustUIMeta;

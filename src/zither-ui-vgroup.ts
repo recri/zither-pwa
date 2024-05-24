@@ -3,9 +3,7 @@
 import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
-import type { FaustUIGroup, FaustUIItem, FaustUIMeta } from '@grame/faustwasm';
-
-import { ZitherUiGroupComponent } from './zither-ui-group-component.js';
+import { ZitherUiGroupComponent } from './ZitherUiGroupComponent.js';
 
 @customElement('zither-ui-vgroup')
 export class ZitherUiVgroup extends ZitherUiGroupComponent {

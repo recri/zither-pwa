@@ -6,20 +6,13 @@ import { property, customElement } from 'lit/decorators.js';
 
 import { Task } from '@lit/task';
 
+import { FaustDspMeta, FaustPolyDspGenerator } from './faustwasm';
+
 import { ZitherApp } from './zither-app.js';
 
-import './zither-ui.js';
-
-/**
- * @typedef {import("./faust/types").FaustDspDistribution} FaustDspDistribution
- * @typedef {import("./faust/faustwasm").FaustAudioWorkletNode} FaustAudioWorkletNode
- * @typedef {import("./faust/faustwasm").FaustDspMeta} FaustDspMeta
- */
-
 // Import necessary Faust modules and data
-// import { FaustMonoDspGenerator, FaustPolyDspGenerator } from "./faustwasm/index.js";
-import { FaustPolyDspGenerator } from './faust/faustwasm/index.js';
-// import type { FaustDspMeta, FaustPolyAudioWorkletNode } from './faust/faustwasm/index.js';
+
+import './zither-ui.js';
 
 /**
  * Creates a Faust audio node for use in the Web Audio API.
@@ -37,10 +30,9 @@ const createFaustNode = async (
   voices = 16
 ) => {
   // Load DSP metadata from JSON
-  /** @type {FaustDspMeta} */
   const { origin } = window.location;
   // console.log(`createFaustNode origin ${origin}`);
-  const dspMeta = await (
+  const dspMeta: FaustDspMeta = await (
     await fetch(`${origin}/assets/faust/${dspName}.json`)
   ).json();
   // console.log(`createFaustNode dspMeta ${dspMeta}`)
@@ -51,17 +43,18 @@ const createFaustNode = async (
   );
   // console.log(`createFaustNode dspModule ${dspModule}`)
 
-  // Try to load not so optional mixer and effect modules
+  // Try to load not so optional mixer
   const mixerModule = await WebAssembly.compileStreaming(
     await fetch(`${origin}/assets/faust/mixerModule.wasm`)
   );
   // console.log(`createFaustNode mixerModule ${mixerModule}`)
+  //  Try to load not so optional effect module
   const effectMeta = await (
-    await fetch(`${origin}/assets/faust/${dspName}_effect.json`)
+      await fetch(`${origin}/assets/faust/${dspName}_effect.json`)
   ).json();
   // console.log(`createFaustNode effectMeta ${effectMeta}`)
   const effectModule = await WebAssembly.compileStreaming(
-    await fetch(`${origin}/assets/faust/${dspName}_effect.wasm`)
+      await fetch(`${origin}/assets/faust/${dspName}_effect.wasm`)
   );
   // console.log(`createFaustNode effectModule ${effectModule}`)
 
@@ -75,9 +68,7 @@ const createFaustNode = async (
     'FaustPolyDSP',
     { module: dspModule, json: JSON.stringify(dspMeta) },
     mixerModule,
-    effectModule
-      ? { module: effectModule, json: JSON.stringify(effectMeta) }
-      : undefined
+    { module: effectModule, json: JSON.stringify(effectMeta) }
   );
 
   if (!faustNode) throw new Error('faustNode is null');

@@ -12,6 +12,7 @@ OUTTSCDIR=../out-tsc/src/faust
 INTSCDIR=../src/faust
 # the files
 FILES=	$(TMPDIR)/eks.html \
+	$(TMPDIR)/eks2.html \
 	$(TMPDIR)/ks.html \
 	$(TMPDIR)/sitar.html \
 	$(TMPDIR)/elecGuitar.html \
@@ -19,20 +20,23 @@ FILES=	$(TMPDIR)/eks.html \
 	$(TMPDIR)/steelGuitar.html \
 	$(TMPDIR)/bass.html
 
+# simplify
+FILES=  $(TMPDIR)/eks2.html
+
 $(TMPDIR)/%.html: $(SRCDIR)/%.dsp
 	$(FAUSTWASM) $< $(TMPDIR)
 
 all:: $(FILES)
+	# move all json and wasm files
 	mv $(TMPDIR)/*.wasm $(TMPDIR)/*.json $(ASSETDIR)
-	rm $(TMPDIR)/*.js $(TMPDIR)/*.html
-	# my server chokes on the delivered index.js
-	cp $(SRCDIR)/index.xx $(TMPDIR)/faustwasm/index.js
-	# the typescript compiler complains about a type
-	cp $(SRCDIR)/index.d.xx $(TMPDIR)/faustwasm/index.d.ts
-	# install the $(TMPDIR)/ in the source tree
-	rsync -av $(TMPDIR)/ $(INTSCDIR)/
-	# the typescript compiler doesn't copy this
-	rsync -av $(TMPDIR)/ $(OUTTSCDIR)/
+	# move the faustwasm files into the source tree
+	rm -fr ../src/faustwasm; mv $(TMPDIR)/faustwasm ../src
+	# modify the faustwasm/index.d.ts file, soundfiles is optional
+	sed -i 's/soundfiles: Record/soundfiles?: Record/' ../src/faustwasm/index.d.ts 
+	# modify the faustwasm/index.js file, remove nodejs clause	
+	sed -i '20,46d' ../src/faustwasm/index.js
+	# clean up the rest
+	rm -fr $(TMPDIR)/*
 
 clean:: ; rm -rf $(TMPDIR)/* $(ASSETDIR)/*
 

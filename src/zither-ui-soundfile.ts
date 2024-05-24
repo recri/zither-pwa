@@ -1,16 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { html, css } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import { html, css, LitElement } from 'lit';
-import { property, customElement } from 'lit/decorators.js';
-
-import type {
-  FaustUIInputItem,
-  FaustUIItem,
-  FaustUIMeta,
-} from '@grame/faustwasm';
+import { ZitherUiInputComponent } from './ZitherUiInputComponent.js';
 
 @customElement('zither-ui-soundfile')
-export class ZitherUiSoundfile extends LitElement {
+export class ZitherUiSoundfile extends ZitherUiInputComponent {
   static styles = css`
     :host {
       display: block;
@@ -21,8 +15,6 @@ export class ZitherUiSoundfile extends LitElement {
     div {
     }
   `;
-
-  @property({ type: Object }) ui!: FaustUIInputItem;
 
   render() {
     return html`<div>></div>`;

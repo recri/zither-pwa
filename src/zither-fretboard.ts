@@ -31,7 +31,7 @@ export class Fretboard extends LitElement {
   @property({ type: Number }) key!: number;
 
   // the scale we are playing
-  @property({ type: Number }) mode!: Array<number>;
+  @property({ type: Array }) mode!: Array<number>;
 
   // the colors of the notes
   @property({ type: Array }) palette!: Array<string>;
@@ -107,24 +107,24 @@ export class Fretboard extends LitElement {
       // the text label for the note in the key of C
       this.texts[c] = noteToName(c + this.key, this.key);
       // is in the scale of our mode
-      const isInScale: boolean = this.mode.includes(c);
+      const isInScale: boolean = this.mode && this.mode.includes(c);
       // is the tonic of our key
       const isTonic: boolean = c === 0;
       // colors, might be filtered by color preferences
       this.fillColors[c] = this.palette[c];
-      /* eslint-disable no-nested-ternary */
-      this.strokeColors[c] = isTonic
-        ? 'white'
-        : isInScale
-        ? 'lightgray'
-        : 'darkgray';
-      this.textColors[c] = isTonic
-        ? 'white'
-        : isInScale
-        ? 'lightgray'
-        : 'darkgray';
-      this.strokeWidths[c] = isTonic ? 3 : isInScale ? 2 : 1;
-      /* eslint-enable no-nested-ternary */
+      if (isTonic) {
+        this.strokeColors[c] = 'white';
+        this.textColors[c] = 'white';
+        this.strokeWidths[c] = 3;
+      } else if (isInScale) {
+        this.strokeColors[c] = 'lightgray';
+        this.textColors[c] = 'lightgray';
+        this.strokeWidths[c] = 2;
+      } else {
+        this.strokeColors[c] = 'darkgray';
+        this.textColors[c] = 'darkgray';
+        this.strokeWidths[c] = 1;
+      }
     }
   }
 

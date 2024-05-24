@@ -1,16 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { html, css, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-
-import type {
-  FaustUIDescriptor,
-  FaustUIMeta,
-  FaustUIItem,
-  FaustUIGroup,
-  FaustUIInputItem,
-  FaustUIOutputItem,
-} from '@grame/faustwasm';
 
 import type { ZitherUi } from './zither-ui.js';
 
@@ -20,6 +9,7 @@ import type { ZitherUi } from './zither-ui.js';
  ** component content on screen
  */
 export class ZitherUiComponent<T> extends LitElement {
+
   @property({ type: Object }) ui!: T;
 
   @property({ type: Object }) top!: ZitherUi;

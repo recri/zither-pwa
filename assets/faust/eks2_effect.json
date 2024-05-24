@@ -1,0 +1,162 @@
+{
+    "name": "NLFeks2",
+    "filename": "eks2",
+    "version": "2.74.1",
+    "compile_options": "-lang wasm-e -inpl -ct 1 -es 1 -mcd 16 -mdd 1024 -mdy 33 -single -ftz 2",
+    "library_list": [
+        "/usr/share/faust/instruments.lib",
+        "/usr/share/faust/maths.lib",
+        "/usr/share/faust/platform.lib",
+        "/usr/share/faust/noises.lib",
+        "/usr/share/faust/signals.lib",
+        "/usr/share/faust/filters.lib",
+        "/usr/share/faust/delays.lib",
+        "/usr/share/faust/oscillators.lib",
+        "/usr/share/faust/basics.lib"
+    ],
+    "include_pathnames": [
+        "/share/faust",
+        "/usr/local/share/faust",
+        "/usr/share/faust",
+        "."
+    ],
+    "size": 4,
+    "code": "5AEf",
+    "inputs": 2,
+    "outputs": 2,
+    "meta": [
+        {
+            "author": "Julius Smith and Romain Michon, hacked by Roger Critchlowa"
+        },
+        {
+            "basics.lib/name": "Faust Basic Element Library"
+        },
+        {
+            "basics.lib/tabulateNd": "Copyright (C) 2023 Bart Brouns <bart@magnetophon.nl>"
+        },
+        {
+            "basics.lib/version": "1.15.0"
+        },
+        {
+            "compile_options": "-lang wasm-e -inpl -ct 1 -es 1 -mcd 16 -mdd 1024 -mdy 33 -single -ftz 2"
+        },
+        {
+            "copyright": "Julius Smith"
+        },
+        {
+            "delays.lib/fdelay4:author": "Julius O. Smith III"
+        },
+        {
+            "delays.lib/fdelayltv:author": "Julius O. Smith III"
+        },
+        {
+            "delays.lib/name": "Faust Delay Library"
+        },
+        {
+            "delays.lib/version": "1.1.0"
+        },
+        {
+            "filename": "eks2"
+        },
+        {
+            "filters.lib/allpassnn:author": "Julius O. Smith III"
+        },
+        {
+            "filters.lib/allpassnn:copyright": "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>"
+        },
+        {
+            "filters.lib/allpassnn:license": "MIT-style STK-4.3 license"
+        },
+        {
+            "filters.lib/ff_comb:author": "Julius O. Smith III"
+        },
+        {
+            "filters.lib/ff_comb:copyright": "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>"
+        },
+        {
+            "filters.lib/ff_comb:license": "MIT-style STK-4.3 license"
+        },
+        {
+            "filters.lib/lowpass0_highpass1": "MIT-style STK-4.3 license"
+        },
+        {
+            "filters.lib/name": "Faust Filters Library"
+        },
+        {
+            "filters.lib/version": "1.3.0"
+        },
+        {
+            "instruments.lib/author": "Romain Michon (rmichon@ccrma.stanford.edu)"
+        },
+        {
+            "instruments.lib/copyright": "Romain Michon"
+        },
+        {
+            "instruments.lib/licence": "STK-4.3"
+        },
+        {
+            "instruments.lib/name": "Faust-STK Tools Library"
+        },
+        {
+            "instruments.lib/version": "1.0.0"
+        },
+        {
+            "license": "STK-4.3"
+        },
+        {
+            "maths.lib/author": "GRAME"
+        },
+        {
+            "maths.lib/copyright": "GRAME"
+        },
+        {
+            "maths.lib/license": "LGPL with exception"
+        },
+        {
+            "maths.lib/name": "Faust Math Library"
+        },
+        {
+            "maths.lib/version": "2.8.0"
+        },
+        {
+            "name": "NLFeks2"
+        },
+        {
+            "noises.lib/name": "Faust Noise Generator Library"
+        },
+        {
+            "noises.lib/version": "1.4.1"
+        },
+        {
+            "oscillators.lib/name": "Faust Oscillator Library"
+        },
+        {
+            "oscillators.lib/version": "1.5.1"
+        },
+        {
+            "platform.lib/name": "Generic Platform Library"
+        },
+        {
+            "platform.lib/version": "1.3.0"
+        },
+        {
+            "reference": "http://ccrma.stanford.edu/~jos/pasp/vegf.html"
+        },
+        {
+            "signals.lib/name": "Faust Signal Routing Library"
+        },
+        {
+            "signals.lib/version": "1.5.0"
+        },
+        {
+            "version": "1.0"
+        }
+    ],
+    "ui": [
+        {
+            "type": "vgroup",
+            "label": "NLFeks2",
+            "items": []
+        }
+    ]
+}

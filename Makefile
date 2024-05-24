@@ -1,14 +1,13 @@
-start::
-	npm run start
+start:: wasm ; npm run start
 
-lint::
-	npm run lint
+lint:: ; npm run lint
 
-format::
-	npm run format
+format:: ; npm run format
 
-test::
-	npm run test
+test:: wasm ; npm run test
 
-build::
-	npm run build
+build:: wasm ; npm run build
+
+wasm:: ; cd faust && make
+
+startbuild:: ; npm run start:build

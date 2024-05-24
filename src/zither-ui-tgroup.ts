@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 /*
  ** an explanation of a tabbed pane here
  ** https://medium.com/@blueyorange/make-a-tabs-web-component-in-litelement-using-slots-and-css-293c55dbd155
@@ -8,9 +6,7 @@
 import { html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
-import type { FaustUIGroup, FaustUIItem, FaustUIMeta } from '@grame/faustwasm';
-
-import { ZitherUiGroupComponent } from './zither-ui-group-component.js';
+import { ZitherUiGroupComponent } from './ZitherUiGroupComponent.js';
 
 @customElement('zither-ui-tgroup')
 export class ZitherUiTgroup extends ZitherUiGroupComponent {

@@ -1,13 +1,9 @@
 import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
+import type { FaustPolyAudioWorkletNode, FaustDspMeta } from './faustwasm';
 import { Constant } from './constant.js';
 import { expandTuning } from './tuning.js';
-
-import type {
-  FaustPolyAudioWorkletNode,
-  FaustDspMeta,
-} from './faust/faustwasm/index.js';
 
 import './zither-splash.js';
 import './zither-fretboard.js';

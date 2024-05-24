@@ -1,14 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-import { html, css } from 'lit';
+import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
-import type { FaustUIOutputItem, FaustUIMeta } from '@grame/faustwasm';
-
-import { ZitherUiValueComponent } from './zither-ui-value-component.js';
+import { ZitherUiOutputComponent } from './ZitherUiOutputComponent.js';
 
 @customElement('zither-ui-numerical')
-export class ZitherUiNumerical extends ZitherUiValueComponent<FaustUIOutputItem> {
+export class ZitherUiNumerical extends ZitherUiOutputComponent {
   static styles = css`
     :host {
       display: block;

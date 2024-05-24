@@ -15,8 +15,7 @@
     "inlineSources": true,
     "rootDir": "./",
     "incremental": true,
-    "pretty": false,
-    "allowJs": true
+    "pretty": false
   },
   "include": ["**/*.ts"]
 }

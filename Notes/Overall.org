@@ -1,0 +1,14 @@
+[ ] So the zither-splash becomes a config/start page, 
+    and a tgroup to open configure groups for
+        Launch - button to launch the current instrument
+	Presets - menu of preconfigured instruments
+	Mechanics - reconfigure fingerboard
+	Ornaments - reconfigure fingerboard decorations
+	Audio - reconfigure the audio 
+	Effects - reconfigure the effect chain
+[ ] Okay, so that enables the debugging of the zither-ui,
+    Just add UI elements to the ui description and fix
+    their rendering.
+[ ] Having coniptions about the failure to transform the source
+    without removing code.  --external:fs --external:url
+    

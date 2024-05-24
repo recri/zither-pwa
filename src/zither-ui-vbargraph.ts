@@ -1,18 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { html, css } from 'lit';
-import { property, customElement } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 
-import type {
-  FaustUIOutputItem,
-  FaustUIItem,
-  FaustUIMeta,
-} from '@grame/faustwasm';
-
-import { ZitherUiValueComponent } from './zither-ui-value-component.js';
+import { ZitherUiOutputComponent } from './ZitherUiOutputComponent.js';
 
 @customElement('zither-ui-vbargraph')
-export class ZitherUiVbargraph extends ZitherUiValueComponent<FaustUIOutputItem> {
+export class ZitherUiVbargraph extends ZitherUiOutputComponent {
   static styles = css`
     :host {
       display: block;
@@ -21,7 +13,7 @@ export class ZitherUiVbargraph extends ZitherUiValueComponent<FaustUIOutputItem>
     }
   `;
 
-  override render() {
+  render() {
     const unit = this.metaObject.unit || '';
     const value = this.value.toFixed(3);
     return html`

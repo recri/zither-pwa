@@ -1,8 +1,8 @@
 ## editors
 /.idea
 /.vscode
-/.editorconfig
 *~
+\#*
 
 ## system files
 .DS_Store
@@ -21,10 +21,7 @@
 /_site/
 /dist/
 /out-tsc/
-/assets/faust/*
-/faust/tmp/
-/src/faust/faustwasm/*
+/src/faustwasm/
 
 storybook-static
 custom-elements.json
-

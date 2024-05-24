@@ -5,8 +5,10 @@ import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 import esbuild from 'rollup-plugin-esbuild';
 import { generateSW } from 'rollup-plugin-workbox';
 import path from 'path';
+import { copy } from '@web/rollup-plugin-copy';
 
 export default {
+  external: [ 'fs', 'url' ],
   input: 'index.html',
   output: {
     entryFileNames: '[hash].js',
@@ -33,6 +35,8 @@ export default {
     }),    
     /** Bundle assets references via import.meta.url */
     importMetaAssets(),
+    /** copy assets */
+    copy({ patterns: 'assets/**/*' }),
     /** Minify html and css tagged template literals */
     babel({
       plugins: [
@@ -62,10 +66,10 @@ export default {
       // directory to match patterns against to be precached
       globDirectory: path.join('dist'),
       // cache any html js and css by default
-      globPatterns: ['**/*.{html,js,css,webmanifest,json,wasm}'],
+      globPatterns: ['**/*.{html,js,css,webmanifest}'],
       skipWaiting: true,
       clientsClaim: true,
       runtimeCaching: [{ urlPattern: 'polyfills/*.js', handler: 'CacheFirst' }],
-    })
+    }),
   ],
 };

@@ -1,11 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-import { html, css } from 'lit';
+import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
-import type { FaustUIInputItem, FaustUIMeta } from '@grame/faustwasm';
-
-import { ZitherUi } from './zither-ui.js';
 import { ZitherUiButton } from './zither-ui-button.js';
 
 @customElement('zither-ui-checkbox')

@@ -12,7 +12,7 @@ import type {
   FaustUIGroup,
   FaustUIInputItem,
   FaustUIOutputItem,
-} from '@grame/faustwasm';
+} from './faustwasm';
 
 import './zither-ui-button.js';
 import './zither-ui-checkbox.js';
@@ -31,7 +31,7 @@ import './zither-ui-vbargraph.js';
 import './zither-ui-vgroup.js';
 import './zither-ui-vslider.js';
 
-import { ZitherUiValueComponent } from './zither-ui-value-component.js';
+import { ZitherUiValueComponent } from './ZitherUiValueComponent.js';
 
 /*
  ** The only zither-ui component that actually needs
