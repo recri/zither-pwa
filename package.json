@@ -28,6 +28,8 @@
     "@open-wc/testing": "^3.1.6",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-node-resolve": "^13.0.6",
+    "@types/emscripten": "^1.39.12",
+    "@types/node": "^20.12.12",
     "@typescript-eslint/eslint-plugin": "^5.48.0",
     "@typescript-eslint/parser": "^5.48.0",
     "@web/dev-server": "^0.1.34",

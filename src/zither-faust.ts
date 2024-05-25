@@ -1,12 +1,22 @@
-/* eslint-ignore @typescript-eslint/no-unused-vars */
-/* @typescript-eslint-ignore no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
 import { Task } from '@lit/task';
 
-import { FaustDspMeta, FaustPolyDspGenerator } from './faustwasm';
+import type {
+  //    FaustDspDistribution,
+  FaustAudioWorkletNode,
+  FaustDspMeta,
+  FaustUIDescriptor,
+  FaustUIGroup,
+  FaustUIItem,
+} from './faustwasm';
+import {
+  FaustMonoDspGenerator,
+  FaustPolyDspGenerator,
+} from './faustwasm/index.js';
 
 import { ZitherApp } from './zither-app.js';
 
@@ -32,7 +42,7 @@ const createFaustNode = async (
   // Load DSP metadata from JSON
   const { origin } = window.location;
   // console.log(`createFaustNode origin ${origin}`);
-  const dspMeta: FaustDspMeta = await (
+  const dspMeta = await (
     await fetch(`${origin}/assets/faust/${dspName}.json`)
   ).json();
   // console.log(`createFaustNode dspMeta ${dspMeta}`)
@@ -50,11 +60,11 @@ const createFaustNode = async (
   // console.log(`createFaustNode mixerModule ${mixerModule}`)
   //  Try to load not so optional effect module
   const effectMeta = await (
-      await fetch(`${origin}/assets/faust/${dspName}_effect.json`)
+    await fetch(`${origin}/assets/faust/${dspName}_effect.json`)
   ).json();
   // console.log(`createFaustNode effectMeta ${effectMeta}`)
   const effectModule = await WebAssembly.compileStreaming(
-      await fetch(`${origin}/assets/faust/${dspName}_effect.wasm`)
+    await fetch(`${origin}/assets/faust/${dspName}_effect.wasm`)
   );
   // console.log(`createFaustNode effectModule ${effectModule}`)
 

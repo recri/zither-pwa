@@ -15,7 +15,6 @@ import { ZitherUiComponent } from './ZitherUiComponent.js';
  */
 
 export class ZitherUiValueComponent<T> extends ZitherUiComponent<T> {
-
   @property({ type: Number }) value: number = 0;
 
   @property({ type: Object }) metaObject!: FaustUIMeta;

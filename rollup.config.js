@@ -8,7 +8,6 @@ import path from 'path';
 import { copy } from '@web/rollup-plugin-copy';
 
 export default {
-  external: [ 'fs', 'url' ],
   input: 'index.html',
   output: {
     entryFileNames: '[hash].js',
@@ -20,6 +19,8 @@ export default {
   preserveEntrySignatures: false,
 
   plugins: [
+    /** copy assets */
+    copy({ patterns: 'assets/**/*' }),
     /** Enable using HTML as rollup entrypoint */
     html({
       minify: true,
@@ -35,8 +36,6 @@ export default {
     }),    
     /** Bundle assets references via import.meta.url */
     importMetaAssets(),
-    /** copy assets */
-    copy({ patterns: 'assets/**/*' }),
     /** Minify html and css tagged template literals */
     babel({
       plugins: [

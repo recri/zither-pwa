@@ -17,5 +17,4 @@ export class ZitherUiHgroup extends ZitherUiGroupComponent {
       flex-direction: row;
     }
   `;
-
 }

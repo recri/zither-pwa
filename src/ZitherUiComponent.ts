@@ -9,7 +9,6 @@ import type { ZitherUi } from './zither-ui.js';
  ** component content on screen
  */
 export class ZitherUiComponent<T> extends LitElement {
-
   @property({ type: Object }) ui!: T;
 
   @property({ type: Object }) top!: ZitherUi;

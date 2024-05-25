@@ -1,0 +1,8 @@
+* Attempt to solve problems by using faustwasm typescript source
+** rsync -av node_modules/@grame/faustwasm/src/ src/faustwasm/
+** rm src/faustwasm/FaustCompiler.ts
+** rm src/faustwasm/FaustCmajor.ts
+** rm src/faustwasm/FaustDspGenerator.ts
+** rm src/faustwasm/FaustSvgDiagrams.ts
+** rm src/faustwasm/exports.ts
+** amend soundfiles: to soundfiles?: in types.ts
