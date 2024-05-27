@@ -12,7 +12,7 @@ import type {
   FaustUIGroup,
   FaustUIInputItem,
   FaustUIOutputItem,
-} from './faustwasm';
+} from './faust/faustwasm';
 
 import './zither-ui-button.js';
 import './zither-ui-checkbox.js';

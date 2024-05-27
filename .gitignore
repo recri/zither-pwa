@@ -21,7 +21,7 @@
 /_site/
 /dist/
 /out-tsc/
-/src/faustwasm/
+/src/faust/
 /assets/faust/
 
 storybook-static

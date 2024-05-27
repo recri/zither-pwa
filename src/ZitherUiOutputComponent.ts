@@ -1,4 +1,4 @@
-import type { FaustUIOutputItem } from './faustwasm';
+import type { FaustUIOutputItem } from './faust/faustwasm';
 
 import { ZitherUiValueComponent } from './ZitherUiValueComponent.js';
 

@@ -1,6 +1,6 @@
 import { html } from 'lit';
 
-import type { FaustUIGroup } from './faustwasm';
+import type { FaustUIGroup } from './faust/faustwasm';
 
 import { ZitherUiComponent } from './ZitherUiComponent.js';
 

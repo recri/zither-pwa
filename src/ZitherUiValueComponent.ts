@@ -1,7 +1,7 @@
 import { css } from 'lit';
 import { property } from 'lit/decorators.js';
 
-import type { FaustUIMeta } from './faustwasm';
+import type { FaustUIMeta } from './faust/faustwasm';
 
 import { ZitherUiComponent } from './ZitherUiComponent.js';
 

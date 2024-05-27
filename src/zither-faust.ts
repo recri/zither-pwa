@@ -13,8 +13,8 @@ import type {
   FaustUIDescriptor,
   FaustUIGroup,
   FaustUIItem,
-} from './faustwasm';
-import { FaustPolyDspGenerator } from './faustwasm';
+} from './faust/faustwasm';
+import { FaustPolyDspGenerator } from './faust/faustwasm';
 
 import { ZitherApp } from './zither-app.js';
 

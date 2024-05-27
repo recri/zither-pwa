@@ -2,7 +2,7 @@
 import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
-import type { FaustUIDescriptor } from './faustwasm';
+import type { FaustUIDescriptor } from './faust/faustwasm';
 
 import { ZitherApp } from './zither-app.js';
 

@@ -1,7 +1,10 @@
 import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
-import type { FaustPolyAudioWorkletNode, FaustDspMeta } from './faustwasm';
+import type {
+  FaustPolyAudioWorkletNode,
+  FaustDspMeta,
+} from './faust/faustwasm';
 import { Constant } from './constant.js';
 import { expandTuning } from './tuning.js';
 
