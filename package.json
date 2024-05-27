@@ -16,11 +16,11 @@
     "start": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds\""
   },
   "dependencies": {
-    "@grame/faustwasm": "^0.2.2",
     "@lit/task": "^1.0.0",
     "lit": "^2.0.2"
   },
   "devDependencies": {
+    "@grame/faustwasm": "^0.2.2",
     "@babel/preset-env": "^7.16.4",
     "@custom-elements-manifest/analyzer": "^0.4.17",
     "@open-wc/building-rollup": "^2.0.2",
