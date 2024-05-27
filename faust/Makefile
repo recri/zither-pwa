@@ -1,4 +1,4 @@
-FAUSTWASM= node ../../faustwasm/scripts/faust2wasm.js -poly
+FAUSTWASM= node ../node_modules/@grame/faustwasm/scripts/faust2wasm.js -poly
 TARGETDIR=../src/faust
 ASSETDIR=../assets/faust
 OUTTSCDIR=../out-tsc/src/faust
@@ -10,11 +10,11 @@ FILES=	$(TARGETDIR)/eks.html \
 	$(TARGETDIR)/steelGuitar.html \
 	$(TARGETDIR)/bass.html
 
-$(TARGETDIR)/%.html: %.dsp
+$(TARGETDIR)/%.html: ./%.dsp
 	$(FAUSTWASM) $< $(TARGETDIR)
 
-all:: clean
-	for f in `$(MAKE) -silent echo`; do $(MAKE) $$f; done
+all:: $(FILES)
+	#for f in `$(MAKE) -silent echo`; do $(MAKE) $$f; done
 	mkdir -p $(ASSETDIR) 
 	mkdir -p $(TARGETDIR)/faustwasm
 	mkdir -p $(OUTTSCDIR)/faustwasm
