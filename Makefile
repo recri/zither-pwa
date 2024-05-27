@@ -1,14 +1,11 @@
-start::
-	npm run start
+start:: ; npm run start
 
-lint::
-	npm run lint
+lint:: ; npm run lint
 
-format::
-	npm run format
+format:: ; npm run format
 
-test::
-	npm run test
+test:: ; npm run test
 
-build::
-	npm run build
+build:: ; npm run build
+
+startbuild:: ; npm run start:build

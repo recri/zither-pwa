@@ -15,6 +15,9 @@ $(TARGETDIR)/%.html: %.dsp
 
 all:: clean
 	for f in `$(MAKE) -silent echo`; do $(MAKE) $$f; done
+	mkdir -p $(ASSETDIR) 
+	mkdir -p $(TARGETDIR)/faustwasm
+	mkdir -p $(OUTTSCDIR)/faustwasm
 	mv $(TARGETDIR)/*.wasm $(TARGETDIR)/*.json $(ASSETDIR)
 	rm $(TARGETDIR)/*.js $(TARGETDIR)/*.html
 	# my server chokes on the delivered index.js
