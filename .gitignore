@@ -22,8 +22,8 @@
 /dist/
 /out-tsc/
 /assets/faust/*
-/src/faust/faustwasm/
 /src/faustwasm/
+/faust/tmp/
 
 storybook-static
 custom-elements.json

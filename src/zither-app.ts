@@ -7,7 +7,7 @@ import { expandTuning } from './tuning.js';
 import type {
   FaustPolyAudioWorkletNode,
   FaustDspMeta,
-} from './faust/faustwasm/index.js';
+} from './faustwasm/index.js';
 
 import './zither-splash.js';
 import './zither-fretboard.js';

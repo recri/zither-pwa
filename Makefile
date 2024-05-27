@@ -9,3 +9,7 @@ test:: ; npm run test
 build:: ; npm run build
 
 startbuild:: ; npm run start:build
+
+wasm:: ; npm run wasm
+
+
