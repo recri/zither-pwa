@@ -1,4 +1,5 @@
 FAUSTWASM= node ../node_modules/@grame/faustwasm/scripts/faust2wasm.js -poly
+#FAUSTWASM= node ../node_modules/@grame/faustwasm/scripts/faust2wasm.js
 SRCDIR=./src
 TMPDIR=./tmp
 # some of the results go into /assets 
@@ -8,8 +9,7 @@ ASSETDIR=../assets/faust
 # some of the results go into the typescript output tree
 # so they can be import'ed by other source modules and
 # found for postprocessing into the rolled up dist.
-OUTTSCDIR=../out-tsc/src/faust
-INTSCDIR=../src/faust
+OUTTSCDIR=../out-tsc/src/faustwasm
 # the files
 FILES=	$(TMPDIR)/eks.html \
 	$(TMPDIR)/eks2.html \
@@ -20,7 +20,7 @@ FILES=	$(TMPDIR)/eks.html \
 	$(TMPDIR)/steelGuitar.html \
 	$(TMPDIR)/bass.html
 
-# simplify
+# simplify the files
 FILES=  $(TMPDIR)/eks2.html
 
 $(TMPDIR)/%.html: $(SRCDIR)/%.dsp
@@ -37,6 +37,9 @@ all:: $(FILES)
 	sed -i '20,46d' ../src/faustwasm/index.js
 	# clean up the rest
 	rm -fr $(TMPDIR)/*
+	# install the faustwasm files into $(OUTTSCDIR)
+	mkdir -p $(OUTTSCDIR)
+	rsync -av ../src/faustwasm/ $(OUTTSCDIR)/
 
 clean:: ; rm -rf $(TMPDIR)/* $(ASSETDIR)/*
 

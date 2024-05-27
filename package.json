@@ -13,7 +13,7 @@
     "build": "rimraf dist && tsc && rollup -c rollup.config.js && npm run analyze -- --exclude dist",
     "start:build": "web-dev-server --root-dir dist --app-index index.html --open",
     "analyze": "cem analyze --litelement",
-    "start": "tsc && rsync -av src/faustwasm/ out-tsc/src/faustwasm/ && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds\""
+    "start": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds\""
   },
   "dependencies": {
     "@grame/faustwasm": "^0.2.2",

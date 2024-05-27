@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable import/extensions */
 
 import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
@@ -13,10 +14,7 @@ import type {
   FaustUIGroup,
   FaustUIItem,
 } from './faustwasm';
-import {
-  FaustMonoDspGenerator,
-  FaustPolyDspGenerator,
-} from './faustwasm/index.js';
+import { FaustPolyDspGenerator } from './faustwasm';
 
 import { ZitherApp } from './zither-app.js';
 
