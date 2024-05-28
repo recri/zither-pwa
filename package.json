@@ -18,12 +18,13 @@
   },
   "dependencies": {
     "@lit/task": "^1.0.0",
+    "@shren/faust-ui": "^1.1.9",
     "lit": "^2.0.2"
   },
   "devDependencies": {
-    "@grame/faustwasm": "^0.2.2",
     "@babel/preset-env": "^7.16.4",
     "@custom-elements-manifest/analyzer": "^0.4.17",
+    "@grame/faustwasm": "^0.2.2",
     "@open-wc/building-rollup": "^2.0.2",
     "@open-wc/eslint-config": "^9.2.1",
     "@open-wc/testing": "^3.1.6",

@@ -1,0 +1,17 @@
+[ ] The web-dev-server crashes when it can't resolve import('fs') and import('url')
+    which are nodejs packages that aren't used on the web.  Both rollup and esbuild
+    have options for declaring packages external and hence ignorable, but web-dev-server
+    didn't get the message.
+    Mangled the source files (from @grame/faustwasm) to avoid this problem.
+[ ] The rollup resolver loses its mind under mysterious conditions and attempts to
+    define a class as extending an undefined symbol.  Backtracked through the changes
+    and determined that moving the faustwasm/index.* from src/faust to just src was
+    the trigger.  I attempted to backport the change into main.  The branch with the
+    change worked, I swear it did, but the branch with the change merged back into
+    main did not work.  And when I switched back to the branch with the change, it
+    no longer worked.
+    This only happens when you build for distribution.  The symptom is that the build
+    throws an error while loading in the chrome console, and the FaustWasm classes needed
+    are not defined, and the app does not work.
+    Have retreated to the backtracked retro2 branch to do further work.
+    

@@ -1,0 +1,19 @@
+[ ] Okay, so the chapman stick lays out bass and melody courses 
+    for the two hands to play, left hand playing the melody while
+    right hand taps the bass.  But the notes still go from lowest
+    at the "nut" to highest at the "bridge".  But we can make the
+    frets work anyway we want, so why not put the lowest notes
+    toward the thumb of the right hand and the little finger of
+    the left hand.  Which would also suggest putting the bass
+    on the left hand side and the treble on the right hand side.
+[ ] If we can retune the midi note table, shouldn't be hard, then
+    we can do 24-tet and 31-tet with chromatic fretting.  All that
+    needs is a font with the half-flat and half-sharp characers.
+[ ] All of these variations need to go into a database that can
+    be exported and imported and edited as necessary.
+[ ] All of the configuration options for the instrument should be
+    remotely controllable from another phone/tablet/laptop via
+    osc over websocket, this is how you tweak the string tone
+    while playing.  The playing surface should be full screen and
+    immune to most everything.  Set a gesture to escape back to
+    the configuration screens.
