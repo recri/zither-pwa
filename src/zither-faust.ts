@@ -98,6 +98,8 @@ export class ZitherFaust extends LitElement {
 
   @property({ type: String }) dspName!: string;
 
+  @property({ type: Number }) poly: number = 16;
+
   static styles = css`
     :host {
       display: block;
@@ -113,49 +115,21 @@ export class ZitherFaust extends LitElement {
       const { faustNode, dspMeta } = await createFaustNode(
         this.audioContext,
         this.dspName,
-        16
+        this.poly
       );
-
+      // give the app a clue
       this.app.audioNode = faustNode;
-      this.app.dspMeta = dspMeta;
-
+      this.app.dspUi = dspMeta.ui;
       // return the node and meta data
       return { faustNode, dspMeta };
     },
     args: () => [],
   });
 
-  renderui = (ui: any) => {
-    switch (ui.type) {
-      case 'vgroup':
-      case 'hgroup':
-      case 'tgroup':
-        return html`<faust-ui .ui="${ui}"
-          >${ui.items.map((it: any) => this.renderui(it))}</faust-ui
-        >`;
-
-      case 'nentry':
-      case 'hslider':
-      case 'vslider':
-      case 'button':
-      case 'checkbox':
-      case 'hbargraph':
-      case 'vbargraph':
-        return html`<faust-ui .ui="${ui}"></faust-ui>`;
-
-      case undefined:
-        return html``;
-
-      default:
-        this.app.log(`renderui ${ui.type} not handled`);
-        return html``;
-    }
-  };
-
   render() {
     return this._faustTask.render({
       pending: () => html`<p>Loading node...</p>`,
-      complete: ({ dspMeta }) => this.renderui(dspMeta.ui),
+      complete: () => html`<p>Completed loading...</p>`,
       error: e => html`<p>Error: ${e}</p>`,
     });
   }

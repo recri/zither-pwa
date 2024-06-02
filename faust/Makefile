@@ -10,7 +10,9 @@ FILES=	$(TARGETDIR)/eks.html \
 	$(TARGETDIR)/steelGuitar.html \
 	$(TARGETDIR)/bass.html
 
-$(TARGETDIR)/%.html: ./%.dsp
+FILES=  $(TARGETDIR)/eks2.html
+
+$(TARGETDIR)/%.html: ./src/%.dsp
 	$(FAUSTWASM) $< $(TARGETDIR)
 
 all:: $(FILES)
@@ -21,9 +23,9 @@ all:: $(FILES)
 	mv $(TARGETDIR)/*.wasm $(TARGETDIR)/*.json $(ASSETDIR)
 	rm $(TARGETDIR)/*.js $(TARGETDIR)/*.html
 	# my server chokes on the delivered index.js
-	cp index.xx $(TARGETDIR)/faustwasm/index.js
+	cp ./src/index.xx $(TARGETDIR)/faustwasm/index.js
 	# the typescript compiler complains about a type
-	cp index.d.xx $(TARGETDIR)/faustwasm/index.d.ts
+	cp ./src/index.d.xx $(TARGETDIR)/faustwasm/index.d.ts
 	# the typescript compiler doesn't copy this
 	rsync -av $(TARGETDIR)/ $(OUTTSCDIR)/
 

@@ -1,0 +1,30 @@
+* Reading https://en.wikipedia.org/wiki/Solf%C3%A8ge (Solfège)
+** do re mi fa sol la ti do - with variations
+** The fixed solfege always attaches do to C and sings the C Major scale
+** Tonic solfege allows do to attach to any tone and sings that tone's major scale
+** There are names for the tones between the tones.
+|--------------------+---------------------------+-----------+--------------|
+| Major Scale Degree | Mova. do solfège syllable | Chromatic | Pronuciation |
+|--------------------+---------------------------+-----------+--------------|
+| 1                  | Do                        |         0 | /doʊ/        |
+| Raised 1           | Di                        |         1 | /diː/         |
+| Lowered 2          | Ra                        |         1 | /ɹɑː/         |
+| 2                  | Re                        |         2 | /ɹeɪ/         |
+| Raised 2           | Ri                        |         3 | /ɹiː/         |
+| Lowered 3          | Me (& Ma)                 |         3 | /meɪ/ (/mɑː/)  |
+| 3                  | Mi                        |         4 | /miː/         |
+| 4                  | Fa                        |         5 | /fɑː/         |
+| Raised 4           | Fi                        |         6 | /fiː/         |
+| Lowered 5          | Se                        |         6 | /seɪ/         |
+| 5                  | Sol                       |         7 | /soʊ/        |
+| Raised 5           | Si                        |         8 | /siː/         |
+| Lowered 6          | Le (& Lo)                 |         8 | /leɪ/ (/loʊ/) |
+| 6                  | La                        |         9 | /lɑː/         |
+| Raised 6           | Li                        |        10 | /liː/         |
+| Lowered 7          | Te (& Ta)                 |        10 | /teɪ/ (/tɑː/)  |
+| 7                  | Ti                        |        11 | /tiː/         |
+|--------------------+---------------------------+-----------+--------------|
+
+** and so on, messed it up. 
+** anyway, this makes for another labelling of the notes
+** and the explanation carries over to explaining the modes

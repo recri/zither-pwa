@@ -17,3 +17,18 @@
     while playing.  The playing surface should be full screen and
     immune to most everything.  Set a gesture to escape back to
     the configuration screens.
+[ ] Vibraphone model in modal bars, one of several presets for the
+    instrument which need to be faustified to compile to wasm.
+    It seems that the parameters could be bundled as a with clause
+    or something, in any case made constant.  Vibraphone on a 
+    fretboard could be outrageous, have to get some feedback on it.
+[ ] https://ccrma.stanford.edu/~jos/pasp/pasp.html has the details
+    on stiffness.  But the Faust physical models library guitar
+    model uses a coefficient of nearly 0 for steel guitar, and 0.4
+    for the nylon strings, so the filter may just be left out of the
+    eks.
+[ ] Pentatonic scales https://en.wikipedia.org/wiki/Pentatonic_scale
+    5 modes of pentatonic: major, blues major, minor, blues minor, and
+    suspended (aka egyptian!).  Also named in chinese and south asian
+    traditions.
+    

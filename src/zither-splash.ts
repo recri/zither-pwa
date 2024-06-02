@@ -32,7 +32,6 @@ export class ZitherSplash extends LitElement {
 
   handler() {
     this.audioContext.resume();
-    this.app.audioState = 'running';
   }
 
   render() {

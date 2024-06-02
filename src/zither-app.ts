@@ -6,13 +6,16 @@ import { expandTuning } from './tuning.js';
 
 import type {
   FaustPolyAudioWorkletNode,
-  FaustDspMeta,
+  FaustUIDescriptor,
+  FaustUIGroup,
 } from './faust/faustwasm/index.js';
 
-import './zither-splash.js';
+// import './zither-splash.js';
 import './zither-fretboard.js';
 import './zither-faust.js';
 import { ZitherLog } from './zither-log.js';
+
+export type ZitherStateType = 'tune' | 'play';
 
 // The zither-app should parse the url for parameter setting
 @customElement('zither-app')
@@ -56,12 +59,12 @@ export class ZitherApp extends LitElement {
 
   @property({ type: Object }) audioContext: AudioContext;
 
-  @property({ type: String }) audioState: string;
-
   @property({ type: Object }) audioNode: FaustPolyAudioWorkletNode | null =
     null;
 
-  @property({ type: Object }) dspMeta: FaustDspMeta | null = null;
+  @property({ type: String }) zitherState: ZitherStateType = 'tune';
+
+  @property({ type: Object }) dspUi: FaustUIDescriptor | null = null;
 
   @property({ type: Number }) courses: number = Constant.defaults.courses;
 
@@ -83,7 +86,9 @@ export class ZitherApp extends LitElement {
 
   @property({ type: Number }) height: number = 200;
 
-  @property({ type: String }) dspName: string = 'eks';
+  @property({ type: String }) dspName: string = 'eks2';
+
+  @property({ type: Object }) hostWindow!: Window;
 
   static styles = css`
     :host {
@@ -103,7 +108,6 @@ export class ZitherApp extends LitElement {
     audioContext.destination.channelInterpretation = 'discrete';
     audioContext.suspend();
     this.audioContext = audioContext;
-    this.audioState = this.audioContext.state;
   }
 
   handleResize() {
@@ -114,16 +118,36 @@ export class ZitherApp extends LitElement {
 
   resizeHandler = () => this.handleResize();
 
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  handleMessage(e) {
+    const { data, source } = e;
+    this.hostWindow = source as Window;
+    const { type } = data;
+    if (!type) return;
+    console.log(`window message event type ${type}`);
+    if (type === 'ui') {
+      this.dspUi = data.ui;
+    } else if (type === 'param') {
+      const { path, value } = data;
+      // this.paramChangeByDSP(path, value);
+    }
+  }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
+
+  messageHandler = e => this.handleMessage(e);
+
   /* eslint-disable wc/guard-super-call */
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener('resize', this.resizeHandler);
+    window.addEventListener('message', this.messageHandler);
     this.handleResize();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener('resize', this.resizeHandler);
+    window.removeEventListener('message', this.messageHandler);
   }
   /* eslint-enable wc/guard-super-call */
 
@@ -131,62 +155,92 @@ export class ZitherApp extends LitElement {
     this.zitherLog.log(msg);
   }
 
+  handler() {
+    if (this.audioContext.state !== 'running') {
+      this.audioContext.resume();
+    }
+    if (this.zitherState === 'play') {
+      this.zitherState = 'tune';
+    } else {
+      this.zitherState = 'play';
+    }
+  }
+
   render() {
+    const parseRawUi = () =>
+      this.dspUi &&
+      this.dspUi[0] &&
+      this.dspUi[0].type === 'tgroup' &&
+      this.dspUi[0].items &&
+      this.dspUi[0].items.length === 2
+        ? {
+            instUi: this.dspUi[0].items[0] as FaustUIGroup,
+            effUi: this.dspUi[0].items[1] as FaustUIGroup,
+          }
+        : {
+            instUi: {
+              type: 'vgroup',
+              label: 'inst',
+              items: [],
+            } as FaustUIGroup,
+            effUi: { type: 'vgroup', label: 'eff', items: [] } as FaustUIGroup,
+          };
+
+    const { instUi, effUi } = parseRawUi();
+
     return html`
       <style>
         :host {
           width: ${this.width}px;
           height: ${this.height}px;
         }
-        zither-splash {
-          position: absolute;
-          top: 0px;
-          left: 0px;
-          width: ${this.width}px;
-          height: ${this.height}px;
-          z-index: 2;
-        }
-        zither-fretboard {
-          position: absolute;
-          top: 0px;
-          left: 0px;
-          width: ${this.width}px;
-          height: ${this.height}px;
-          z-index: 1;
-        }
+        zither-fretboard,
+        zither-ui-root,
         zither-faust {
           position: absolute;
           top: 0px;
           left: 0px;
           width: ${this.width}px;
           height: ${this.height}px;
+        }
+        zither-fretboard {
+          display: ${this.zitherState === 'play' ? 'block' : 'none'};
+          z-index: ${this.zitherState === 'play' ? 2 : 0};
+        }
+        zither-ui-root {
+          display: ${this.zitherState === 'tune' ? 'block' : 'none'};
+          z-index: ${this.zitherState === 'tune' ? 2 : 0};
+        }
+        zither-faust {
           z-index: 0;
         }
+        button {
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          font-size: calc(16px + 2vmin);
+          z-index: 3;
+        }
       </style>
-
-      ${this.audioState === 'suspended'
-        ? html`<zither-splash
-            .app=${this}
-            .audioContext=${this.audioContext}
-          ></zither-splash>`
-        : html``}
-      ${this.audioState !== 'running'
-        ? html``
-        : html`<zither-fretboard
-            .app=${this}
-            .audioContext=${this.audioContext}
-            .courses=${this.courses}
-            .strings=${this.strings}
-            .frets=${this.frets}
-            .nut=${this.nut}
-            .tuning=${expandTuning(this.courses, this.strings, this.tuningName)}
-            .key=${Constant.key.keys[this.keyName]}
-            .mode=${Constant.modes[this.modeName]}
-            .colors=${this.colors}
-            .width=${this.width}
-            .height=${this.height}
-          ></zither-fretboard>`}
-
+      <button @click="${this.handler}">
+        ${this.zitherState === 'play' ? 'tune' : 'play'}
+      </button>
+      <zither-ui-root .app=${this} .instUi=${instUi} .effUi=${effUi}>
+      </zither-ui-root>
+      <zither-fretboard
+        .app=${this}
+        .audioContext=${this.audioContext}
+        .courses=${this.courses}
+        .strings=${this.strings}
+        .frets=${this.frets}
+        .nut=${this.nut}
+        .tuning=${expandTuning(this.courses, this.strings, this.tuningName)}
+        .key=${Constant.key.keys[this.keyName]}
+        .mode=${Constant.modes[this.modeName]}
+        .colors=${this.colors}
+        .width=${this.width}
+        .height=${this.height}
+      ></zither-fretboard>
       <zither-faust
         .app=${this}
         .audioContext=${this.audioContext}

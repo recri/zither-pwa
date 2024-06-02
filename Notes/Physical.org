@@ -1,0 +1,41 @@
+[ ] adding velocity/force sensitivity would make the instrument much better.
+[ ] Found two projects on youtube using velostat and copper tape to make a
+    pressure sensitive matrix.
+[ ] One project was making a sensor for a yoga mat.  
+	https://www.youtube.com/watch?v=0uPZwMg5B3k
+    This project uses shift registers to scan one edge of the matrix.
+[ ] The other was making a midi-matrix homomorphic keyboard.
+	https://www.youtube.com/watch?app=desktop&v=DKAtv-m32v8
+    This project uses two CD74HC4067 16:1 multiplexors connected to 15
+    rows and 15 columns driven by a Teensy 4.0
+[ ] The technique can be made into a jlcpcb project.  Design two pcbs, one
+    with the rows and the other with the columns of a sensor matrix.  
+    The pcbs will sandwich one or more layers of velostat, so as to measure
+    the resistance between a row electrode and a column electrode, which is
+    proportional to the pressure on the assembly at that point.
+[ ] the velostat sandwich will be glued together, the electrode pattern is
+    on the velostat side of the boards, the other side routes the electrodes
+    to an edge connector pattern for attaching to the circuitry.  This allows
+    differently sized sensor matrices, for differently sized phones and tablets,
+    to share a common processor unit.  Though I say "edge connector" it will
+    probably be soldered because the mechanicals will be way too much detail
+    for a manufactured connector.
+[ ] The sensor matrix pcbs also include the circuitry for scanning the matrix.
+    One set of shift registers scans a one bit across the row electrodes.
+    A second set of shift registers will select the column to be
+[ ] Romain Michon's force sensor was much simpler and more elegant.
+    https://ccrma.stanford.edu/~rmichon/publications/doc/SMC16-nuance.pdf
+    He placed 4 force sensitive resistors at the corners of the iPad,
+    calibrated their force sensitivity, AM modulated carriers at 4, 6, 10,
+    and 14kHz with the signals, sent the mixed signal as an audio input
+    to the iPad, and demodulated the signal with Faust.
+[ ] I'm thinking velostat matrix to Teensy touchscreen usb device
+    https://forum.pjrc.com/index.php?threads/teensy-as-a-touchscreen.71464/
+[ ] But I have no idea how this information gets merged with the existing
+    touch screen input.  Ideally, the system would notice the force being
+    presented on the the extra HID device and combine that with the primary
+    touch information.  Alternatively, the web app itself could read the HID
+    input stream and do the merge.  Or the force information could be audio
+    encoded and decoded in faust.  It's a neat device, but it's not going to
+    scale easily.
+    
