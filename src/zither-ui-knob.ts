@@ -17,6 +17,7 @@ export class ZitherUiKnob extends ZitherUiInputComponent {
   `;
 
   render() {
+    console.log(`zither-ui-knob render`);
     return html`<p>zither-ui-knob</p>`;
   }
 }

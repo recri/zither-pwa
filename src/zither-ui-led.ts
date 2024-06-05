@@ -14,6 +14,7 @@ export class ZitherUiLed extends ZitherUiOutputComponent {
   `;
 
   render() {
+    console.log(`zither-ui-led render`);
     return html`<p>zither-ui-led</p>`;
   }
 }

@@ -17,6 +17,7 @@ export class ZitherUiVslider extends ZitherUiInputComponent {
   `;
 
   render() {
+    console.log(`zither-ui-vslider render`);
     return html`<p>zither-ui-vslider</p>`;
   }
 }

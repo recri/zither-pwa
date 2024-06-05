@@ -17,6 +17,7 @@ export class ZitherUiRadio extends ZitherUiInputComponent {
   `;
 
   render() {
+    console.log(`zither-ui-radio render`);
     return html`<p>zither-ui-radio</p>`;
   }
 }

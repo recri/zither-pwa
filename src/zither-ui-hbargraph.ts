@@ -14,6 +14,7 @@ export class ZitherUiHbargraph extends ZitherUiOutputComponent {
   `;
 
   render() {
+    console.log(`zither-ui-hbargraph render`);
     return html`<p>zither-ui-hbargraph</p>`;
   }
 }

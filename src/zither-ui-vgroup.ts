@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
@@ -13,22 +11,28 @@ export class ZitherUiVgroup extends ZitherUiComponent<FaustUIGroup> {
     :host {
       display: block;
       padding: 25px;
-      color: var(--zither-ui-text-color, #000);
+      color: var(--zither-ui-text-color, #fff);
+      background: var(--zither-ui-background-color, #000);
     }
 
-    div {
+    main {
       display: block flex;
       flex-direction: column;
     }
   `;
 
   render() {
+    console.log(`zither-ui-vgroup render`);
     return html`
       <style>
         ${this.componentStyle()}
       </style>
       ${this.componentHeaderRender()}
-      <div><slot></slot></div>
+      <main>
+        <slot name="panel">
+          <p>No content for vgroup ${this.label}</p>
+        </slot>
+      </main>
       ${this.componentFooterRender()}
     `;
   }

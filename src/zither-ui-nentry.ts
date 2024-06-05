@@ -17,6 +17,7 @@ export class ZitherUiNentry extends ZitherUiInputComponent {
   `;
 
   render() {
+    console.log(`zither-ui-nentry render`);
     return html`<p>zither-ui-nentry</p>`;
   }
 }

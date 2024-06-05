@@ -11,22 +11,28 @@ export class ZitherUiHgroup extends ZitherUiComponent<FaustUIGroup> {
     :host {
       display: block;
       padding: 25px;
-      color: var(--zither-ui-text-color, #000);
+      color: var(--zither-ui-text-color, #fff);
+      background: var(--zither-ui-background-color, #000);
     }
 
-    div {
+    main {
       display: block flex;
       flex-direction: row;
     }
   `;
 
   render() {
+    console.log(`zither-ui-hgroup render`);
     return html`
       <style>
         ${this.componentStyle()}
       </style>
       ${this.componentHeaderRender()}
-      <div><slot></slot></div>
+      <main>
+        <slot name="panel">
+          <p>No content for hgroup ${this.label}</p>
+        </slot>
+      </main>
       ${this.componentFooterRender()}
     `;
   }

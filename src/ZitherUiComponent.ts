@@ -17,21 +17,22 @@ export class ZitherUiComponent<T> extends LitElement {
 
   @property({ type: String }) label!: string;
 
-  /*
-   ** zither-ui css variables
-   */
   /* eslint-disable class-methods-use-this */
   componentStyle() {
     return css``;
   }
+  /* eslint-enable class-methods-use-this */
 
   componentHeaderRender() {
     return this.context === 'tgroup'
       ? html`<span slot="label" class="label">${this.label}</span>
           <div slot="panel" class="panel"></div>`
-      : html`<div class="panel"><span class="label">${this.label}</span></div>`;
+      : html`<div slot="panel" class="panel">
+          <span class="label">${this.label}</span>
+        </div>`;
   }
 
+  /* eslint-disable class-methods-use-this */
   componentFooterRender() {
     return html`</div>`;
   }

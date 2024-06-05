@@ -17,6 +17,7 @@ export class ZitherUiSoundfile extends ZitherUiInputComponent {
   `;
 
   render() {
+    console.log(`zither-ui-soundfile render`);
     return html`<div><p>zither-ui-soundfile</p></div>`;
   }
 }

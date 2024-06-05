@@ -14,67 +14,10 @@ import type {
   FaustUIOutputItem,
 } from './faust/faustwasm';
 
-import './zither-ui-button.js';
-import './zither-ui-checkbox.js';
-import './zither-ui-hbargraph.js';
-import './zither-ui-hgroup.js';
-import './zither-ui-hslider.js';
-import './zither-ui-knob.js';
-import './zither-ui-led.js';
-import './zither-ui-menu.js';
-import './zither-ui-nentry.js';
-import './zither-ui-numerical.js';
-import './zither-ui-radio.js';
-import './zither-ui-soundfile.js';
-import './zither-ui-tgroup.js';
-import './zither-ui-vbargraph.js';
-import './zither-ui-vgroup.js';
-import './zither-ui-vslider.js';
-
 import { ZitherUiValueComponent } from './ZitherUiValueComponent.js';
 
-/*
- ** The only zither-ui component that actually needs
- ** to be instantiated.  Given a FaustUIDescriptor
- ** as its sole property, it unrolls all the parts
- ** from there.  In the unrolling, all the other
- ** components get pulled in and instantiated as
- ** required.
- */
 @customElement('zither-ui')
 export class ZitherUi extends LitElement {
-  /*
-   ** the faust ui meta element contains all the overflow from the
-   ** original ui definition.  It consists of an array of Object
-   ** which this flattens into an object and an enumeration.
-   ** This function originally from faust-ui/src/components/group.ts
-   */
-  static parseMeta(metaIn: FaustUIMeta[]): {
-    metaObject: FaustUIMeta;
-    enums?: { [key: string]: number };
-  } {
-    const metaObject: FaustUIMeta = {};
-    if (!metaIn) return { metaObject };
-    metaIn.forEach(m => Object.assign(metaObject, m));
-    if (metaObject.style) {
-      const enumsRegex =
-        /\{(?:(?:'|_|-)(.+?)(?:'|_|-):([-+]?[0-9]*\.?[0-9]+?);)+(?:(?:'|_|-)(.+?)(?:'|_|-):([-+]?[0-9]*\.?[0-9]+?))\}/;
-      const matched = metaObject.style.match(enumsRegex);
-      if (matched) {
-        const itemsRegex =
-          /(?:(?:'|_|-)(.+?)(?:'|_|-):([-+]?[0-9]*\.?[0-9]+?))/g;
-        const enums: { [key: string]: number } = {};
-        let item;
-        // eslint-disable-next-line no-cond-assign
-        while ((item = itemsRegex.exec(matched[0]))) {
-          enums[item[1]] = +item[2];
-        }
-        return { metaObject, enums };
-      }
-    }
-    return { metaObject };
-  }
-
   /* css variables that coud be set in the root html
       --zither-ui-text-color
       --zither-ui-background-color
@@ -100,6 +43,10 @@ export class ZitherUi extends LitElement {
   /**
    * The constructor listener and the three following methods
    * are lifted from faust-ui.
+   * but the windowMessager is probably wrong, both sides are
+   * going to use the same window, and that's not what window
+   * messages are for, they're supposed to go between windows
+   * of different origins.
    */
   constructor() {
     super();
@@ -151,48 +98,7 @@ export class ZitherUi extends LitElement {
   /* eslint-enable @typescript-eslint/no-unused-vars */
   /* eslint-enable class-methods-use-this */
 
-  renderType(i: FaustUIItem, context: string): any {
-    function styleOf(j: FaustUIItem, metaObject: FaustUIMeta) {
-      if (metaObject.style) {
-        const s = metaObject.style;
-        if (s.startsWith('knob')) return 'knob';
-        if (s.startsWith('menu')) return 'menu';
-        if (s.startsWith('radio')) return 'radio';
-        if (s.startsWith('led')) return 'led';
-        if (s.startsWith('numerical')) return 'numerical';
-        console.log(
-          `styleOf found meta.style ${s} but did not match, returning ${j.type}`
-        );
-      }
-      return j.type;
-    }
-
-    console.log(`zither-ui renderType ${i.type}`);
-
-    if (i.type.endsWith('group')) {
-      const i_with_items = i as FaustUIGroup;
-      return html`<zither-ui-${i.type}
-			    .ui=${i}
-			    .top=${this}
-			    .context=${context}
-			    .label=${i.label}>
-			      ${i_with_items.items.map(j => this.renderType(j, i.type))}
-			  </zither-ui-${i.type}>`;
-    }
-    const i_with_meta = i as FaustUIInputItem | FaustUIOutputItem;
-    const { metaObject } = ZitherUi.parseMeta(i_with_meta.meta || []);
-    const style = styleOf(i_with_meta, metaObject);
-    return html`<zither-ui-${style} 
-		   .ui=${i}
-  		   .metaObject=${metaObject}
-		   .top=${this}
-		   .context=${context}
-		   .label=${i.label}>
-		  </zither-ui-${style}>`;
-  }
-
   render() {
-    console.log(`zither-ui render`);
-    return html` <main>${this.ui.map(i => this.renderType(i, ''))}</main> `;
+    return html`<div><slot></slot></div>`;
   }
 }

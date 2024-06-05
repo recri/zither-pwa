@@ -16,6 +16,7 @@ export class ZitherUiVbargraph extends ZitherUiOutputComponent {
   render() {
     const unit = this.metaObject.unit || '';
     const value = this.value.toFixed(3);
+    console.log(`zither-ui-vbargraph render`);
     return html`
 <div class="flexdiv">
   <div class="canvasdiv">

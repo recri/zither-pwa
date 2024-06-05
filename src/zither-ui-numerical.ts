@@ -14,6 +14,7 @@ export class ZitherUiNumerical extends ZitherUiOutputComponent {
   `;
 
   render() {
+    console.log(`zither-ui-numerical render`);
     return html`<p>zither-ui-numerical</p>`;
   }
 }

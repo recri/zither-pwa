@@ -17,6 +17,7 @@ export class ZitherUiMenu extends ZitherUiInputComponent {
   `;
 
   render() {
+    console.log(`zither-ui-menu render`);
     return html`<p>zither-ui-menu</p>`;
   }
 }

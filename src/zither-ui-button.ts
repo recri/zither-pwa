@@ -57,6 +57,7 @@ export class ZitherUiButton extends ZitherUiInputComponent {
   }
 
   render() {
+    console.log(`zither-ui-button render`);
     return html` <style>
         ${this.componentStyle()}
         ${this.buttonStyle()}

@@ -10,7 +10,7 @@ import type {
   FaustUIGroup,
 } from './faust/faustwasm/index.js';
 
-// import './zither-splash.js';
+import './zither-ui-root.js';
 import './zither-fretboard.js';
 import './zither-faust.js';
 import { ZitherLog } from './zither-log.js';
@@ -119,35 +119,36 @@ export class ZitherApp extends LitElement {
   resizeHandler = () => this.handleResize();
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
-  handleMessage(e) {
-    const { data, source } = e;
-    this.hostWindow = source as Window;
-    const { type } = data;
-    if (!type) return;
-    console.log(`window message event type ${type}`);
-    if (type === 'ui') {
-      this.dspUi = data.ui;
-    } else if (type === 'param') {
-      const { path, value } = data;
-      // this.paramChangeByDSP(path, value);
-    }
-  }
+  // turned off for lack of e type, also not sure if it's necessary
+  //  handleMessage(e) {
+  //    const { data, source } = e;
+  //    this.hostWindow = source as Window;
+  //    const { type } = data;
+  //    if (!type) return;
+  //    console.log(`window message event type ${type}`);
+  //    if (type === 'ui') {
+  //      this.dspUi = data.ui;
+  //    } else if (type === 'param') {
+  //      const { path, value } = data;
+  //      // this.paramChangeByDSP(path, value);
+  //    }
+  //  }
   /* eslint-enable @typescript-eslint/no-unused-vars */
 
-  messageHandler = e => this.handleMessage(e);
+  //  messageHandler = e => this.handleMessage(e);
 
   /* eslint-disable wc/guard-super-call */
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener('resize', this.resizeHandler);
-    window.addEventListener('message', this.messageHandler);
+    //    window.addEventListener('message', this.messageHandler);
     this.handleResize();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener('resize', this.resizeHandler);
-    window.removeEventListener('message', this.messageHandler);
+    //    window.removeEventListener('message', this.messageHandler);
   }
   /* eslint-enable wc/guard-super-call */
 
