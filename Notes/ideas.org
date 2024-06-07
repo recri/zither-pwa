@@ -31,4 +31,35 @@
     5 modes of pentatonic: major, blues major, minor, blues minor, and
     suspended (aka egyptian!).  Also named in chinese and south asian
     traditions.
-    
+[ ] The user interface is being a total pain in the ass.  Using faust-ui
+    conflicts with the normal lit-html construction practice.  Rewriting
+    into zither-ui, using lit-html, yields massive failure to expand the
+    ui.  Attempting to use shoelace-style components find that they are
+    mysteriously crippled when they're intantiated inside one of my
+    web components.  Works fine at the toplevel, fails to style when inside.
+[ ] So, I can make a web page of bookmarks for zither.elf.org which
+    launch differently configured instruments.  So all I need is to define
+    the core search string parameters.
+* parameters to zither
+** tune - a list of notes - sets the number of strings and the notes they
+   sound.
+	could be a well known tuning as a string of note names: EADGBE, GDAE, etc.
+	could be a comma separated list of midi note numbers
+	could be a concatenated string or comma separated list of midi note names
+** transpose - number of semitones to transpose up or down the tuning
+** frets - the number of semitones implemented
+** freting - a list of fret types per string, or one for all strings
+	f - fretted - chromatically fretted
+	u - unfretted - continuously tuned 
+	o - open string only - pluckable harp, lyre, or zither string
+	r - reverse fretted or unfretted from bridge toward nut
+** scale - one of several predefined scale names
+** tonic - the tonic note of the scale
+** label-notes - visibly identify the notes at each fretting
+	either as ABC..., or as solfege, absolute or relative
+** color-notes - palette for coloring notes.
+** hide-off-scale - off scale notes are not drawn - they are blank frets
+** mute-off-scale - off scale notes are not drawn or played
+** cover-off-scale - off scale notes are played as the next on scale note
+** instrument parameters - numerical paramaters for the physical model
+** effect parameters - numberical parameters for the effect model

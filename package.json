@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@lit/task": "^1.0.0",
+    "@shoelace-style/shoelace": "^2.15.1",
     "@shren/faust-ui": "^1.1.9",
     "lit": "^2.0.2",
     "lit-html": "^3.1.3"

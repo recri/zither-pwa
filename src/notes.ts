@@ -1,5 +1,7 @@
 import { Constant } from './constant.js';
 
+// unicode ♭ flat symbol, microscopic
+// unicode ♯ sharp symbol, also microscopic
 // clamp an octave value to the working range
 export const octaveClamp = (octave: number): number =>
   Math.min(9, Math.max(0, octave));

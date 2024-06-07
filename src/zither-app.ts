@@ -90,13 +90,7 @@ export class ZitherApp extends LitElement {
 
   @property({ type: Object }) hostWindow!: Window;
 
-  static styles = css`
-    :host {
-      display: block;
-      border: none;
-      padding: 0px;
-    }
-  `;
+  static styles = css``;
 
   constructor() {
     super();
@@ -113,42 +107,20 @@ export class ZitherApp extends LitElement {
   handleResize() {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
-    // console.log(`handleResize ${this.width} x ${this.height}`);
   }
 
   resizeHandler = () => this.handleResize();
-
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  // turned off for lack of e type, also not sure if it's necessary
-  //  handleMessage(e) {
-  //    const { data, source } = e;
-  //    this.hostWindow = source as Window;
-  //    const { type } = data;
-  //    if (!type) return;
-  //    console.log(`window message event type ${type}`);
-  //    if (type === 'ui') {
-  //      this.dspUi = data.ui;
-  //    } else if (type === 'param') {
-  //      const { path, value } = data;
-  //      // this.paramChangeByDSP(path, value);
-  //    }
-  //  }
-  /* eslint-enable @typescript-eslint/no-unused-vars */
-
-  //  messageHandler = e => this.handleMessage(e);
 
   /* eslint-disable wc/guard-super-call */
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener('resize', this.resizeHandler);
-    //    window.addEventListener('message', this.messageHandler);
     this.handleResize();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener('resize', this.resizeHandler);
-    //    window.removeEventListener('message', this.messageHandler);
   }
   /* eslint-enable wc/guard-super-call */
 
@@ -217,7 +189,7 @@ export class ZitherApp extends LitElement {
         }
         button {
           position: absolute;
-          top: 0px;
+          top: ${this.height - 100}px;
           left: 0px;
           font-size: calc(16px + 2vmin);
           z-index: 3;
