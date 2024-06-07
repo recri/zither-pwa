@@ -1,0 +1,30 @@
+<html>
+  <header>
+    <style>
+      @import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/themes/light.css';
+body {
+  font: 16px sans-serif;
+  background-color: var(--sl-color-neutral-0);
+  color: var(--sl-color-neutral-900);
+  padding: 1rem;
+}
+    </style>
+  </header>
+  <body>
+
+<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/shoelace.js"></script>
+
+<sl-tab-group>
+  <sl-tab slot="nav" panel="general">General</sl-tab>
+  <sl-tab slot="nav" panel="custom">Custom</sl-tab>
+  <sl-tab slot="nav" panel="advanced">Advanced</sl-tab>
+  <sl-tab slot="nav" panel="disabled" disabled>Disabled</sl-tab>
+
+  <sl-tab-panel name="general">This is the general tab panel.</sl-tab-panel>
+  <sl-tab-panel name="custom">This is the custom tab panel.</sl-tab-panel>
+  <sl-tab-panel name="advanced">This is the advanced tab panel.</sl-tab-panel>
+  <sl-tab-panel name="disabled">This is a disabled tab panel.</sl-tab-panel>
+</sl-tab-group>
+
+  </body>
+</html>
