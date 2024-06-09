@@ -52,7 +52,7 @@ export const noteToNameOctave = (
   key: number = Constant.notes.C0
 ) => noteToName(note, key) + noteToOctave(note);
 
-const noteRegExp = /^([A-G][#b]?)(-1|[0-9])$/;
+const noteRegExp = /^([A-G][♯♭#b]?)(-1|[0-9])$/;
 
 export function nameOctaveToNote(nameOctave: string): number {
   const result = noteRegExp.exec(nameOctave);

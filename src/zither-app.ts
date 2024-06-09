@@ -2,7 +2,6 @@ import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
 import { Constant } from './constant.js';
-import { expandTuning } from './tuning.js';
 
 import type {
   FaustPolyAudioWorkletNode,
@@ -28,6 +27,7 @@ export class ZitherApp extends LitElement {
     ZitherApp.urlSearchParams.has(name) ||
     window.localStorage.getItem(name) !== null;
 
+  // modify this to store new property values to window.localStorage
   static getProp = (name: string, defValue: string): string =>
     ZitherApp.urlSearchParams.has(name)
       ? ZitherApp.urlSearchParams.get(name)!
@@ -55,8 +55,6 @@ export class ZitherApp extends LitElement {
     ZitherApp.putProp(name, `${value}`);
   /* eslint-enable no-nested-ternary */
 
-  @property({ type: Object }) zitherLog!: ZitherLog;
-
   @property({ type: Object }) audioContext: AudioContext;
 
   @property({ type: Object }) audioNode: FaustPolyAudioWorkletNode | null =
@@ -66,21 +64,38 @@ export class ZitherApp extends LitElement {
 
   @property({ type: Object }) dspUi: FaustUIDescriptor | null = null;
 
-  @property({ type: Number }) courses: number = Constant.defaults.courses;
+  @property({ type: Object }) zitherLog!: ZitherLog;
 
-  @property({ type: Number }) strings: number = Constant.defaults.strings;
+  // begin instrument properties
 
-  @property({ type: Number }) frets: number = Constant.defaults.frets;
+  @property({ type: String }) tuning: string = ZitherApp.getProp(
+    'tuning',
+    Constant.defaultTuning
+  );
 
-  @property({ type: Number }) nut: number = Constant.defaults.nut;
+  @property({ type: String }) fretting: string = ZitherApp.getProp(
+    'fretting',
+    Constant.defaultFretting
+  );
 
-  @property({ type: String }) tuningName: string = Constant.defaultTuningName;
+  @property({ type: Number }) frets: number = ZitherApp.getIntProp(
+    'frets',
+    Constant.defaults.frets
+  );
 
-  @property({ type: String }) keyName: string = Constant.defaultKeyName;
+  @property({ type: Number }) transpose: number = ZitherApp.getIntProp(
+    'transpose',
+    Constant.defaults.transpose
+  );
 
-  @property({ type: String }) modeName: string = Constant.defaultModeName;
+  @property({ type: String }) tonic: string = ZitherApp.getProp(
+    'tonic',
+    Constant.defaultTonic
+  );
 
-  @property({ type: Array }) colors: Array<string> = Constant.defaultColors;
+  @property({ type: String }) scale: string = Constant.defaultScale;
+
+  @property({ type: Array }) colors: string = Constant.defaultColors;
 
   @property({ type: Number }) width: number = 200;
 
@@ -88,13 +103,11 @@ export class ZitherApp extends LitElement {
 
   @property({ type: String }) dspName: string = 'eks2';
 
-  @property({ type: Object }) hostWindow!: Window;
-
   static styles = css``;
 
   constructor() {
     super();
-
+    // window.localStorage.clear();
     /** @type {typeof AudioContext} */
     const AudioCtx = window.AudioContext; // || window.webkitAudioContext;
 
@@ -203,13 +216,12 @@ export class ZitherApp extends LitElement {
       <zither-fretboard
         .app=${this}
         .audioContext=${this.audioContext}
-        .courses=${this.courses}
-        .strings=${this.strings}
+        .tuning=${this.tuning}
+        .fretting=${this.fretting}
         .frets=${this.frets}
-        .nut=${this.nut}
-        .tuning=${expandTuning(this.courses, this.strings, this.tuningName)}
-        .key=${Constant.key.keys[this.keyName]}
-        .mode=${Constant.modes[this.modeName]}
+        .transpose=${this.transpose}
+        .tonic=${this.tonic}
+        .scale=${this.scale}
         .colors=${this.colors}
         .width=${this.width}
         .height=${this.height}

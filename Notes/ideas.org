@@ -40,26 +40,30 @@
 [ ] So, I can make a web page of bookmarks for zither.elf.org which
     launch differently configured instruments.  So all I need is to define
     the core search string parameters.
+[ ] Is there a way to use sustain and multiple plays to modulate level on
+    a pure touch device?
 * parameters to zither
-** tune - a list of notes - sets the number of strings and the notes they
-   sound.
+** tuning - a list of notes - sets the number of strings and the notes they
+   sound.  Also the 
 	could be a well known tuning as a string of note names: EADGBE, GDAE, etc.
 	could be a comma separated list of midi note numbers
 	could be a concatenated string or comma separated list of midi note names
-** transpose - number of semitones to transpose up or down the tuning
-** frets - the number of semitones implemented
-** freting - a list of fret types per string, or one for all strings
+	not sure if # as sharp can pass as a note
+** fretting - a list of fret types per string, or one for all strings
 	f - fretted - chromatically fretted
 	u - unfretted - continuously tuned 
 	o - open string only - pluckable harp, lyre, or zither string
 	r - reverse fretted or unfretted from bridge toward nut
+** transpose - number of semitones to transpose the tuning up or down
+** frets - the number of frets implemented
 ** scale - one of several predefined scale names
 ** tonic - the tonic note of the scale
 ** label-notes - visibly identify the notes at each fretting
 	either as ABC..., or as solfege, absolute or relative
 ** color-notes - palette for coloring notes.
-** hide-off-scale - off scale notes are not drawn - they are blank frets
-** mute-off-scale - off scale notes are not drawn or played
-** cover-off-scale - off scale notes are played as the next on scale note
+** hide-off-scale - off scale notes are not drawn, labelled, or colored
+	- they are blank frets
+** mute-off-scale - off scale notes are not played, implies hide-off-scale
+** cover-off-scale - off scale notes are played as the next on scale note, implies mute-off-scale
 ** instrument parameters - numerical paramaters for the physical model
 ** effect parameters - numberical parameters for the effect model

@@ -3,7 +3,6 @@
 
 import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
-
 import { Task } from '@lit/task';
 
 import { ZitherApp } from './zither-app.js';

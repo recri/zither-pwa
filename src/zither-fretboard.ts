@@ -2,8 +2,8 @@ import { LitElement, html, css, unsafeCSS } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
 import { ZitherApp } from './zither-app.js';
-
-// import { Constant } from './constant.js';
+import { Constant } from './constant.js';
+import { expandTuning } from './tuning.js';
 import { noteToName, mtof } from './notes.js';
 import './zither-fretnote.js';
 
@@ -15,26 +15,20 @@ export class Fretboard extends LitElement {
   // the audio context we are running in
   @property({ type: Object }) audioContext!: AudioContext;
 
-  // the number of courses running along the fretboard
-  @property({ type: Number }) courses!: number;
-
-  // the number of strings in each course
-  @property({ type: Number }) strings!: number;
-
   // the number of frets running across the fretboard
   @property({ type: Number }) frets!: number;
 
   // the tuning of the strings in the courses
-  @property({ type: Array }) tuning!: Array<number>;
+  @property({ type: Array }) tuning!: string;
 
   // the tonic note of the key we are playing
-  @property({ type: Number }) key!: number;
+  @property({ type: Number }) key!: string;
 
   // the scale we are playing
-  @property({ type: Number }) mode!: Array<number>;
+  @property({ type: Number }) scale!: string;
 
   // the colors of the notes
-  @property({ type: Array }) colors!: Array<string>;
+  @property({ type: Array }) colors!: string;
 
   // the width of the screen
   @property({ type: Number }) width!: number;
@@ -59,6 +53,27 @@ export class Fretboard extends LitElement {
   `;
 
   // fretboard management
+  tuningNotes: Array<number> = [];
+
+  keyNote: number = 0;
+
+  scaleNotes: Array<number> = [];
+
+  courses: number = 0;
+
+  strings: number = 1;
+
+  palette: Array<string> = [];
+
+  processInputs() {
+    this.tuningNotes = expandTuning(this.tuning);
+    this.keyNote = Constant.key.keys[this.key];
+    this.scaleNotes = Constant.scales[this.scale];
+    this.courses = this.tuningNotes.length;
+    this.strings = 1;
+    this.palette = Constant.palettes[this.colors];
+  }
+
   courseNumbers: Array<number> = [];
 
   fretNumbers: Array<number> = [];
@@ -105,13 +120,13 @@ export class Fretboard extends LitElement {
     // interate over chromatic degrees in our current key
     for (let c = 0; c < 12; c += 1) {
       // the text label for the note in the key of C
-      this.texts[c] = noteToName(c + this.key, this.key);
+      this.texts[c] = noteToName(c + this.keyNote, this.keyNote);
       // is in the scale of our mode
-      const isInScale: boolean = this.mode.includes(c);
+      const isInScale: boolean = this.scaleNotes.includes(c);
       // is the tonic of our key
       const isTonic: boolean = c === 0;
       // colors, might be filtered by color preferences
-      this.fillColors[c] = this.colors[c];
+      this.fillColors[c] = this.palette[c];
       /* eslint-disable no-nested-ternary */
       this.strokeColors[c] = isTonic
         ? 'white'
@@ -136,7 +151,7 @@ export class Fretboard extends LitElement {
     /* eslint-enable no-param-reassign */
     // the notes to be sounded
     // assumes that the strings in the course are in unison or octave
-    const midiNotes: Array<number> = this.tuning
+    const midiNotes: Array<number> = this.tuningNotes
       .slice(course * this.strings, (course + 1) * this.strings)
       .map(n => n + fret);
     // the frequencies to be keyed
@@ -144,7 +159,7 @@ export class Fretboard extends LitElement {
     // the chromatic note class for these notes in the key of C
     const chromaticDegree: number = midiNotes[0] % 12;
     // the chromatic note class for these notes in the current key
-    const chromaticDegreeInKey = (chromaticDegree - this.key + 12) % 12;
+    const chromaticDegreeInKey = (chromaticDegree - this.keyNote + 12) % 12;
 
     return html` <zither-fretnote
       class="fretnote"
@@ -164,6 +179,7 @@ export class Fretboard extends LitElement {
   }
 
   render() {
+    this.processInputs();
     this.computeSizes();
     this.computeArrays();
     return html`
