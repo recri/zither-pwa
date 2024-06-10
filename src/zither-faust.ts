@@ -33,7 +33,7 @@ import { FaustPolyDspGenerator } from './faust/faustwasm/index.js';
 const createFaustNode = async (
   audioContext: AudioContext,
   dspName = 'template',
-  voices = 16
+  voices = 16,
 ) => {
   // Load DSP metadata from JSON
   /** @type {FaustDspMeta} */
@@ -46,13 +46,13 @@ const createFaustNode = async (
 
   // Compile the DSP module from WebAssembly binary data
   const dspModule = await WebAssembly.compileStreaming(
-    await fetch(`${origin}/assets/faust/${dspName}.wasm`)
+    await fetch(`${origin}/assets/faust/${dspName}.wasm`),
   );
   // console.log(`createFaustNode dspModule ${dspModule}`)
 
   // Try to load not so optional mixer and effect modules
   const mixerModule = await WebAssembly.compileStreaming(
-    await fetch(`${origin}/assets/faust/mixerModule.wasm`)
+    await fetch(`${origin}/assets/faust/mixerModule.wasm`),
   );
   // console.log(`createFaustNode mixerModule ${mixerModule}`)
   const effectMeta = await (
@@ -60,7 +60,7 @@ const createFaustNode = async (
   ).json();
   // console.log(`createFaustNode effectMeta ${effectMeta}`)
   const effectModule = await WebAssembly.compileStreaming(
-    await fetch(`${origin}/assets/faust/${dspName}_effect.wasm`)
+    await fetch(`${origin}/assets/faust/${dspName}_effect.wasm`),
   );
   // console.log(`createFaustNode effectModule ${effectModule}`)
 
@@ -76,7 +76,7 @@ const createFaustNode = async (
     mixerModule,
     effectModule
       ? { module: effectModule, json: JSON.stringify(effectMeta) }
-      : undefined
+      : undefined,
   );
 
   if (!faustNode) throw new Error('faustNode is null');
@@ -114,7 +114,7 @@ export class ZitherFaust extends LitElement {
       const { faustNode, dspMeta } = await createFaustNode(
         this.audioContext,
         this.dspName,
-        this.poly
+        this.poly,
       );
       // give the app a clue
       this.app.audioNode = faustNode;

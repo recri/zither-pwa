@@ -22,7 +22,7 @@ export class Fretboard extends LitElement {
   @property({ type: Array }) tuning!: string;
 
   // the tonic note of the key we are playing
-  @property({ type: Number }) key!: string;
+  @property({ type: Number }) tonic!: string;
 
   // the scale we are playing
   @property({ type: Number }) scale!: string;
@@ -55,7 +55,7 @@ export class Fretboard extends LitElement {
   // fretboard management
   tuningNotes: Array<number> = [];
 
-  keyNote: number = 0;
+  tonicNote: number = 0;
 
   scaleNotes: Array<number> = [];
 
@@ -67,7 +67,7 @@ export class Fretboard extends LitElement {
 
   processInputs() {
     this.tuningNotes = expandTuning(this.tuning);
-    this.keyNote = Constant.key.keys[this.key];
+    this.tonicNote = Constant.key.keys[this.tonic];
     this.scaleNotes = Constant.scales[this.scale];
     this.courses = this.tuningNotes.length;
     this.strings = 1;
@@ -120,7 +120,7 @@ export class Fretboard extends LitElement {
     // interate over chromatic degrees in our current key
     for (let c = 0; c < 12; c += 1) {
       // the text label for the note in the key of C
-      this.texts[c] = noteToName(c + this.keyNote, this.keyNote);
+      this.texts[c] = noteToName(c + this.tonicNote, this.tonicNote);
       // is in the scale of our mode
       const isInScale: boolean = this.scaleNotes.includes(c);
       // is the tonic of our key
@@ -131,13 +131,13 @@ export class Fretboard extends LitElement {
       this.strokeColors[c] = isTonic
         ? 'white'
         : isInScale
-        ? 'lightgray'
-        : 'darkgray';
+          ? 'lightgray'
+          : 'darkgray';
       this.textColors[c] = isTonic
         ? 'white'
         : isInScale
-        ? 'lightgray'
-        : 'darkgray';
+          ? 'lightgray'
+          : 'darkgray';
       this.strokeWidths[c] = isTonic ? 3 : isInScale ? 2 : 1;
       /* eslint-enable no-nested-ternary */
     }
@@ -159,7 +159,7 @@ export class Fretboard extends LitElement {
     // the chromatic note class for these notes in the key of C
     const chromaticDegree: number = midiNotes[0] % 12;
     // the chromatic note class for these notes in the current key
-    const chromaticDegreeInKey = (chromaticDegree - this.keyNote + 12) % 12;
+    const chromaticDegreeInKey = (chromaticDegree - this.tonicNote + 12) % 12;
 
     return html` <zither-fretnote
       class="fretnote"
@@ -200,7 +200,7 @@ export class Fretboard extends LitElement {
           fret =>
             html`<div class="fret">
               ${this.courseNumbers.map(course => this.makeNote(course, fret))}
-            </div>`
+            </div>`,
         )}
       </div>
     `;

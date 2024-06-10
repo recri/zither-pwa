@@ -452,6 +452,8 @@ export const Constant = {
   defaultTonic: 'C', // key of C
   defaultScale: 'ionian', // C Major scale
   defaultColors: 'gray',
+  defaultOffscale: 'show',
+  defaultLabels: 'note',
   notes,
   nameToNote,
   octave,

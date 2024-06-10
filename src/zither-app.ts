@@ -32,8 +32,8 @@ export class ZitherApp extends LitElement {
     ZitherApp.urlSearchParams.has(name)
       ? ZitherApp.urlSearchParams.get(name)!
       : window.localStorage.getItem(name) !== null
-      ? window.localStorage.getItem(name)!
-      : defValue;
+        ? window.localStorage.getItem(name)!
+        : defValue;
 
   static putProp = (name: string, value: string) =>
     window.localStorage.setItem(name, value);
@@ -70,32 +70,48 @@ export class ZitherApp extends LitElement {
 
   @property({ type: String }) tuning: string = ZitherApp.getProp(
     'tuning',
-    Constant.defaultTuning
+    Constant.defaultTuning,
   );
 
   @property({ type: String }) fretting: string = ZitherApp.getProp(
     'fretting',
-    Constant.defaultFretting
+    Constant.defaultFretting,
   );
 
   @property({ type: Number }) frets: number = ZitherApp.getIntProp(
     'frets',
-    Constant.defaults.frets
+    Constant.defaults.frets,
   );
 
   @property({ type: Number }) transpose: number = ZitherApp.getIntProp(
     'transpose',
-    Constant.defaults.transpose
+    Constant.defaults.transpose,
   );
 
   @property({ type: String }) tonic: string = ZitherApp.getProp(
     'tonic',
-    Constant.defaultTonic
+    Constant.defaultTonic,
   );
 
-  @property({ type: String }) scale: string = Constant.defaultScale;
+  @property({ type: String }) scale: string = ZitherApp.getProp(
+    'scale',
+    Constant.defaultScale,
+  );
 
-  @property({ type: Array }) colors: string = Constant.defaultColors;
+  @property({ type: String }) colors: string = ZitherApp.getProp(
+    'colors',
+    Constant.defaultColors,
+  );
+
+  @property({ type: String }) offscale: string = ZitherApp.getProp(
+    'offscale',
+    Constant.defaultOffscale,
+  );
+
+  @property({ type: String }) labels: string = ZitherApp.getProp(
+    'labels',
+    Constant.defaultLabels,
+  );
 
   @property({ type: Number }) width: number = 200;
 
@@ -103,7 +119,14 @@ export class ZitherApp extends LitElement {
 
   @property({ type: String }) dspName: string = 'eks2';
 
-  static styles = css``;
+  static styles = css`
+    :host {
+      background-color: var(--zither-app-background-color);
+      border: none;
+      padding: 0px;
+      margin: none;
+    }
+  `;
 
   constructor() {
     super();
