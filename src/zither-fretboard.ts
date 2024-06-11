@@ -93,7 +93,7 @@ export class Fretboard extends LitElement {
   processInputs() {
     this.tuningNotes = expandTuning(this.tuning);
     this.fretting = expandFretting(this.tuning, this.tuningNotes);
-      console.log(`fretting ${this.fretting} tuning ${this.tuningNotes}`);
+    // console.log(`fretting ${this.fretting} tuning ${this.tuningNotes}`);
     this.tonicNote = Constant.key.keys[this.tonic];
     this.scaleNotes = Constant.scales[this.scale];
     // assuming only fretted or open for the moment

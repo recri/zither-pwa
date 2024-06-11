@@ -16,14 +16,22 @@ import { ZitherLog } from './zither-log.js';
 
 export type ZitherStateType = 'tune' | 'play';
 
-const pause_icon= html`
-  <svg xmlns="http://www.w3.org/2000/svg" height="64" viewBox="0 -960 960 960" width="64">
-    <path d="M560-200v-560h160v560H560Zm-320 0v-560h160v560H240Z"/>
-  </svg>`;
-const play_icon = html`
-  <svg xmlns="http://www.w3.org/2000/svg" height="64" viewBox="0 -960 960 960" width="64">
-    <path d="M320-200v-560l440 280-440 280Z"/>
-  </svg>`;
+const pauseIcon = html` <svg
+  xmlns="http://www.w3.org/2000/svg"
+  height="64"
+  viewBox="0 -960 960 960"
+  width="64"
+>
+  <path d="M560-200v-560h160v560H560Zm-320 0v-560h160v560H240Z" />
+</svg>`;
+const playIcon = html` <svg
+  xmlns="http://www.w3.org/2000/svg"
+  height="64"
+  viewBox="0 -960 960 960"
+  width="64"
+>
+  <path d="M320-200v-560l440 280-440 280Z" />
+</svg>`;
 
 // The zither-app should parse the url for parameter setting
 @customElement('zither-app')
@@ -242,12 +250,9 @@ export class ZitherApp extends LitElement {
         }
       </style>
       <button @click="${this.handler}">
-        ${this.zitherState === 'play' ? pause_icon : play_icon}
+        ${this.zitherState === 'play' ? pauseIcon : playIcon}
       </button>
-      <zither-ui
-        .app=${this}
-        .audioNode=${this.audioNode}
-      ></zither-ui>
+      <zither-ui .app=${this} .audioNode=${this.audioNode}></zither-ui>
       <zither-fretboard
         .app=${this}
         .velocity=${this.velocity}
