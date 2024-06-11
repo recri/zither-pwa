@@ -73,11 +73,6 @@ export class ZitherApp extends LitElement {
     Constant.defaultTuning,
   );
 
-  @property({ type: String }) fretting: string = ZitherApp.getProp(
-    'fretting',
-    Constant.defaultFretting,
-  );
-
   @property({ type: Number }) frets: number = ZitherApp.getIntProp(
     'frets',
     Constant.defaults.frets,
@@ -250,7 +245,6 @@ export class ZitherApp extends LitElement {
         .app=${this}
         .velocity=${this.velocity}
         .tuning=${this.tuning}
-        .fretting=${this.fretting}
         .frets=${this.frets}
         .transpose=${this.transpose}
         .tonic=${this.tonic}

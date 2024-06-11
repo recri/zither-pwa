@@ -478,8 +478,7 @@ const defaults: { [key: string]: number } = {
 
 export const Constant = {
   defaults,
-  defaultFretting: 'f', // fretted instruments
-  defaultTuning: 'EADGCF', // all fourths tuning
+  defaultTuning: 'f,EADGCF', // all fourths tuning
   defaultTonic: 'C', // key of C
   defaultScale: 'ionian', // C Major scale
   defaultColors: 'gray',

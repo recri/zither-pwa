@@ -3,7 +3,7 @@ import { property, customElement } from 'lit/decorators.js';
 
 import { ZitherApp } from './zither-app.js';
 import { Constant } from './constant.js';
-import { expandTuning } from './tuning.js';
+import { expandTuning, expandFretting } from './tuning.js';
 import { noteToName, noteToSolfege, mtof } from './notes.js';
 import './zither-fretnote.js';
 
@@ -23,9 +23,6 @@ export class Fretboard extends LitElement {
 
   // the tuning of the strings
   @property({ type: String }) tuning!: string;
-
-  // the fretting of the strings
-  @property({ type: String }) fretting!: string;
 
   // the number of frets, ie chromatic notes, running across the fretboard
   @property({ type: Number }) frets!: number;
@@ -73,6 +70,8 @@ export class Fretboard extends LitElement {
   // fretboard management
   tuningNotes: Array<number> = [];
 
+  fretting: string = 'f';
+
   tonicNote: number = 0;
 
   scaleNotes: Array<number> = [];
@@ -93,6 +92,8 @@ export class Fretboard extends LitElement {
 
   processInputs() {
     this.tuningNotes = expandTuning(this.tuning);
+    this.fretting = expandFretting(this.tuning, this.tuningNotes);
+      console.log(`fretting ${this.fretting} tuning ${this.tuningNotes}`);
     this.tonicNote = Constant.key.keys[this.tonic];
     this.scaleNotes = Constant.scales[this.scale];
     // assuming only fretted or open for the moment
