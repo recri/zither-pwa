@@ -236,10 +236,8 @@ export class ZitherApp extends LitElement {
         }
         button {
           position: absolute;
-          top: ${this.height - 50}px;
-          /* bottom: ${this.height - 5}px; */
-          left: 0px;
-          font-size: calc(16px + 2vmin);
+          bottom: 0;
+          right: 0;
           z-index: 3;
         }
       </style>
