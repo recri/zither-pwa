@@ -36,6 +36,14 @@ export const noteToName = (
     ? Constant.octave.flat
     : Constant.octave.sharp)[note % 12];
 
+export const noteToSolfege = (
+  note: number,
+  key: number = Constant.notes.C0,
+): string =>
+  (Constant.key.isflat[key % 12]
+    ? Constant.solfege.lowered
+    : Constant.solfege.raised)[note % 12];
+
 export const nameToNote = (name: string): number =>
   Constant.nameToNote[name] - Constant.nameToNote.C;
 

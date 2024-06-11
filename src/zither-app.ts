@@ -113,11 +113,16 @@ export class ZitherApp extends LitElement {
     Constant.defaultLabels,
   );
 
+  // begin dsp properties
+  @property({ type: String }) dspName: string = 'eks2'; // name of dsp module
+
+  @property({ type: Number }) velocity: number = 114; // velocity of midi notes
+
+  // window properties
+
   @property({ type: Number }) width: number = 200;
 
   @property({ type: Number }) height: number = 200;
-
-  @property({ type: String }) dspName: string = 'eks2';
 
   static styles = css`
     :host {
@@ -195,7 +200,9 @@ export class ZitherApp extends LitElement {
             effUi: { type: 'vgroup', label: 'eff', items: [] } as FaustUIGroup,
           };
 
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     const { instUi, effUi } = parseRawUi();
+    /* eslint-enable @typescript-eslint/no-unused-vars */
 
     return html`
       <style>
@@ -225,7 +232,8 @@ export class ZitherApp extends LitElement {
         }
         button {
           position: absolute;
-          top: ${this.height - 100}px;
+          top: ${this.height - 50}px;
+          /* bottom: ${this.height - 5}px; */
           left: 0px;
           font-size: calc(16px + 2vmin);
           z-index: 3;
@@ -234,17 +242,21 @@ export class ZitherApp extends LitElement {
       <button @click="${this.handler}">
         ${this.zitherState === 'play' ? 'tune' : 'play'}
       </button>
-      <zither-ui-root .app=${this} .instUi=${instUi} .effUi=${effUi}>
-      </zither-ui-root>
+      <zither-ui-root
+        .app=${this}
+        .audioNode=${this.audioNode}
+      ></zither-ui-root>
       <zither-fretboard
         .app=${this}
-        .audioContext=${this.audioContext}
+        .velocity=${this.velocity}
         .tuning=${this.tuning}
         .fretting=${this.fretting}
         .frets=${this.frets}
         .transpose=${this.transpose}
         .tonic=${this.tonic}
         .scale=${this.scale}
+        .offscale=${this.offscale}
+        .labels=${this.labels}
         .colors=${this.colors}
         .width=${this.width}
         .height=${this.height}

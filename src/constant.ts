@@ -189,6 +189,37 @@ const octave: { [key: string]: Array<string> } = {
   flat: ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'],
 };
 
+const solfege: { [key: string]: Array<string> } = {
+  raised: [
+    'do',
+    'di',
+    're',
+    'ri',
+    'mi',
+    'fa',
+    'fi',
+    'sol',
+    'si',
+    'la',
+    'li',
+    'ti',
+  ],
+  lowered: [
+    'do',
+    'ra',
+    're',
+    'me',
+    'mi',
+    'fa',
+    'se',
+    'sol',
+    'le',
+    'la',
+    'te',
+    'ti',
+  ],
+};
+
 // octave number and semitone offset from middle_C
 const octaveOffset: { [key: number]: number } = {
   '-1': -60,
@@ -457,6 +488,7 @@ export const Constant = {
   notes,
   nameToNote,
   octave,
+  solfege,
   octaveOffset,
   key,
   scales,
