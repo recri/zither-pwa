@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /*
- ** zither-ui-root
+ ** zither-ui
  */
 import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
@@ -15,8 +15,8 @@ import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/compone
 import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/range/range.js';
 
 // The zither-app should parse the url for parameter setting
-@customElement('zither-ui-root')
-export class ZitherUiRoot extends LitElement {
+@customElement('zither-ui')
+export class ZitherUi extends LitElement {
   @property({ type: Object }) app!: ZitherApp;
 
   @property({ type: Object }) audioNode!: FaustPolyAudioWorkletNode;

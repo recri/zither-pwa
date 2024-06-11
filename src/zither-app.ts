@@ -9,7 +9,7 @@ import type {
   FaustUIGroup,
 } from './faust/faustwasm/index.js';
 
-import './zither-ui-root.js';
+import './zither-ui.js';
 import './zither-fretboard.js';
 import './zither-faust.js';
 import { ZitherLog } from './zither-log.js';
@@ -206,7 +206,7 @@ export class ZitherApp extends LitElement {
           height: ${this.height}px;
         }
         zither-fretboard,
-        zither-ui-root,
+        zither-ui,
         zither-faust {
           position: absolute;
           top: 0px;
@@ -218,7 +218,7 @@ export class ZitherApp extends LitElement {
           display: ${this.zitherState === 'play' ? 'block' : 'none'};
           z-index: ${this.zitherState === 'play' ? 2 : 0};
         }
-        zither-ui-root {
+        zither-ui {
           display: ${this.zitherState === 'tune' ? 'block' : 'none'};
           z-index: ${this.zitherState === 'tune' ? 2 : 0};
         }
@@ -237,10 +237,10 @@ export class ZitherApp extends LitElement {
       <button @click="${this.handler}">
         ${this.zitherState === 'play' ? 'tune' : 'play'}
       </button>
-      <zither-ui-root
+      <zither-ui
         .app=${this}
         .audioNode=${this.audioNode}
-      ></zither-ui-root>
+      ></zither-ui>
       <zither-fretboard
         .app=${this}
         .velocity=${this.velocity}
