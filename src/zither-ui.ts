@@ -10,6 +10,9 @@ import type { FaustPolyAudioWorkletNode } from './faust/faustwasm/index.js';
 import { ZitherApp } from './zither-app.js';
 
 // figure out how to cherry pick from node_modules
+import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/tab/tab.js';
+import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/tab-group/tab-group.js';
+import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/tab-panel/tab-panel.js';
 import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/select/select.js';
 import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/option/option.js';
 import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/range/range.js';
@@ -27,17 +30,6 @@ export class ZitherUi extends LitElement {
       border: none;
       padding: 0px;
       margin: none;
-    }
-    div.wrapper {
-      display: grid;
-      grid-template-columns: 0.2fr 0.8fr;
-    }
-    div.label {
-      padding: 12px;
-      text-align: right;
-    }
-    sl-range {
-      padding: 20px;
     }
   `;
 
@@ -202,311 +194,288 @@ export class ZitherUi extends LitElement {
     const slTuning = (fretting: string, tuning: string, text: string) =>
       html`<sl-option value="${fretting},${tuning}">${text}</sl-option>`;
     return html`
-      <div class="wrapper">
-        <div class="label">tuning</div>
-        <sl-select
-          size="small"
-          label="tuning"
-          value="${this.app.tuning}"
-          @sl-change=${this.slChangeEventString}
-        >
-          <span slot="label"></span>
-          ${slTuning('f', 'C3,G3,B3,D4', 'banjo 4 plectrum')}
-          ${slTuning('f', 'D3,G3,B3,E4', 'banjo 4 chicago')}
-          ${slTuning('f', 'C3,G3,D4,A4', 'banjo 4 tenor')}
-          <!-- 5 string banjo is tricky because the 5th string starts at the 5th fret -->
-          ${slTuning('f', 'EADG', 'bass 4')}
-          ${slTuning('f', 'BEADG', 'bass 5 low')}
-          ${slTuning('f', 'EADGC', 'bass 5 high')}
-          <!-- cello needs fretless -->
-          <!-- dulcimer needs special fretting -->
-          ${slTuning('f', 'EADGBE', 'guitar 6')}
-          ${slTuning('f', 'EADGCF', 'guitar 6 all fourths')}
-          ${slTuning('f', 'E2,G2,B2,E3,G3,B3,E4', 'guitar 7 all thirds')}
-          ${slTuning(
-            'o',
-            'B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5,C6,D6,E6,F6,G6,A6,B6,C7',
-            'harp 23',
-          )}
-          ${slTuning(
-            'o',
-            'G2,A2,B2,C3,D3,E3,F3,G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5,C6,D6,E6,F6,G6,A6',
-            'harp 30',
-          )}
-          ${slTuning(
-            'o',
-            'G2,A2,B2,C3,D3,E3,F3,G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5,C6,D6,E6,F6,G6,A6,B6,C7',
-            'harp 32',
-          )}
-          ${slTuning(
-            'o',
-            'C2,D2,E2,F2,G2,A2,B2,C3,D3,E3,F3,G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5,C6,D6,E6,F6,G6,A6,B6,C7',
-            'harp 36',
-          )}
-          ${slTuning('o', 'D4,E4,G4,A4,B4,D5,E5', 'lyre 7')}
-          ${slTuning(
-            'o',
-            'G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5',
-            'lyre 16',
-          )}
-          ${slTuning('f', 'GDAE', 'mandolin 4')}
-          ${slTuning('f', 'B3,E3,A2,D2,G1,C1', 'stick 6 bass')}
-          ${slTuning('f', 'B1,E2,A2,D3,G3,C4', 'stick 6 guitar')}
-          ${slTuning('f', 'A2,D2,G1,C1,F♯2,B2,E3,A3', 'stick 8 classic')}
-          ${slTuning('f', 'E3,A2,D2,G1,C1,F♯2,B2,E3,A3,D4', 'stick 10 classic')}
-          ${slTuning(
-            'f',
-            'B3,E3,A2,D2,G1,C1,C♯2,F♯2,B2,E3,A3,D4',
-            'stick 12 classic',
-          )}
-          ${slTuning('f', 'G4,C4,E4,A4', 'ukulele 4')}
-          <!-- viola needs fretless -->
-          <!-- violin needs fretless -->
-          ${slTuning(
-            'o',
-            'G4,A4,B4,C5,D5,E5,F♯5,G5,A5,B5,C6,D6,E6,F♯6,G6',
-            'zither 15 in G',
-          )}
-          ${slTuning(
-            'o',
-            'B3,C4,D4,E4,F♯4,G4,A4,B4,C5,D5,E5,F♯5,G5,A5,B5,C6,D6,E6,F♯6,G6',
-            'folk zither 20 in G',
-          )}
-          ${slTuning(
-            'o',
-            'B3,C♯4,D4,E4,F4,G4,A4,B4,C♯5,D5,E5,F5,G5,A5,B5,C♯6,D6,E6,F6,G6',
-            'zither 20 in D',
-          )}
-          ${slTuning(
-            'o',
-            'B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5,C6,D6,E6,F6,G6',
-            'zither 20 in C',
-          )}
-          <!-- concert and alpine zithers are more complicated -->
-        </sl-select>
-        <div class="label">frets</div>
-        <sl-range
-          label="frets"
-          value="${this.app.frets}"
-          min="0"
-          max="37"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span slot="label"></span>
-        </sl-range>
-        <div class="label">transpose</div>
-        <sl-range
-          label="transpose"
-          value="${this.app.transpose}"
-          min="-24"
-          max="24"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span slot="label"></span>
-        </sl-range>
-        <div class="label">tonic</div>
-        <sl-select
-          size="small"
-          label="tonic"
-          value="${this.app.tonic}"
-          @sl-change=${this.slChangeEventString}
-        >
-          <span slot="label"></span>
-          ${[
-            'G♭',
-            'D♭',
-            'A♭',
-            'E♭',
-            'B♭',
-            'F',
-            'C',
-            'G',
-            'D',
-            'A',
-            'E',
-            'B',
-            'F♯',
-            'C♯',
-          ].map(
-            tonic => html`<sl-option value="${tonic}">${tonic}</sl-option>`,
-          )}
-        </sl-select>
-        <div class="label">scale</div>
-        <sl-select
-          size="small"
-          label="scale"
-          value="${this.app.scale}"
-          @sl-change=${this.slChangeEventString}
-        >
-          <span slot="label"></span>
-          ${[
-            'ionian',
-            'dorian',
-            'phrygian',
-            'lydian',
-            'mixolydian',
-            'aeolian',
-            'locrian',
-            'major',
-            'naturalminor',
-            'harmonicminor',
-            'jazzminor',
-            'major5note',
-            'bluesmajor5note',
-            'suspended5note',
-            'minor5note',
-            'bluesminor5note',
-            'bluesminor6note',
-            'bluesmajor6note',
-            'blues7note',
-            'harmonicmajor',
-            'blues9note',
-            'chromatic',
-          ].map(
-            scale => html`<sl-option value="${scale}">${scale}</sl-option>`,
-          )}
-        </sl-select>
-        <div class="label">offscale</div>
-        <sl-select
-          size="small"
-          label="offscale"
-          value="${this.app.offscale}"
-          @sl-change=${this.slChangeEventString}
-        >
-          <span slot="label"></span>
-          <sl-option value="show">show</sl-option>
-          <sl-option value="hide">hide</sl-option>
-          <sl-option value="mute">mute</sl-option>
-          <sl-option value="cover">cover</sl-option>
-        </sl-select>
-        <div class="label">labels</div>
-        <sl-select
-          size="small"
-          label="labels"
-          value="${this.app.labels}"
-          @sl-change=${this.slChangeEventString}
-        >
-          <span slot="label"></span>
-          <sl-option value="none">none</sl-option>
-          <sl-option value="note">note</sl-option>
-          <sl-option value="solfege">solfege</sl-option>
-        </sl-select>
-        <div class="label">colors</div>
-        <sl-select
-          size="small"
-          label="colors"
-          value="${this.app.colors}"
-          @sl-change=${this.slChangeEventString}
-        >
-          <span slot="label"></span>
-          ${[
-            'bamO',
-            'brocO',
-            'corkO',
-            'romaO',
-            'vikO',
-            'blue',
-            'green',
-            'magenta',
-            'gray1',
-            'gray',
-            'fire',
-            'none',
-          ].map(
-            color => html`<sl-option value="${color}">${color}</sl-option>`,
-          )}
-        </sl-select>
+      <sl-tab-group>
+        <sl-tab slot="nav" panel="mechanical">Mechanical</sl-tab>
+        <sl-tab slot="nav" panel="audio">Audio</sl-tab>
+        <sl-tab-panel name="mechanical">
+          <sl-select
+            size="small"
+            label="tuning"
+            value="${this.app.tuning}"
+            @sl-change=${this.slChangeEventString}
+          >
+            ${slTuning('f', 'C3,G3,B3,D4', 'banjo 4 plectrum')}
+            ${slTuning('f', 'D3,G3,B3,E4', 'banjo 4 chicago')}
+            ${slTuning('f', 'C3,G3,D4,A4', 'banjo 4 tenor')}
+            <!-- 5 string banjo is tricky because the 5th string starts at the 5th fret -->
+            ${slTuning('f', 'EADG', 'bass 4')}
+            ${slTuning('f', 'BEADG', 'bass 5 low')}
+            ${slTuning('f', 'EADGC', 'bass 5 high')}
+            <!-- cello needs fretless -->
+            <!-- dulcimer needs special fretting -->
+            ${slTuning('f', 'EADGBE', 'guitar 6')}
+            ${slTuning('f', 'EADGCF', 'guitar 6 all fourths')}
+            ${slTuning('f', 'E2,G2,B2,E3,G3,B3,E4', 'guitar 7 all thirds')}
+            ${slTuning(
+              'o',
+              'B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5,C6,D6,E6,F6,G6,A6,B6,C7',
+              'harp 23',
+            )}
+            ${slTuning(
+              'o',
+              'G2,A2,B2,C3,D3,E3,F3,G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5,C6,D6,E6,F6,G6,A6',
+              'harp 30',
+            )}
+            ${slTuning(
+              'o',
+              'G2,A2,B2,C3,D3,E3,F3,G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5,C6,D6,E6,F6,G6,A6,B6,C7',
+              'harp 32',
+            )}
+            ${slTuning(
+              'o',
+              'C2,D2,E2,F2,G2,A2,B2,C3,D3,E3,F3,G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5,C6,D6,E6,F6,G6,A6,B6,C7',
+              'harp 36',
+            )}
+            ${slTuning('o', 'D4,E4,G4,A4,B4,D5,E5', 'lyre 7')}
+            ${slTuning(
+              'o',
+              'G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5',
+              'lyre 16',
+            )}
+            ${slTuning('f', 'GDAE', 'mandolin 4')}
+            ${slTuning('f', 'B3,E3,A2,D2,G1,C1', 'stick 6 bass')}
+            ${slTuning('f', 'B1,E2,A2,D3,G3,C4', 'stick 6 guitar')}
+            ${slTuning('f', 'A2,D2,G1,C1,F♯2,B2,E3,A3', 'stick 8 classic')}
+            ${slTuning(
+              'f',
+              'E3,A2,D2,G1,C1,F♯2,B2,E3,A3,D4',
+              'stick 10 classic',
+            )}
+            ${slTuning(
+              'f',
+              'B3,E3,A2,D2,G1,C1,C♯2,F♯2,B2,E3,A3,D4',
+              'stick 12 classic',
+            )}
+            ${slTuning('f', 'G4,C4,E4,A4', 'ukulele 4')}
+            <!-- viola needs fretless -->
+            <!-- violin needs fretless -->
+            ${slTuning(
+              'o',
+              'G4,A4,B4,C5,D5,E5,F♯5,G5,A5,B5,C6,D6,E6,F♯6,G6',
+              'zither 15 in G',
+            )}
+            ${slTuning(
+              'o',
+              'B3,C4,D4,E4,F♯4,G4,A4,B4,C5,D5,E5,F♯5,G5,A5,B5,C6,D6,E6,F♯6,G6',
+              'folk zither 20 in G',
+            )}
+            ${slTuning(
+              'o',
+              'B3,C♯4,D4,E4,F4,G4,A4,B4,C♯5,D5,E5,F5,G5,A5,B5,C♯6,D6,E6,F6,G6',
+              'zither 20 in D',
+            )}
+            ${slTuning(
+              'o',
+              'B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5,C6,D6,E6,F6,G6',
+              'zither 20 in C',
+            )}
+            <!-- concert and alpine zithers are more complicated -->
+          </sl-select>
+          <sl-range
+            label="frets"
+            value="${this.app.frets}"
+            min="0"
+            max="37"
+            @sl-change=${this.slChangeEventNumber}
+          >
+          </sl-range>
+          <sl-range
+            label="transpose"
+            value="${this.app.transpose}"
+            min="-24"
+            max="24"
+            @sl-change=${this.slChangeEventNumber}
+          >
+          </sl-range>
+          <sl-select
+            size="small"
+            label="tonic"
+            value="${this.app.tonic}"
+            @sl-change=${this.slChangeEventString}
+          >
+            ${[
+              'G♭',
+              'D♭',
+              'A♭',
+              'E♭',
+              'B♭',
+              'F',
+              'C',
+              'G',
+              'D',
+              'A',
+              'E',
+              'B',
+              'F♯',
+              'C♯',
+            ].map(
+              tonic => html`<sl-option value="${tonic}">${tonic}</sl-option>`,
+            )}
+          </sl-select>
+          <sl-select
+            size="small"
+            label="scale"
+            value="${this.app.scale}"
+            @sl-change=${this.slChangeEventString}
+          >
+            ${[
+              'ionian',
+              'dorian',
+              'phrygian',
+              'lydian',
+              'mixolydian',
+              'aeolian',
+              'locrian',
+              'major',
+              'naturalminor',
+              'harmonicminor',
+              'jazzminor',
+              'major5note',
+              'bluesmajor5note',
+              'suspended5note',
+              'minor5note',
+              'bluesminor5note',
+              'bluesminor6note',
+              'bluesmajor6note',
+              'blues7note',
+              'harmonicmajor',
+              'blues9note',
+              'chromatic',
+            ].map(
+              scale => html`<sl-option value="${scale}">${scale}</sl-option>`,
+            )}
+          </sl-select>
+          <sl-select
+            size="small"
+            label="offscale"
+            value="${this.app.offscale}"
+            @sl-change=${this.slChangeEventString}
+          >
+            <sl-option value="show">show</sl-option>
+            <sl-option value="hide">hide</sl-option>
+            <sl-option value="mute">mute</sl-option>
+            <sl-option value="cover">cover</sl-option>
+          </sl-select>
+          <sl-select
+            size="small"
+            label="labels"
+            value="${this.app.labels}"
+            @sl-change=${this.slChangeEventString}
+          >
+            <sl-option value="none">none</sl-option>
+            <sl-option value="note">note</sl-option>
+            <sl-option value="solfege">solfege</sl-option>
+          </sl-select>
+          <sl-select
+            size="small"
+            label="colors"
+            value="${this.app.colors}"
+            @sl-change=${this.slChangeEventString}
+          >
+            ${[
+              'bamO',
+              'brocO',
+              'corkO',
+              'romaO',
+              'vikO',
+              'blue',
+              'green',
+              'magenta',
+              'gray1',
+              'gray',
+              'fire',
+              'none',
+            ].map(
+              color => html`<sl-option value="${color}">${color}</sl-option>`,
+            )}
+          </sl-select>
+        </sl-tab-panel>
+        <sl-tab-panel name="audio">
+          <sl-range
+            label="velocity"
+            value="${this.app.velocity}"
+            min="0"
+            max="127"
+            step="1"
+            @sl-change=${this.slChangeEventNumber}
+          >
+          </sl-range>
+          <sl-range
+            label="pickangle"
+            value="${this.pickangle}"
+            min="0.0"
+            max="0.9"
+            step="0.1"
+            @sl-change=${this.slChangeEventNumber}
+          >
+          </sl-range>
+          <sl-range
+            label="pickposition"
+            value="${this.pickposition}"
+            min="0.02"
+            max="0.98"
+            step="0.01"
+            @sl-change=${this.slChangeEventNumber}
+          >
+          </sl-range>
+          <sl-range
+            label="decaytime"
+            value="${this.decaytime}"
+            min="0.0"
+            max="10.0"
+            step="0.01"
+            @sl-change=${this.slChangeEventNumber}
+          >
+          </sl-range>
+          <sl-range
+            label="brightness"
+            value="${this.brightness}"
+            min="0.0"
+            max="1.0"
+            step="0.01"
+            @sl-change=${this.slChangeEventNumber}
+          >
+          </sl-range>
 
-        <div class="label">velocity</div>
-        <sl-range
-          label="velocity"
-          value="${this.app.velocity}"
-          min="0"
-          max="127"
-          step="1"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span slot="label"></span>
-        </sl-range>
-        <div class="label">pickangle</div>
-        <sl-range
-          label="pickangle"
-          value="${this.pickangle}"
-          min="0.0"
-          max="0.9"
-          step="0.1"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span slot="label"></span>
-        </sl-range>
-        <div class="label">pickposition</div>
-        <sl-range
-          label="pickposition"
-          value="${this.pickposition}"
-          min="0.02"
-          max="0.98"
-          step="0.01"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span slot="label"></span>
-        </sl-range>
-        <div class="label">decaytime</div>
-        <sl-range
-          label="decaytime"
-          value="${this.decaytime}"
-          min="0.0"
-          max="10.0"
-          step="0.01"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span slot="label"></span>
-        </sl-range>
-        <div class="label">brightness</div>
-        <sl-range
-          label="brightness"
-          value="${this.brightness}"
-          min="0.0"
-          max="1.0"
-          step="0.01"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span slot="label"></span>
-        </sl-range>
-
-        <div class="label">typemod</div>
-        <sl-range
-          label="typemod"
-          value="${this.typemod}"
-          min="0"
-          max="4"
-          step="1"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span slot="label"></span>
-        </sl-range>
-        <div class="label">nonlinearity</div>
-        <sl-range
-          label="nonlinearity"
-          value="${this.nonlinearity}"
-          min="0"
-          max="1.0"
-          step="0.01"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span slot="label"></span>
-        </sl-range>
-        <div class="label">freqmod</div>
-        <sl-range
-          label="freqmod"
-          value="${this.freqmod}"
-          min="20"
-          max="1000"
-          step="0.1"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span slot="label"></span>
-        </sl-range>
-      </div>
+          <sl-range
+            label="typemod"
+            value="${this.typemod}"
+            min="0"
+            max="4"
+            step="1"
+            @sl-change=${this.slChangeEventNumber}
+          >
+          </sl-range>
+          <sl-range
+            label="nonlinearity"
+            value="${this.nonlinearity}"
+            min="0"
+            max="1.0"
+            step="0.01"
+            @sl-change=${this.slChangeEventNumber}
+          >
+          </sl-range>
+          <sl-range
+            label="freqmod"
+            value="${this.freqmod}"
+            min="20"
+            max="1000"
+            step="0.1"
+            @sl-change=${this.slChangeEventNumber}
+          >
+          </sl-range>
+        </sl-tab-panel>
+      </sl-tab-group>
     `;
   }
 }

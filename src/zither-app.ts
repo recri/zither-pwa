@@ -17,6 +17,7 @@ import { ZitherLog } from './zither-log.js';
 export type ZitherStateType = 'tune' | 'play';
 
 const pauseIcon = html` <svg
+  aria-hidden="true"
   xmlns="http://www.w3.org/2000/svg"
   height="64"
   viewBox="0 -960 960 960"
@@ -24,7 +25,9 @@ const pauseIcon = html` <svg
 >
   <path d="M560-200v-560h160v560H560Zm-320 0v-560h160v560H240Z" />
 </svg>`;
+
 const playIcon = html` <svg
+  aria-hidden="true"
   xmlns="http://www.w3.org/2000/svg"
   height="64"
   viewBox="0 -960 960 960"
