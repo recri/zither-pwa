@@ -31,6 +31,9 @@ export class ZitherUi extends LitElement {
       padding: 0px;
       margin: none;
     }
+    .label {
+      font-size: calc(10px + 2vmin);
+    }
   `;
 
   get pickangle() {
@@ -204,6 +207,7 @@ export class ZitherUi extends LitElement {
             value="${this.app.tuning}"
             @sl-change=${this.slChangeEventString}
           >
+            <span class="label" slot="label">tuning</span>
             ${slTuning('f', 'C3,G3,B3,D4', 'banjo 4 plectrum')}
             ${slTuning('f', 'D3,G3,B3,E4', 'banjo 4 chicago')}
             ${slTuning('f', 'C3,G3,D4,A4', 'banjo 4 tenor')}
@@ -288,6 +292,7 @@ export class ZitherUi extends LitElement {
             max="37"
             @sl-change=${this.slChangeEventNumber}
           >
+            <span class="label" slot="label">frets</span>
           </sl-range>
           <sl-range
             label="transpose"
@@ -296,6 +301,7 @@ export class ZitherUi extends LitElement {
             max="24"
             @sl-change=${this.slChangeEventNumber}
           >
+            <span class="label" slot="label">transpose</span>
           </sl-range>
           <sl-select
             size="small"
@@ -303,6 +309,7 @@ export class ZitherUi extends LitElement {
             value="${this.app.tonic}"
             @sl-change=${this.slChangeEventString}
           >
+            <span class="label" slot="label">tonic</span>
             ${[
               'G♭',
               'D♭',
@@ -328,6 +335,7 @@ export class ZitherUi extends LitElement {
             value="${this.app.scale}"
             @sl-change=${this.slChangeEventString}
           >
+            <span class="label" slot="label">scale</span>
             ${[
               'ionian',
               'dorian',
@@ -361,6 +369,7 @@ export class ZitherUi extends LitElement {
             value="${this.app.offscale}"
             @sl-change=${this.slChangeEventString}
           >
+            <span class="label" slot="label">offscale</span>
             <sl-option value="show">show</sl-option>
             <sl-option value="hide">hide</sl-option>
             <sl-option value="mute">mute</sl-option>
@@ -372,6 +381,7 @@ export class ZitherUi extends LitElement {
             value="${this.app.labels}"
             @sl-change=${this.slChangeEventString}
           >
+            <span class="label" slot="label">labels</span>
             <sl-option value="none">none</sl-option>
             <sl-option value="note">note</sl-option>
             <sl-option value="solfege">solfege</sl-option>
@@ -382,6 +392,7 @@ export class ZitherUi extends LitElement {
             value="${this.app.colors}"
             @sl-change=${this.slChangeEventString}
           >
+            <span class="label" slot="label">colors</span>
             ${[
               'bamO',
               'brocO',
@@ -409,6 +420,7 @@ export class ZitherUi extends LitElement {
             step="1"
             @sl-change=${this.slChangeEventNumber}
           >
+            <span class="label" slot="label">velocity</span>
           </sl-range>
           <sl-range
             label="pickangle"
@@ -418,6 +430,7 @@ export class ZitherUi extends LitElement {
             step="0.1"
             @sl-change=${this.slChangeEventNumber}
           >
+            <span class="label" slot="label">pickangle</span>
           </sl-range>
           <sl-range
             label="pickposition"
@@ -427,6 +440,7 @@ export class ZitherUi extends LitElement {
             step="0.01"
             @sl-change=${this.slChangeEventNumber}
           >
+            <span class="label" slot="label">pickposition</span>
           </sl-range>
           <sl-range
             label="decaytime"
@@ -436,6 +450,7 @@ export class ZitherUi extends LitElement {
             step="0.01"
             @sl-change=${this.slChangeEventNumber}
           >
+            <span class="label" slot="label">decaytime</span>
           </sl-range>
           <sl-range
             label="brightness"
@@ -445,6 +460,7 @@ export class ZitherUi extends LitElement {
             step="0.01"
             @sl-change=${this.slChangeEventNumber}
           >
+            <span class="label" slot="label">brightness</span>
           </sl-range>
 
           <sl-range
@@ -455,6 +471,7 @@ export class ZitherUi extends LitElement {
             step="1"
             @sl-change=${this.slChangeEventNumber}
           >
+            <span class="label" slot="label">typemod</span>
           </sl-range>
           <sl-range
             label="nonlinearity"
@@ -464,6 +481,7 @@ export class ZitherUi extends LitElement {
             step="0.01"
             @sl-change=${this.slChangeEventNumber}
           >
+            <span class="label" slot="label">nonlinearity</span>
           </sl-range>
           <sl-range
             label="freqmod"
@@ -473,6 +491,7 @@ export class ZitherUi extends LitElement {
             step="0.1"
             @sl-change=${this.slChangeEventNumber}
           >
+            <span class="label" slot="label">freqmod</span>
           </sl-range>
         </sl-tab-panel>
       </sl-tab-group>
