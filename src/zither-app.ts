@@ -234,16 +234,19 @@ export class ZitherApp extends LitElement {
           height: ${this.height}px;
         }
         zither-fretboard {
-          display: ${this.zitherState === 'play' ? 'block' : 'none'};
-          z-index: ${this.zitherState === 'play' ? 2 : 0};
+          /*display: ${this.zitherState === 'play' ? 'block' : 'none'};*/
+          /*z-index: ${this.zitherState === 'play' ? 2 : 0}; */
+          display: block;
+          z-index: 1;
         }
         zither-ui {
           position: absolute;
           bottom: 0;
           right: 0;
-          width: 60%;
+          width: 70%;
           height: 80%;
-          display: ${this.zitherState === 'tune' ? 'block' : 'none'};
+          /* display: ${this.zitherState === 'tune' ? 'block' : 'none'}; */
+          display: 'block';
           z-index: ${this.zitherState === 'tune' ? 2 : 0};
         }
         zither-faust {
