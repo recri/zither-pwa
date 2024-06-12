@@ -226,11 +226,10 @@ export class ZitherApp extends LitElement {
           height: ${this.height}px;
         }
         zither-fretboard,
-        zither-ui,
         zither-faust {
           position: absolute;
-          top: 0px;
-          left: 0px;
+          top: 0;
+          left: 0;
           width: ${this.width}px;
           height: ${this.height}px;
         }
@@ -239,6 +238,11 @@ export class ZitherApp extends LitElement {
           z-index: ${this.zitherState === 'play' ? 2 : 0};
         }
         zither-ui {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 60%;
+          height: 80%;
           display: ${this.zitherState === 'tune' ? 'block' : 'none'};
           z-index: ${this.zitherState === 'tune' ? 2 : 0};
         }
