@@ -1,4 +1,4 @@
-import { LitElement, html, css, unsafeCSS } from 'lit';
+import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
 import { ZitherApp } from './zither-app.js';
@@ -62,7 +62,7 @@ export class Fretboard extends LitElement {
       display: flex;
       touch-action: none;
     }
-    div.fret {
+    div.string {
       display: flex;
     }
   `;
@@ -111,28 +111,85 @@ export class Fretboard extends LitElement {
 
   positionNumbers: Array<number> = [];
 
-  boardDirection: string = 'row';
-
-  positionDirection: string = 'column';
-
   noteWidth: number = 0;
 
   noteHeight: number = 0;
 
+  portraitStyle = html``;
+
+  landscapeStyle = html``;
+
   // compute sizes based on the array of strings and frets
+  // construct the style sheets for portrait and landscape
   computeSizes() {
     this.stringNumbers = rangeFromZeroToLast(this.strings - 1);
     this.positionNumbers = rangeFromZeroToLast(this.positions - 1);
     if (this.width >= this.height) {
-      this.boardDirection = 'row';
-      this.positionDirection = 'column';
       this.noteWidth = this.width / this.positions;
       this.noteHeight = this.height / this.strings;
+      this.landscapeStyle = html`
+        <style>
+          div.fretboard {
+            width: ${this.width}px;
+            height: ${this.height}px;
+            flex-direction: column;
+          }
+          div.string {
+            width: ${this.width}px;
+            height: ${this.noteHeight}px;
+            flex-direction: row;
+          }
+          fretnote.x1 {
+            width: ${1 * this.noteWidth}px;
+            height: ${this.noteHeight}px;
+          }
+          fretnote.x2 {
+            width: ${2 * this.noteWidth}px;
+            height: ${this.noteHeight}px;
+          }
+          fretnote.x3 {
+            width: ${3 * this.noteWidth}px;
+            height: ${this.noteHeight}px;
+          }
+          fretnote.x4 {
+            width: ${4 * this.noteWidth}px;
+            height: ${this.noteHeight}px;
+          }
+        </style>
+      `;
     } else {
-      this.boardDirection = 'column';
-      this.positionDirection = 'row';
       this.noteWidth = this.width / this.strings;
       this.noteHeight = this.height / this.positions;
+      this.portraitStyle = html`
+        <style>
+          div.fretboard {
+            width: ${this.width}px;
+            height: ${this.height}px;
+            flex-direction: row;
+          }
+          div.string {
+            width: ${this.noteWidth}px;
+            height: ${this.height}px;
+            flex-direction: column;
+          }
+          fretnote.x1 {
+            width: ${this.noteWidth}px;
+            height: ${1 * this.noteHeight}px;
+          }
+          fretnote.x2 {
+            width: ${this.noteWidth}px;
+            height: ${2 * this.noteHeight}px;
+          }
+          fretnote.x3 {
+            width: ${this.noteWidth}px;
+            height: ${3 * this.noteHeight}px;
+          }
+          fretnote.x4 {
+            width: ${this.noteWidth}px;
+            height: ${4 * this.noteHeight}px;
+          }
+        </style>
+      `;
     }
   }
 
@@ -184,15 +241,6 @@ export class Fretboard extends LitElement {
           ? 'lightgray'
           : 'darkgray';
       this.strokeWidths[c] = isTonic ? 3 : this.isInScale[c] ? 2 : 1;
-
-      if (!this.isInScale[c] && this.offscale !== 'show') {
-        this.texts[c] = '';
-        this.fillColors[c] = '';
-        this.strokeColors[c] = '';
-        this.textColors[c] = '';
-        this.strokeWidths[c] = 0;
-      }
-
       /* eslint-enable no-nested-ternary */
     }
   }
@@ -201,7 +249,7 @@ export class Fretboard extends LitElement {
     // these have to be done in reverse order when loading into a column
     // from top to botton.
     /* eslint-disable no-param-reassign */
-    if (this.positionDirection === 'column') string = this.strings - string - 1;
+    if (this.width >= this.height) string = this.strings - string - 1;
     /* eslint-enable no-param-reassign */
     // the midi note to be sounded
     const midiNote: number = clamp(
@@ -217,51 +265,58 @@ export class Fretboard extends LitElement {
     const chromaticDegree: number = midiNote % 12;
     // the chromatic note class for these notes in the current key, not needed? or needed?
     const chromaticDegreeInKey = (chromaticDegree - this.tonicNote + 12) % 12;
+    // implement cover
+    let widthScale = 1;
+    let heightScale = 1;
+    // count how many omitted fretnotes precede this one
+    let cover = 0;
+    if (this.offscale === 'cover') {
+      if (this.isInScale[chromaticDegreeInKey] === false) return html``; // omit offscale fretnote
+      while (
+        position > cover &&
+        !this.isInScale[(chromaticDegreeInKey - cover - 1 + 12) % 12]
+      ) {
+        cover += 1;
+      }
+      // console.log(`cover = ${cover}`);
+      if (this.width >= this.height) {
+        widthScale += cover;
+      } else {
+        heightScale += cover;
+      }
+    }
     return html` <zither-fretnote
-      class="fretnote"
+      class="fretnote x${cover + 1}"
       .fretboard=${this}
-      .string=${string}
-      .position=${position}
-      .width=${this.noteWidth}
-      .height=${this.noteHeight}
+      .width=${this.noteWidth * widthScale}
+      .height=${this.noteHeight * heightScale}
       .freq=${freq}
       .note=${midiNote}
       .velocity=${this.velocity}
       .isinscale=${this.isInScale[chromaticDegreeInKey]}
       .offscale=${this.offscale}
       .text=${this.texts[chromaticDegreeInKey]}
+      .fontSize=${this.noteHeight * 0.5}
       .fillColor=${this.fillColors[chromaticDegreeInKey]}
       .strokeColor=${this.strokeColors[chromaticDegreeInKey]}
       .strokeWidth=${this.strokeWidths[chromaticDegreeInKey]}
       .textColor=${this.textColors[chromaticDegreeInKey]}
+      .inset="3"
     ></zither-fretnote>`;
   }
 
-  // to be able to stretch fret-notes along the string, as when frets are missing
-  // or when we cover the offscale notes, we need to layout each string as a column
   render() {
     this.processInputs();
     this.computeSizes();
     this.computeArrays();
     // console.log(`note w ${this.noteWidth} h ${this.noteHeight} window w ${this.width} h ${this.height}`);
     return html`
-      <style>
-        div.fretboard {
-          flex-direction: ${unsafeCSS(this.boardDirection)};
-        }
-        div.fret {
-          flex-direction: ${unsafeCSS(this.positionDirection)};
-        }
-        zither-fretnote.fretnote {
-          width: ${this.noteWidth}px;
-          height: ${this.noteHeight}px;
-        }
-      </style>
+      ${this.width >= this.height ? this.landscapeStyle : this.portraitStyle}
       <div class="fretboard">
-        ${this.positionNumbers.map(
-          position =>
-            html`<div class="fret">
-              ${this.stringNumbers.map(string =>
+        ${this.stringNumbers.map(
+          string =>
+            html`<div class="string">
+              ${this.positionNumbers.map(position =>
                 this.makeNote(string, position),
               )}
             </div>`,
