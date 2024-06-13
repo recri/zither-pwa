@@ -48,7 +48,7 @@ export class Fretnote extends LitElement {
   `;
 
   start_handler(ev: TouchEvent) {
-    ev.preventDefault();
+    // ev.preventDefault();
     const node = this.fretboard.app.audioNode;
     // console.log(`fretnote start ${node}`);
     if (node) node.keyOn(1, this.note, this.velocity);
@@ -56,13 +56,13 @@ export class Fretnote extends LitElement {
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
   move_handler(ev: TouchEvent) {
-    ev.preventDefault();
+    // ev.preventDefault();
     const node = this.fretboard.app.audioNode;
   }
   /* eslint-enable @typescript-eslint/no-unused-vars */
 
   end_handler(ev: TouchEvent) {
-    ev.preventDefault();
+    // ev.preventDefault();
     const node = this.fretboard.app.audioNode;
     // console.log(`fretnote end ${node}`);
     if (node) node.keyOff(1, this.note, 0);

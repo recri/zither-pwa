@@ -326,8 +326,6 @@ export class ZitherApp extends LitElement {
           height: ${this.height}px;
         }
         zither-fretboard {
-          /*display: ${this.zitherState === 'play' ? 'block' : 'none'};*/
-          /*z-index: ${this.zitherState === 'play' ? 2 : 0}; */
           display: block;
           z-index: 1;
         }
@@ -337,7 +335,6 @@ export class ZitherApp extends LitElement {
           right: 0;
           width: 70%;
           height: 80%;
-          /* display: ${this.zitherState === 'tune' ? 'block' : 'none'}; */
           display: 'block';
           z-index: ${this.zitherState === 'tune' ? 2 : 0};
         }
@@ -354,6 +351,28 @@ export class ZitherApp extends LitElement {
       <button @click="${this.handler}">
         ${this.zitherState === 'play' ? pauseIcon : playIcon}
       </button>
+      <zither-faust
+        .app=${this}
+        .audioContext=${this.audioContext}
+        .dspName=${this.dspName}
+        .poly=${this.poly}
+      >
+      </zither-faust>
+      <zither-fretboard
+        .app=${this}
+        .velocity=${this.velocity}
+        .tuning=${this.tuning}
+        .frets=${this.frets}
+        .transpose=${this.transpose}
+        .tonic=${this.tonic}
+        .scale=${this.scale}
+        .offscale=${this.offscale}
+        .labels=${this.labels}
+        .colors=${this.colors}
+        .width=${this.width}
+        .height=${this.height}
+      ></zither-fretboard>
+      <zither-log .app=${this}></zither-log>
       <zither-ui
         .app=${this}
         .poly=${this.poly}
@@ -374,28 +393,6 @@ export class ZitherApp extends LitElement {
         .nonlinearity=${this.nonlinearity}
         .freqmod=${this.freqmod}
       ></zither-ui>
-      <zither-fretboard
-        .app=${this}
-        .velocity=${this.velocity}
-        .tuning=${this.tuning}
-        .frets=${this.frets}
-        .transpose=${this.transpose}
-        .tonic=${this.tonic}
-        .scale=${this.scale}
-        .offscale=${this.offscale}
-        .labels=${this.labels}
-        .colors=${this.colors}
-        .width=${this.width}
-        .height=${this.height}
-      ></zither-fretboard>
-      <zither-faust
-        .app=${this}
-        .audioContext=${this.audioContext}
-        .dspName=${this.dspName}
-        .poly=${this.poly}
-      >
-      </zither-faust>
-      <zither-log .app=${this}></zither-log>
     `;
   }
 }
