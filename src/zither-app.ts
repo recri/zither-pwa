@@ -66,6 +66,14 @@ export class ZitherApp extends LitElement {
   static putIntProp = (name: string, value: number) =>
     ZitherApp.putProp(name, `${value}`);
 
+  static getFloatProp = (name: string, defValue: number): number =>
+    ZitherApp.hasProp(name)
+      ? parseFloat(ZitherApp.getProp(name, '')!)
+      : defValue;
+
+  static putFloatProp = (name: string, value: number) =>
+    ZitherApp.putProp(name, `${value}`);
+
   static getBoolProp = (name: string, defValue: boolean): boolean =>
     ZitherApp.hasProp(name)
       ? ZitherApp.getProp(name, `${defValue}`) === 'true'
@@ -75,63 +83,147 @@ export class ZitherApp extends LitElement {
     ZitherApp.putProp(name, `${value}`);
   /* eslint-enable no-nested-ternary */
 
-  @property({ type: Object }) audioContext: AudioContext;
+  @property() audioContext: AudioContext;
 
-  @property({ type: Object }) audioNode: FaustPolyAudioWorkletNode | null =
-    null;
+  @property() audioNode: FaustPolyAudioWorkletNode | null = null;
 
-  @property({ type: String }) zitherState: ZitherStateType = 'tune';
+  @property() zitherState: ZitherStateType = 'tune';
 
-  @property({ type: Object }) dspUi: FaustUIDescriptor | null = null;
+  @property() dspUi: FaustUIDescriptor | null = null;
 
-  @property({ type: Object }) zitherLog!: ZitherLog;
+  @property() zitherLog!: ZitherLog;
 
   // begin instrument properties
 
-  @property({ type: String }) tuning: string = ZitherApp.getProp(
+  @property() tuning: string = ZitherApp.getProp(
     'tuning',
     Constant.defaultTuning,
   );
 
-  @property({ type: Number }) frets: number = ZitherApp.getIntProp(
+  @property() frets: number = ZitherApp.getIntProp(
     'frets',
     Constant.defaults.frets,
   );
 
-  @property({ type: Number }) transpose: number = ZitherApp.getIntProp(
+  @property() transpose: number = ZitherApp.getIntProp(
     'transpose',
     Constant.defaults.transpose,
   );
 
-  @property({ type: String }) tonic: string = ZitherApp.getProp(
-    'tonic',
-    Constant.defaultTonic,
-  );
+  @property() tonic: string = ZitherApp.getProp('tonic', Constant.defaultTonic);
 
-  @property({ type: String }) scale: string = ZitherApp.getProp(
-    'scale',
-    Constant.defaultScale,
-  );
+  @property() scale: string = ZitherApp.getProp('scale', Constant.defaultScale);
 
-  @property({ type: String }) colors: string = ZitherApp.getProp(
+  @property() colors: string = ZitherApp.getProp(
     'colors',
     Constant.defaultColors,
   );
 
-  @property({ type: String }) offscale: string = ZitherApp.getProp(
+  @property() offscale: string = ZitherApp.getProp(
     'offscale',
     Constant.defaultOffscale,
   );
 
-  @property({ type: String }) labels: string = ZitherApp.getProp(
+  @property() labels: string = ZitherApp.getProp(
     'labels',
     Constant.defaultLabels,
   );
 
   // begin dsp properties
-  @property({ type: String }) dspName: string = 'eks2'; // name of dsp module
+  @property() dspName: string = 'eks2'; // name of dsp module
 
-  @property({ type: Number }) velocity: number = 114; // velocity of midi notes
+  @property() velocity: number = ZitherApp.getIntProp(
+    'velocity',
+    Constant.defaults.velocity,
+  );
+
+  @property() poly: number = ZitherApp.getIntProp(
+    'poly',
+    Constant.defaults.poly,
+  );
+
+  @property()
+  set pickangle(value) {
+    if (this.audioNode)
+      this.audioNode.setParamValue('/NLFeks2/pick_angle', value);
+  }
+
+  get pickangle() {
+    return this.audioNode
+      ? this.audioNode.getParamValue('/NLFeks2/pick_angle')
+      : ZitherApp.getFloatProp('pickangle', Constant.defaults.pickangle);
+  }
+
+  @property()
+  set pickposition(value: number) {
+    if (this.audioNode)
+      this.audioNode.setParamValue('/NLFeks2/pick_position', value);
+  }
+
+  get pickposition() {
+    return this.audioNode
+      ? this.audioNode.getParamValue('/NLFeks2/pick_position')
+      : ZitherApp.getFloatProp('pickposition', Constant.defaults.pickposition);
+  }
+
+  @property()
+  set decaytime(value: number) {
+    if (this.audioNode)
+      this.audioNode.setParamValue('/NLFeks2/decaytime_T60', value);
+  }
+
+  get decaytime() {
+    return this.audioNode
+      ? this.audioNode.getParamValue('/NLFeks2/decaytime_T60')
+      : ZitherApp.getFloatProp('decaytime', Constant.defaults.decaytime);
+  }
+
+  @property()
+  set brightness(value: number) {
+    if (this.audioNode)
+      this.audioNode.setParamValue('/NLFeks2/brightness', value);
+  }
+
+  get brightness() {
+    return this.audioNode
+      ? this.audioNode.getParamValue('/NLFeks2/brightness')
+      : ZitherApp.getFloatProp('brightness', Constant.defaults.brightness);
+  }
+
+  @property()
+  set typemod(value: number) {
+    if (this.audioNode)
+      this.audioNode.setParamValue('/NLFeks2/Nonlinear_Filter/typeMod', value);
+  }
+
+  get typemod() {
+    return this.audioNode
+      ? this.audioNode.getParamValue('/NLFeks2/Nonlinear_Filter/typeMod')
+      : ZitherApp.getFloatProp('typemod', Constant.defaults.typemod);
+  }
+
+  @property()
+  set nonlinearity(value: number) {
+    if (this.audioNode)
+      this.audioNode.setParamValue('/NLFeks2/Nonlinearity', value);
+  }
+
+  get nonlinearity() {
+    return this.audioNode
+      ? this.audioNode.getParamValue('/NLFeks2/Nonlinearity')
+      : ZitherApp.getFloatProp('nonlinearity', Constant.defaults.nonlinearity);
+  }
+
+  @property()
+  set freqmod(value: number) {
+    if (this.audioNode) this.audioNode.setParamValue('/NLFeks2/freqMod', value);
+  }
+
+  get freqmod() {
+    return this.audioNode
+      ? this.audioNode.getParamValue('/NLFeks2/freqMod')
+      : ZitherApp.getFloatProp('freqmod', Constant.defaults.freqmod);
+  }
 
   // window properties
 
@@ -262,7 +354,26 @@ export class ZitherApp extends LitElement {
       <button @click="${this.handler}">
         ${this.zitherState === 'play' ? pauseIcon : playIcon}
       </button>
-      <zither-ui .app=${this} .audioNode=${this.audioNode}></zither-ui>
+      <zither-ui
+        .app=${this}
+        .poly=${this.poly}
+        .velocity=${this.velocity}
+        .tuning=${this.tuning}
+        .frets=${this.frets}
+        .transpose=${this.transpose}
+        .tonic=${this.tonic}
+        .scale=${this.scale}
+        .offscale=${this.offscale}
+        .labels=${this.labels}
+        .colors=${this.colors}
+        .pickangle=${this.pickangle}
+        .pickposition=${this.pickposition}
+        .decaytime=${this.decaytime}
+        .brightness=${this.brightness}
+        .typemod=${this.typemod}
+        .nonlinearity=${this.nonlinearity}
+        .freqmod=${this.freqmod}
+      ></zither-ui>
       <zither-fretboard
         .app=${this}
         .velocity=${this.velocity}
@@ -281,6 +392,7 @@ export class ZitherApp extends LitElement {
         .app=${this}
         .audioContext=${this.audioContext}
         .dspName=${this.dspName}
+        .poly=${this.poly}
       >
       </zither-faust>
       <zither-log .app=${this}></zither-log>

@@ -474,6 +474,15 @@ const palettes: { [key: string]: Array<string> } = {
 const defaults: { [key: string]: number } = {
   frets: 13, // one octave to start
   transpose: 0, // in standard offset
+  velocity: 114, // midi note on velocity
+  poly: 10, // midi polyphony number of voices
+  typemod: 0, // type of nonlinear modulation
+  nonlinearity: 0, // degree of nonlinearity
+  freqmod: 220, // frequency of nonlinearity
+  brightness: 0.5, // brightness
+  decaytime: 4, // decay time of notes
+  pickangle: 0, // pick angle
+  pickposition: 0.13, // pick position
 };
 
 export const Constant = {

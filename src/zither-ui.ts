@@ -20,9 +20,39 @@ import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/compone
 // The zither-app should parse the url for parameter setting
 @customElement('zither-ui')
 export class ZitherUi extends LitElement {
-  @property({ type: Object }) app!: ZitherApp;
+  @property() app!: ZitherApp;
 
-  @property({ type: Object }) audioNode!: FaustPolyAudioWorkletNode;
+  @property() velocity!: number;
+
+  @property() tuning!: string;
+
+  @property() frets!: number;
+
+  @property() transpose!: number;
+
+  @property() tonic!: string;
+
+  @property() scale!: string;
+
+  @property() offscale!: string;
+
+  @property() labels!: string;
+
+  @property() colors!: string;
+
+  @property() pickangle!: number;
+
+  @property() pickposition!: number;
+
+  @property() decaytime!: number;
+
+  @property() brightness!: number;
+
+  @property() typemod!: number;
+
+  @property() nonlinearity!: number;
+
+  @property() freqmod!: number;
 
   static styles = css`
     :host {
@@ -35,82 +65,6 @@ export class ZitherUi extends LitElement {
       font-size: calc(10px + 2vmin);
     }
   `;
-
-  get pickangle() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/NLFeks2/pick_angle')
-      : 0;
-  }
-
-  set pickangle(value) {
-    if (this.audioNode)
-      this.audioNode.setParamValue('/NLFeks2/pick_angle', value);
-  }
-
-  get pickposition() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/NLFeks2/pick_position')
-      : 0;
-  }
-
-  set pickposition(value: number) {
-    if (this.audioNode)
-      this.audioNode.setParamValue('/NLFeks2/pick_position', value);
-  }
-
-  get decaytime() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/NLFeks2/decaytime_T60')
-      : 0;
-  }
-
-  set decaytime(value: number) {
-    if (this.audioNode)
-      this.audioNode.setParamValue('/NLFeks2/decaytime_T60', value);
-  }
-
-  get brightness() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/NLFeks2/brightness')
-      : 0;
-  }
-
-  set brightness(value: number) {
-    if (this.audioNode)
-      this.audioNode.setParamValue('/NLFeks2/brightness', value);
-  }
-
-  get typemod() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/NLFeks2/Nonlinear_Filter/typeMod')
-      : 0;
-  }
-
-  set typemod(value: number) {
-    if (this.audioNode)
-      this.audioNode.setParamValue('/NLFeks2/Nonlinear_Filter/typeMod', value);
-  }
-
-  get nonlinearity() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/NLFeks2/Nonlinearity')
-      : 0;
-  }
-
-  set nonlinearity(value: number) {
-    if (this.audioNode)
-      this.audioNode.setParamValue('/NLFeks2/Nonlinearity', value);
-  }
-
-  get freqmod() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/NLFeks2/freqMod')
-      : 0;
-  }
-
-  set freqmod(value: number) {
-    if (this.audioNode) this.audioNode.setParamValue('/NLFeks2/freqMod', value);
-  }
 
   slChangeEventString(e: Event) {
     if (e.target) {
@@ -164,25 +118,25 @@ export class ZitherUi extends LitElement {
           break;
 
         case 'pickangle':
-          this.pickangle = value;
+          this.app.pickangle = value;
           break;
         case 'pickposition':
-          this.pickposition = value;
+          this.app.pickposition = value;
           break;
         case 'decaytime':
-          this.decaytime = value;
+          this.app.decaytime = value;
           break;
         case 'brightness':
-          this.brightness = value;
+          this.app.brightness = value;
           break;
         case 'typemod':
-          this.typemod = value;
+          this.app.typemod = value;
           break;
         case 'nonlinearity':
-          this.nonlinearity = value;
+          this.app.nonlinearity = value;
           break;
         case 'freqmod':
-          this.freqmod = value;
+          this.app.freqmod = value;
           break;
         default:
           console.log(
@@ -193,9 +147,15 @@ export class ZitherUi extends LitElement {
     }
   }
 
+  // ${slTuning('f', 'E2,G2,B2,E3,G3,B3,E4', 'guitar 7 all thirds')} is wrong
+  // E F F# G G# is a third
+  // G# A A# B C is a third
+  // C C# D D# E is a third
+  //  ${slTuning('f', 'E2,G#2,C3,E3,G#3,C4,E4', 'guitar 7 all thirds')} should be right
   render() {
     const slTuning = (fretting: string, tuning: string, text: string) =>
       html`<sl-option value="${fretting},${tuning}">${text}</sl-option>`;
+    // console.log(`this.tuning.startsWith('o,') -> ${this.tuning.startsWith('o,')}`);
     return html`
       <sl-tab-group>
         <sl-tab slot="nav" panel="mechanical">Mechanical</sl-tab>
@@ -204,7 +164,7 @@ export class ZitherUi extends LitElement {
           <sl-select
             size="small"
             label="tuning"
-            value="${this.app.tuning}"
+            value="${this.tuning}"
             @sl-change=${this.slChangeEventString}
           >
             <span class="label" slot="label">tuning</span>
@@ -212,14 +172,16 @@ export class ZitherUi extends LitElement {
             ${slTuning('f', 'D3,G3,B3,E4', 'banjo 4 chicago')}
             ${slTuning('f', 'C3,G3,D4,A4', 'banjo 4 tenor')}
             <!-- 5 string banjo is tricky because the 5th string starts at the 5th fret -->
+            <!-- Also introduces the library of old-timey tunings named after songs -->
             ${slTuning('f', 'EADG', 'bass 4')}
             ${slTuning('f', 'BEADG', 'bass 5 low')}
             ${slTuning('f', 'EADGC', 'bass 5 high')}
             <!-- cello needs fretless -->
-            <!-- dulcimer needs special fretting -->
+            <!-- dulcimer needs diatonic fretting -->
+            <!-- also clarity on order of strings in tuning names -->
             ${slTuning('f', 'EADGBE', 'guitar 6')}
             ${slTuning('f', 'EADGCF', 'guitar 6 all fourths')}
-            ${slTuning('f', 'E2,G2,B2,E3,G3,B3,E4', 'guitar 7 all thirds')}
+            ${slTuning('f', 'E2,G♯2,C3,E3,G♯3,C4,E4', 'guitar 7 all thirds')}
             ${slTuning(
               'o',
               'B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5,C6,D6,E6,F6,G6,A6,B6,C7',
@@ -285,18 +247,29 @@ export class ZitherUi extends LitElement {
             )}
             <!-- concert and alpine zithers are more complicated -->
           </sl-select>
-          <sl-range
-            label="frets"
-            value="${this.app.frets}"
-            min="0"
-            max="37"
-            @sl-change=${this.slChangeEventNumber}
-          >
-            <span class="label" slot="label">frets</span>
-          </sl-range>
+          ${this.tuning && this.tuning.startsWith('o,')
+            ? html`<sl-range
+                label="frets"
+                value="${this.frets}"
+                min="0"
+                max="37"
+                disabled
+                @sl-change=${this.slChangeEventNumber}
+              >
+                <span class="label" slot="label">frets</span>
+              </sl-range>`
+            : html` <sl-range
+                label="frets"
+                value="${this.frets}"
+                min="0"
+                max="37"
+                @sl-change=${this.slChangeEventNumber}
+              >
+                <span class="label" slot="label">frets</span>
+              </sl-range>`}
           <sl-range
             label="transpose"
-            value="${this.app.transpose}"
+            value="${this.transpose}"
             min="-24"
             max="24"
             @sl-change=${this.slChangeEventNumber}
@@ -306,7 +279,7 @@ export class ZitherUi extends LitElement {
           <sl-select
             size="small"
             label="tonic"
-            value="${this.app.tonic}"
+            value="${this.tonic}"
             @sl-change=${this.slChangeEventString}
           >
             <span class="label" slot="label">tonic</span>
@@ -332,7 +305,7 @@ export class ZitherUi extends LitElement {
           <sl-select
             size="small"
             label="scale"
-            value="${this.app.scale}"
+            value="${this.scale}"
             @sl-change=${this.slChangeEventString}
           >
             <span class="label" slot="label">scale</span>
@@ -366,7 +339,7 @@ export class ZitherUi extends LitElement {
           <sl-select
             size="small"
             label="offscale"
-            value="${this.app.offscale}"
+            value="${this.offscale}"
             @sl-change=${this.slChangeEventString}
           >
             <span class="label" slot="label">offscale</span>
@@ -378,7 +351,7 @@ export class ZitherUi extends LitElement {
           <sl-select
             size="small"
             label="labels"
-            value="${this.app.labels}"
+            value="${this.labels}"
             @sl-change=${this.slChangeEventString}
           >
             <span class="label" slot="label">labels</span>
@@ -389,7 +362,7 @@ export class ZitherUi extends LitElement {
           <sl-select
             size="small"
             label="colors"
-            value="${this.app.colors}"
+            value="${this.colors}"
             @sl-change=${this.slChangeEventString}
           >
             <span class="label" slot="label">colors</span>
@@ -414,7 +387,7 @@ export class ZitherUi extends LitElement {
         <sl-tab-panel name="audio">
           <sl-range
             label="velocity"
-            value="${this.app.velocity}"
+            value="${this.velocity}"
             min="0"
             max="127"
             step="1"
