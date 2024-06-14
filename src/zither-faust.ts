@@ -118,7 +118,7 @@ export class ZitherFaust extends LitElement {
       );
       // give the app a clue
       this.app.audioNode = faustNode;
-      this.app.dspUi = dspMeta.ui;
+      // this.app.dspUi = dspMeta.ui;
       // return the node and meta data
       return { faustNode, dspMeta };
     },

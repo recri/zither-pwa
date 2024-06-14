@@ -1,40 +1,17 @@
 import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
+import type { FaustPolyAudioWorkletNode } from './faust/faustwasm/index.js';
+
 import { Constant } from './constant.js';
-
-import type {
-  FaustPolyAudioWorkletNode,
-  FaustUIDescriptor,
-  FaustUIGroup,
-} from './faust/faustwasm/index.js';
-
+import './zither-splash.js';
 import './zither-ui.js';
 import './zither-fretboard.js';
 import './zither-faust.js';
 import { ZitherLog } from './zither-log.js';
+import { playIcon, pauseIcon } from './zither-icons.js';
 
-export type ZitherStateType = 'tune' | 'play';
-
-const pauseIcon = html` <svg
-  aria-hidden="true"
-  xmlns="http://www.w3.org/2000/svg"
-  height="64"
-  viewBox="0 -960 960 960"
-  width="64"
->
-  <path d="M560-200v-560h160v560H560Zm-320 0v-560h160v560H240Z" />
-</svg>`;
-
-const playIcon = html` <svg
-  aria-hidden="true"
-  xmlns="http://www.w3.org/2000/svg"
-  height="64"
-  viewBox="0 -960 960 960"
-  width="64"
->
-  <path d="M320-200v-560l440 280-440 280Z" />
-</svg>`;
+export type ZitherStateType = 'tune' | 'play' | 'splash';
 
 // The zither-app should parse the url for parameter setting
 @customElement('zither-app')
@@ -87,9 +64,7 @@ export class ZitherApp extends LitElement {
 
   @property() audioNode: FaustPolyAudioWorkletNode | null = null;
 
-  @property() zitherState: ZitherStateType = 'tune';
-
-  @property() dspUi: FaustUIDescriptor | null = null;
+  @property() zitherState: ZitherStateType = 'splash';
 
   @property() zitherLog!: ZitherLog;
 
@@ -288,35 +263,13 @@ export class ZitherApp extends LitElement {
   }
 
   render() {
-    const parseRawUi = () =>
-      this.dspUi &&
-      this.dspUi[0] &&
-      this.dspUi[0].type === 'tgroup' &&
-      this.dspUi[0].items &&
-      this.dspUi[0].items.length === 2
-        ? {
-            instUi: this.dspUi[0].items[0] as FaustUIGroup,
-            effUi: this.dspUi[0].items[1] as FaustUIGroup,
-          }
-        : {
-            instUi: {
-              type: 'vgroup',
-              label: 'inst',
-              items: [],
-            } as FaustUIGroup,
-            effUi: { type: 'vgroup', label: 'eff', items: [] } as FaustUIGroup,
-          };
-
-    /* eslint-disable @typescript-eslint/no-unused-vars */
-    const { instUi, effUi } = parseRawUi();
-    /* eslint-enable @typescript-eslint/no-unused-vars */
-
     return html`
       <style>
         :host {
           width: ${this.width}px;
           height: ${this.height}px;
         }
+        zither-splash,
         zither-fretboard,
         zither-faust {
           position: absolute;
@@ -324,6 +277,9 @@ export class ZitherApp extends LitElement {
           left: 0;
           width: ${this.width}px;
           height: ${this.height}px;
+        }
+        zither-faust {
+          z-index: 0;
         }
         zither-fretboard {
           display: block;
@@ -338,8 +294,8 @@ export class ZitherApp extends LitElement {
           display: 'block';
           z-index: ${this.zitherState === 'tune' ? 2 : 0};
         }
-        zither-faust {
-          z-index: 0;
+        zither-splash {
+          z-index: ${this.zitherState === 'splash' ? 3 : 0};
         }
         button {
           position: absolute;
@@ -351,6 +307,9 @@ export class ZitherApp extends LitElement {
       <button @click="${this.handler}">
         ${this.zitherState === 'play' ? pauseIcon : playIcon}
       </button>
+      <zither-splash 
+	.app=${this}
+      ></zither-splash>
       <zither-faust
         .app=${this}
         .audioContext=${this.audioContext}

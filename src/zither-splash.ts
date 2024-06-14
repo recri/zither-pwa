@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
+import { playIcon, pauseIcon } from './zither-icons.js';
 import { ZitherApp } from './zither-app.js';
 
 @customElement('zither-splash')
@@ -28,15 +29,20 @@ export class ZitherSplash extends LitElement {
 
   @property({ type: Object }) app!: ZitherApp;
 
-  @property({ type: Object }) audioContext!: AudioContext;
+  playHandler() {
+    this.app.audioContext.resume();
+    this.app.zitherState = 'play';
+  }
 
-  handler() {
-    this.audioContext.resume();
+  tuneHandler() {
+    this.app.audioContext.resume();
+    this.app.zitherState = 'tune';
   }
 
   render() {
     return html`<main>
-      <button @click="${this.handler}">Activate</button>
+      <button @click="${this.playHandler}">${playIcon}Play</button>
+      <button @click="${this.tuneHandler}">${pauseIcon}Tune</button>
     </main>`;
   }
 }

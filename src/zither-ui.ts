@@ -5,8 +5,7 @@
 import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
-import type { FaustPolyAudioWorkletNode } from './faust/faustwasm/index.js';
-
+import { playIcon, ejectIcon } from './zither-icons.js';
 import { ZitherApp } from './zither-app.js';
 
 // figure out how to cherry pick from node_modules
@@ -64,6 +63,9 @@ export class ZitherUi extends LitElement {
     .label {
       font-size: calc(10px + 2vmin);
     }
+sl-tab-panel {
+padding: 5px;
+}
   `;
 
   slChangeEventString(e: Event) {
