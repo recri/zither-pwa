@@ -24,6 +24,11 @@ export class ZitherSplash extends LitElement {
       justify-content: center;
       align-items: center;
     }
+    div.buttons {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
     sl-button {
       font-size: calc(16px + 2vmin);
       margin: 20px;
@@ -32,17 +37,31 @@ export class ZitherSplash extends LitElement {
 
   @property({ type: Object }) app!: ZitherApp;
 
+  closeHandler() {
+    this.app.closeHandler();
+  }
+
+  playHandler() {
+    this.app.playHandler();
+  }
+
+  tuneHandler() {
+    this.app.tuneHandler();
+  }
+
   render() {
     return html`<main>
-      <sl-button @click=${this.app.closeHandler} size="large" circle>
-        <sl-icon name="x-lg" label="close instrument"></sl-icon>
-      </sl-button>
-      <sl-button @click=${this.app.tuneHandler} size="large" circle>
-        <sl-icon name="gear" label="tune instrument"></sl-icon>
-      </sl-button>
-      <sl-button @click=${this.app.playHandler} size="large" circle>
-        <sl-icon name="music-note-beamed" label="play instrument"></sl-icon>
-      </sl-button>
+      <div class="buttons">
+        <sl-button @click=${this.closeHandler} size="large" circle>
+          <sl-icon name="x-lg" label="close instrument"></sl-icon>
+        </sl-button>
+        <sl-button @click=${this.tuneHandler} size="large" circle>
+          <sl-icon name="gear" label="tune instrument"></sl-icon>
+        </sl-button>
+        <sl-button @click=${this.playHandler} size="large" circle>
+          <sl-icon name="music-note-beamed" label="play instrument"></sl-icon>
+        </sl-button>
+      </div>
     </main>`;
   }
 }

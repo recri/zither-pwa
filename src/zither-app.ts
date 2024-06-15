@@ -236,24 +236,23 @@ export class ZitherApp extends LitElement {
   }
 
   handleResize() {
+    // console.log(`handleResize ${this.width} x ${this.height} becomes ${window.innerWidth} x ${window.innerHeight}`);
     this.width = window.innerWidth;
     this.height = window.innerHeight;
   }
 
-  /*
   resizeHandler = () => this.handleResize();
-*/
 
   /* eslint-disable wc/guard-super-call */
   connectedCallback() {
     super.connectedCallback();
-    window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.resizeHandler);
     this.handleResize();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.resizeHandler);
   }
   /* eslint-enable wc/guard-super-call */
 
@@ -264,12 +263,19 @@ export class ZitherApp extends LitElement {
   playHandler() {
     this.audioContext.resume();
     this.zitherState = 'play';
-    this.shadowRoot!.getElementById('myfretboard')!.requestFullscreen();
+    if ( ! document.fullscreenElement) {
+      // console.log(`requesting fullscreen`);
+      this.requestFullscreen();
+    }
   }
 
   tuneHandler() {
     this.audioContext.resume();
     this.zitherState = 'tune';
+      if (document.fullscreenElement) {
+        // console.log(`relinquishing fullscreen`);
+        document.exitFullscreen();
+      }
   }
 
   /* eslint-disable class-methods-use-this */
@@ -278,19 +284,6 @@ export class ZitherApp extends LitElement {
     else this.zitherState = 'splash';
   }
   /* eslint-enable class-methods-use-this */
-
-  /*
-  handler() {
-    if (this.audioContext.state !== 'running') {
-      this.audioContext.resume();
-    }
-    if (this.zitherState === 'play') {
-      this.zitherState = 'tune';
-    } else {
-      this.zitherState = 'play';
-    }
-  }
-*/
 
   render() {
     return html`

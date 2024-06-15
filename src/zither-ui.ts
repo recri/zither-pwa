@@ -159,6 +159,18 @@ export class ZitherUi extends LitElement {
     }
   }
 
+  closeHandler() {
+    this.app.closeHandler();
+  }
+
+  playHandler() {
+    this.app.playHandler();
+  }
+
+  tuneHandler() {
+    this.app.tuneHandler();
+  }
+
   // ${slTuning('f', 'E2,G2,B2,E3,G3,B3,E4', 'guitar 7 all thirds')} is wrong
   // E F F# G G# is a third
   // G# A A# B C is a third
@@ -481,10 +493,10 @@ export class ZitherUi extends LitElement {
         </sl-tab-panel>
       </sl-tab-group>
       <div class="buttons">
-        <sl-button @click=${this.app.closeHandler} size="large" circle>
+        <sl-button @click=${this.closeHandler} size="large" circle>
           <sl-icon name="x-lg" label="close instrument"></sl-icon>
         </sl-button>
-        <sl-button @click=${this.app.playHandler} size="large" circle>
+        <sl-button @click=${this.playHandler} size="large" circle>
           <sl-icon name="music-note-beamed" label="play instrument"></sl-icon>
         </sl-button>
       </div>

@@ -21,6 +21,12 @@ export class Fretboard extends LitElement {
   // the zither app we're part of
   @property({ type: Object }) app!: ZitherApp;
 
+  // the width of the screen
+  @property({ type: Number }) width!: number;
+
+  // the height of the screen
+  @property({ type: Number }) height!: number;
+
   // the velocity to sound at
   @property({ type: Number }) velocity!: number;
 
@@ -47,12 +53,6 @@ export class Fretboard extends LitElement {
 
   // the colors of the notes
   @property({ type: String }) colors!: string;
-
-  // the width of the screen
-  @property({ type: Number }) width!: number;
-
-  // the height of the screen
-  @property({ type: Number }) height!: number;
 
   static styles = css`
     :host {
@@ -137,7 +137,7 @@ export class Fretboard extends LitElement {
     this.stringNumbers = rangeFromZeroToLast(this.strings - 1);
     this.positionNumbers = rangeFromZeroToLast(this.positions - 1);
     if (this.width >= this.height) {
-      this.noteWidth = this.width / (this.positions + 1);
+      this.noteWidth = this.width / this.positions;
       this.noteHeight = this.height / this.strings;
       this.landscapeStyle = html`
         <style>
@@ -171,7 +171,7 @@ export class Fretboard extends LitElement {
       `;
     } else {
       this.noteWidth = this.width / this.strings;
-      this.noteHeight = this.height / (this.positions + 1);
+      this.noteHeight = this.height / this.positions;
       this.portraitStyle = html`
         <style>
           div.fretboard {
@@ -317,6 +317,10 @@ export class Fretboard extends LitElement {
     ></zither-fretnote>`;
   }
 
+  tuneHandler() {
+    this.app.tuneHandler();
+  }
+
   render() {
     this.processInputs();
     this.computeSizes();
@@ -324,7 +328,7 @@ export class Fretboard extends LitElement {
     // console.log(`note w ${this.noteWidth} h ${this.noteHeight} window w ${this.width} h ${this.height}`);
     return html`
       <div class="buttons">
-        <sl-button @click=${this.app.tuneHandler} size="large" circle>
+        <sl-button @click=${this.tuneHandler} size="large" circle>
           <sl-icon name="gear" label="tune instrument"></sl-icon>
         </sl-button>
       </div>
