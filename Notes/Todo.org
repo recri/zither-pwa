@@ -46,3 +46,13 @@
 [ ] there's a thought about sharing the delay line between instances of the synth.
 [ ] The pixel 7a choked after a while
 [ ] Does the full screen API give better control over miscellaneous chrome?
+[ ] make sure that pwa builds from github, may have lost some of the copy logic
+    required to recreate out-tsc and dist from scratch.
+[ ] PWA can exit with window.close().
+[ ] PWA can be forced to update by changes to webmanifest or service worker.
+[ ] Can solve button accessibility problems with sl-button, and use the
+    sl-icon library, too.  
+	Use 'gear' settings icon for 'tune instrument'.
+	Use 'x-large' for 'close instrument'.
+	Use 'music-note-beamed' for 'play instrument'.
+[ ] Fix the background on the zither desktop icon theme color? ...

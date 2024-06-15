@@ -1,6 +1,9 @@
 import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
+import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/icon/icon.js';
+import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/button/button.js';
+
 import { ZitherApp } from './zither-app.js';
 import { Constant } from './constant.js';
 import { expandTuning, expandFretting } from './tuning.js';
@@ -65,6 +68,15 @@ export class Fretboard extends LitElement {
     div.string {
       display: flex;
     }
+    div.buttons {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+    sl-button {
+      font-size: calc(16px + 2vmin);
+      margin: 20px;
+    }
   `;
 
   // fretboard management
@@ -125,7 +137,7 @@ export class Fretboard extends LitElement {
     this.stringNumbers = rangeFromZeroToLast(this.strings - 1);
     this.positionNumbers = rangeFromZeroToLast(this.positions - 1);
     if (this.width >= this.height) {
-      this.noteWidth = this.width / this.positions;
+      this.noteWidth = this.width / (this.positions + 1);
       this.noteHeight = this.height / this.strings;
       this.landscapeStyle = html`
         <style>
@@ -159,7 +171,7 @@ export class Fretboard extends LitElement {
       `;
     } else {
       this.noteWidth = this.width / this.strings;
-      this.noteHeight = this.height / this.positions;
+      this.noteHeight = this.height / (this.positions + 1);
       this.portraitStyle = html`
         <style>
           div.fretboard {
@@ -311,6 +323,11 @@ export class Fretboard extends LitElement {
     this.computeArrays();
     // console.log(`note w ${this.noteWidth} h ${this.noteHeight} window w ${this.width} h ${this.height}`);
     return html`
+      <div class="buttons">
+        <sl-button @click=${this.app.tuneHandler} size="large" circle>
+          <sl-icon name="gear" label="tune instrument"></sl-icon>
+        </sl-button>
+      </div>
       ${this.width >= this.height ? this.landscapeStyle : this.portraitStyle}
       <div class="fretboard">
         ${this.stringNumbers.map(

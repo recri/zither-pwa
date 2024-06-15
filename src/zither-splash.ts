@@ -1,7 +1,9 @@
 import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
-import { playIcon, pauseIcon } from './zither-icons.js';
+import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/icon/icon.js';
+import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/button/button.js';
+
 import { ZitherApp } from './zither-app.js';
 
 @customElement('zither-splash')
@@ -22,27 +24,25 @@ export class ZitherSplash extends LitElement {
       justify-content: center;
       align-items: center;
     }
-    button {
+    sl-button {
       font-size: calc(16px + 2vmin);
+      margin: 20px;
     }
   `;
 
   @property({ type: Object }) app!: ZitherApp;
 
-  playHandler() {
-    this.app.audioContext.resume();
-    this.app.zitherState = 'play';
-  }
-
-  tuneHandler() {
-    this.app.audioContext.resume();
-    this.app.zitherState = 'tune';
-  }
-
   render() {
     return html`<main>
-      <button @click="${this.playHandler}">${playIcon}Play</button>
-      <button @click="${this.tuneHandler}">${pauseIcon}Tune</button>
+      <sl-button @click=${this.app.closeHandler} size="large" circle>
+        <sl-icon name="x-lg" label="close instrument"></sl-icon>
+      </sl-button>
+      <sl-button @click=${this.app.tuneHandler} size="large" circle>
+        <sl-icon name="gear" label="tune instrument"></sl-icon>
+      </sl-button>
+      <sl-button @click=${this.app.playHandler} size="large" circle>
+        <sl-icon name="music-note-beamed" label="play instrument"></sl-icon>
+      </sl-button>
     </main>`;
   }
 }

@@ -5,10 +5,11 @@
 import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
-import { playIcon, ejectIcon } from './zither-icons.js';
 import { ZitherApp } from './zither-app.js';
 
 // figure out how to cherry pick from node_modules
+import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/icon/icon.js';
+import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/button/button.js';
 import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/tab/tab.js';
 import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/tab-group/tab-group.js';
 import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/tab-panel/tab-panel.js';
@@ -63,9 +64,18 @@ export class ZitherUi extends LitElement {
     .label {
       font-size: calc(10px + 2vmin);
     }
-sl-tab-panel {
-padding: 5px;
-}
+    sl-tab-panel {
+      padding: 5px;
+    }
+    div.buttons {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+    sl-button {
+      font-size: calc(16px + 2vmin);
+      margin: 20px;
+    }
   `;
 
   slChangeEventString(e: Event) {
@@ -470,6 +480,14 @@ padding: 5px;
           </sl-range>
         </sl-tab-panel>
       </sl-tab-group>
+      <div class="buttons">
+        <sl-button @click=${this.app.closeHandler} size="large" circle>
+          <sl-icon name="x-lg" label="close instrument"></sl-icon>
+        </sl-button>
+        <sl-button @click=${this.app.playHandler} size="large" circle>
+          <sl-icon name="music-note-beamed" label="play instrument"></sl-icon>
+        </sl-button>
+      </div>
     `;
   }
 }

@@ -9,13 +9,17 @@ import './zither-ui.js';
 import './zither-fretboard.js';
 import './zither-faust.js';
 import { ZitherLog } from './zither-log.js';
-import { playIcon, pauseIcon } from './zither-icons.js';
 
 export type ZitherStateType = 'tune' | 'play' | 'splash';
 
 // The zither-app should parse the url for parameter setting
 @customElement('zither-app')
 export class ZitherApp extends LitElement {
+  /**
+   ** Code to implement parameters from url
+   ** and from local storage.
+   */
+
   /* eslint-disable no-nested-ternary */
   static urlSearchParams: URLSearchParams = new URL(window.location.href)
     .searchParams;
@@ -59,6 +63,10 @@ export class ZitherApp extends LitElement {
   static putBoolProp = (name: string, value: boolean) =>
     ZitherApp.putProp(name, `${value}`);
   /* eslint-enable no-nested-ternary */
+
+  /**
+   ** properties
+   * */
 
   @property() audioContext: AudioContext;
 
@@ -232,18 +240,20 @@ export class ZitherApp extends LitElement {
     this.height = window.innerHeight;
   }
 
+  /*
   resizeHandler = () => this.handleResize();
+*/
 
   /* eslint-disable wc/guard-super-call */
   connectedCallback() {
     super.connectedCallback();
-    window.addEventListener('resize', this.resizeHandler);
+    window.addEventListener('resize', this.handleResize);
     this.handleResize();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    window.removeEventListener('resize', this.resizeHandler);
+    window.removeEventListener('resize', this.handleResize);
   }
   /* eslint-enable wc/guard-super-call */
 
@@ -251,6 +261,25 @@ export class ZitherApp extends LitElement {
     this.zitherLog.log(msg);
   }
 
+  playHandler() {
+    this.audioContext.resume();
+    this.zitherState = 'play';
+    this.shadowRoot!.getElementById('myfretboard')!.requestFullscreen();
+  }
+
+  tuneHandler() {
+    this.audioContext.resume();
+    this.zitherState = 'tune';
+  }
+
+  /* eslint-disable class-methods-use-this */
+  closeHandler() {
+    if (this.zitherState === 'splash') window.close();
+    else this.zitherState = 'splash';
+  }
+  /* eslint-enable class-methods-use-this */
+
+  /*
   handler() {
     if (this.audioContext.state !== 'running') {
       this.audioContext.resume();
@@ -261,6 +290,7 @@ export class ZitherApp extends LitElement {
       this.zitherState = 'play';
     }
   }
+*/
 
   render() {
     return html`
@@ -297,19 +327,8 @@ export class ZitherApp extends LitElement {
         zither-splash {
           z-index: ${this.zitherState === 'splash' ? 3 : 0};
         }
-        button {
-          position: absolute;
-          bottom: 0;
-          right: 0;
-          z-index: 3;
-        }
       </style>
-      <button @click="${this.handler}">
-        ${this.zitherState === 'play' ? pauseIcon : playIcon}
-      </button>
-      <zither-splash 
-	.app=${this}
-      ></zither-splash>
+      <zither-splash .app=${this}></zither-splash>
       <zither-faust
         .app=${this}
         .audioContext=${this.audioContext}
@@ -318,6 +337,7 @@ export class ZitherApp extends LitElement {
       >
       </zither-faust>
       <zither-fretboard
+        id="myfretboard"
         .app=${this}
         .velocity=${this.velocity}
         .tuning=${this.tuning}
