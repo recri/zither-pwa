@@ -208,6 +208,29 @@ export class ZitherUi extends LitElement {
             ${slTuning('f', 'E2,G♯2,C3,E3,G♯3,C4,E4', 'guitar 7 all thirds')}
             ${slTuning(
               'o',
+              'C7,B6,A6,G6,F6,E6,D6,C6,B5,A5,G5,F5,E5,D5,C5,B4,A4,G4,F4,E4,D4,C4',
+              'lute harp',
+            )}
+            ${slTuning(
+              'o',
+              'E5,D♯5,C5,B4,A4,G4,F♯4,E4,D♯4,C4,B3,A3,G3,F♯3,E3',
+              'nevel harp',
+            )}
+            ${slTuning(
+              'o',
+              'G5,F♯5,E5,D♯5,C5,B4,A4,G4,F♯4,E4',
+              'mini kinnor harp',
+            )}
+            ${slTuning('o', 'G4,F♯4,E4,D♯4,C4,B3,A3,G3,F♯3,E3', 'kinnor harp')}
+            ${slTuning('o', 'E4,F4,G♯4,A4,B4,C5,D5,E5', 'lyre harp')}
+            ${slTuning(
+              'o',
+              'D3,E3,F♯3,G3,A3,B3,C♯4,D4,E4,F♯4,G4,A4,B4,C♯5,D5,E5',
+              'lyre harp',
+            )}
+            ${slTuning('o', 'F5,E5,D5,C5,B4,A4,G♯4,F4,E4,D4', 'lyre harp')}
+            ${slTuning(
+              'o',
               'B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5,C6,D6,E6,F6,G6,A6,B6,C7',
               'harp 23',
             )}
@@ -257,7 +280,7 @@ export class ZitherUi extends LitElement {
             ${slTuning(
               'o',
               'B3,C4,D4,E4,F♯4,G4,A4,B4,C5,D5,E5,F♯5,G5,A5,B5,C6,D6,E6,F♯6,G6',
-              'folk zither 20 in G',
+              'zither 20 in G',
             )}
             ${slTuning(
               'o',

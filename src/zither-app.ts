@@ -263,7 +263,7 @@ export class ZitherApp extends LitElement {
   playHandler() {
     this.audioContext.resume();
     this.zitherState = 'play';
-    if ( ! document.fullscreenElement) {
+    if (!document.fullscreenElement) {
       // console.log(`requesting fullscreen`);
       this.requestFullscreen();
     }
@@ -272,10 +272,10 @@ export class ZitherApp extends LitElement {
   tuneHandler() {
     this.audioContext.resume();
     this.zitherState = 'tune';
-      if (document.fullscreenElement) {
-        // console.log(`relinquishing fullscreen`);
-        document.exitFullscreen();
-      }
+    if (document.fullscreenElement) {
+      // console.log(`relinquishing fullscreen`);
+      document.exitFullscreen();
+    }
   }
 
   /* eslint-disable class-methods-use-this */
@@ -289,8 +289,8 @@ export class ZitherApp extends LitElement {
     return html`
       <style>
         :host {
-          width: ${this.width}px;
-          height: ${this.height}px;
+          width: 100%;
+          height: 100%;
         }
         zither-splash,
         zither-fretboard,
@@ -298,8 +298,8 @@ export class ZitherApp extends LitElement {
           position: absolute;
           top: 0;
           left: 0;
-          width: ${this.width}px;
-          height: ${this.height}px;
+          width: 100%;
+          height: 100%;
         }
         zither-faust {
           z-index: 0;

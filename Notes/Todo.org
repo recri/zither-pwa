@@ -5,8 +5,8 @@
 	tapping at various rates, record successful tests in the database, record the
 	start of unsuccessful tests in the database, choose boundaries from 
 [ ] recheck performance limits
-[ ] implement the mechanical properties page (strings, courses, frets, tunings, etc.)
-[ ] implement the audio device properties page.
+[x] implement the mechanical properties page (strings, courses, frets, tunings, etc.)
+[x] implement the audio device properties page.
 [ ] implement the audio device selection page.
 [ ] make a zither layout
 [ ] the position of the touch between the frets could modulate the pick position filter.
@@ -18,9 +18,11 @@
 [ ] More useful would be a way to mute the strings, or selectively mute the strings.
 [ ] Send each note on its own channel, so it will have its own channel messages.
     Not sure if the channel is implemented, half remember that it isn't.
+    But make it work by making 16 synths with no sharing.
 [ ] switching on device rotation is very disruptive.
 [ ] rotating from portrait to landscape and back reduces the fretlabels to microscopic
     in portrait.  The sizes are stable after the first two swaps.
+    Other oddities arise, too, the control panel resizes and relocates to mid screen.
 [ ] eks - don't see why the pick position is restricted to 0.5 max, maybe it's symmetric
     around the midpoint?
 [ ] the pm guitar models appear to use string models, bridge models, nut models, pick
@@ -45,14 +47,32 @@
 [ ] The models need to be as lean as possible.  Multi notes choke the ONN tablet.
 [ ] there's a thought about sharing the delay line between instances of the synth.
 [ ] The pixel 7a choked after a while
-[ ] Does the full screen API give better control over miscellaneous chrome?
+------------------------------------------------------------------------
+[x] Does the full screen API give better control over miscellaneous chrome?
+    Well, some of the chrome hangs around on the iPad, but it really cleans up
+    on android.
 [ ] make sure that pwa builds from github, may have lost some of the copy logic
     required to recreate out-tsc and dist from scratch.
-[ ] PWA can exit with window.close().
-[ ] PWA can be forced to update by changes to webmanifest or service worker.
-[ ] Can solve button accessibility problems with sl-button, and use the
+[x] PWA can exit with window.close().
+    Only on more recent devices.  SE failed to exit or even make noise.  Moto
+    failed to exit.
+[x] PWA can be forced to update by changes to webmanifest or service worker.
+[x] Can solve button accessibility problems with sl-button, and use the
     sl-icon library, too.  
 	Use 'gear' settings icon for 'tune instrument'.
 	Use 'x-large' for 'close instrument'.
 	Use 'music-note-beamed' for 'play instrument'.
-[ ] Fix the background on the zither desktop icon theme color? ...
+[?] Fix the background on the zither desktop icon theme color? ...
+    I get white on IOS and gray on Android.
+[ ] Can detect touchscreen with media query:
+    if(window.matchMedia("(pointer: coarse)").matches) {
+      // touchscreen
+    }
+    https://www.w3.org/TR/mediaqueries-4/#descdef-media-any-pointer
+    Can confess to the failings of the program on desktops and laptops.
+[ ] Need a tone control that tracks the string's fundamental frequency.
+[ ] Don't need the nonlinear junk.
+[ ] Need stiffness.
+[ ] line of green at bottom of fretboard, off by one?
+[ ] resize the harp buttons, maybe tilt them from corner to corner to make
+    more space.

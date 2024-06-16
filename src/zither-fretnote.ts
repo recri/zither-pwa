@@ -33,12 +33,6 @@ export class Fretnote extends LitElement {
 
   @property({ type: String }) text!: string;
 
-  @property({ type: Number }) width!: number;
-
-  @property({ type: Number }) height!: number;
-
-  @property({ type: Number }) inset: number = 1;
-
   static styles = css`
     :host {
       background-color: var(--zither-app-background-color);
@@ -65,16 +59,11 @@ export class Fretnote extends LitElement {
   }
 
   render() {
-    const w = this.width;
-    const h = this.height;
-    const i = this.inset;
-
     const style = html`
       <style>
         svg {
-          width: ${w}px;
-          height: ${h}px;
-          /*  padding: 3px; */
+          width: 100%;
+          height: 100%;
         }
         path {
           fill: ${this.fillColor};
@@ -96,14 +85,15 @@ export class Fretnote extends LitElement {
     if (!this.isinscale && this.offscale === 'mute')
       return html`
         ${style}
-        <svg viewbox="0 0 ${w} ${h}"></svg>
+        <svg viewbox="0 0 100 100" preserveAspectRatio="none"></svg>
       `;
 
     if (!this.isinscale && this.offscale === 'hide')
       return html`
         ${style}
         <svg
-          viewbox="0 0 ${w} ${h}"
+          viewbox="0 0 100 100"
+          preserveAspectRatio="none"
           @touchstart=${this.start_handler}
           @touchmove=${this.move_handler}
           @touchend=${this.end_handler}
@@ -112,17 +102,20 @@ export class Fretnote extends LitElement {
 
     return html` ${style}
       <svg
-        viewbox="0 0 ${w} ${h}"
+        viewbox="0 0 100 100"
+        preserveAspectRatio="none"
         @touchstart=${this.start_handler}
         @touchmove=${this.move_handler}
         @touchend=${this.end_handler}
       >
         <path
-          d="M ${i},${h / 2} Q ${i},${h - i} ${w / 2},${h - i} ${w - i},${h -
-          i} ${w - i},${h / 2} ${w - i},${i} ${w / 2},${i} ${i},${i} ${i},${h /
-          2} Z"
+          d="M 5,25 Q 5,50 5,75 5,95 25,95 50,95 75,95 95,95 95,75 95,50 95,25 95,5 75,5 50,5 25,5 5,5 5,25 Z"
         ></path>
-        <text x="${w / 2}" y="${h / 2}">${this.text}</text>
+        <text x="50" y="50">${this.text}</text>
       </svg>`;
   }
 }
+/*
+  square        d="M 5,25 Q 5,50 5,75 5,95 25,95 50,95 75,95 95,95 95,75 95,50 95,25 95,5 75,5 50,5 25,5 5,5 5,25 Z"
+  round         d="M 5,50 Q 5,95 50,95 95,95 95,50 95,5 50,5 5,5 5,50 Z"
+*/
