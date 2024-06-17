@@ -196,15 +196,26 @@ export class ZitherUi extends LitElement {
             ${slTuning('f', 'D3,G3,B3,E4', 'banjo 4 chicago')}
             ${slTuning('f', 'C3,G3,D4,A4', 'banjo 4 tenor')}
             <!-- 5 string banjo is tricky because the 5th string starts at the 5th fret -->
+            <!-- if it started where the rest of the strings start, it would be D4 -->
+            ${slTuning('f', 'D4,C3,G3,B3,D4', 'banjo 5 standard*')}
+            ${slTuning('f', 'D4,D3,G3,B3,D4', 'banjo 5 open-G*')}
+            ${slTuning('f', 'D4,C3,G3,B3,D4', 'banjo 5 open-G-alt*')}
+            ${slTuning('f', 'D4,C3,G3,C4,D4', 'banjo 5 double-C*')}
+            ${slTuning('f', 'D4,D3,G3,C4,D4', 'banjo 5 sawmill*')}
+            ${slTuning('f', 'C#4,D3,F#3,A3,D4', 'banjo 5 open-D*')}
+            ${slTuning('f', 'E4,D3,A3,D4,E', 'banjo 5 double-D*')}
+            ${slTuning('f', 'E4,E3,A3,C#4,E', 'banjo 5 open-A*')}
             <!-- Also introduces the library of old-timey tunings named after songs -->
-            ${slTuning('f', 'EADG', 'bass 4')}
-            ${slTuning('f', 'BEADG', 'bass 5 low')}
-            ${slTuning('f', 'EADGC', 'bass 5 high')}
+            ${slTuning('f', 'E1,A1,D2,G2', 'bass 4')}
+            ${slTuning('f', 'B0,E1,A1,D2,G2', 'bass 5 low')}
+            ${slTuning('f', 'E1,A1,D2,G2,C3', 'bass 5 high')}
+            ${slTuning('f', 'B0,E1,A1,D2,G2,C3,F3,A♯3', 'bass 8 low')}
+            ${slTuning('f', 'E1,A1,D2,G2,C3,F3,A♯3,D♯4', 'bass 8 high')}
             <!-- cello needs fretless -->
             <!-- dulcimer needs diatonic fretting -->
             <!-- also clarity on order of strings in tuning names -->
-            ${slTuning('f', 'EADGBE', 'guitar 6')}
-            ${slTuning('f', 'EADGCF', 'guitar 6 all fourths')}
+            ${slTuning('f', 'E2,A2,D3,G3,B3,E4', 'guitar 6')}
+            ${slTuning('f', 'E2,A2,D3,G3,C4,F4', 'guitar 6 all fourths')}
             ${slTuning('f', 'E2,G♯2,C3,E3,G♯3,C4,E4', 'guitar 7 all thirds')}
             ${slTuning(
               'o',
@@ -255,19 +266,97 @@ export class ZitherUi extends LitElement {
               'G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5',
               'lyre 16',
             )}
-            ${slTuning('f', 'GDAE', 'mandolin 4')}
+            ${slTuning('f', 'G3,G3,D4,D4,A4,A4,E5,E5', 'mandolin 4 standard')}
+            ${slTuning('f', 'F3,F3,C4,C4,G4,G4,D5,D5', 'mandolin 4 cajun')}
+            ${slTuning('f', 'G3,G3,D4,D4,G4,G4,B4,B4', 'mandolin 4 open-G')}
+            ${slTuning('f', 'G3,G3,D4,D4,G4,G4,D5,D5', 'mandolin 4 sawmill')}
+            ${slTuning('f', 'G3,G3,D4,D4,A4,A4,D5,D5', 'mandolin 4 geedad')}
+            ${slTuning('f', 'D3,D3,D4,D4,A4,A4,D5,D5', 'mandolin 4 open-D')}
+            ${slTuning('f', 'A3,A3,D4,D4,A4,A4,E5,E5', 'mandolin 4 high bass')}
+            ${slTuning(
+              'f',
+              'A3,A3,E4,E4,A4,A4,E5,E5',
+              'mandolin 4 cross-tuning',
+            )}
+            ${slTuning('f', 'A3,A3,E4,E4,A4,A4,C♯5,C♯5', 'mandolin 4 open-A')}
+            ${slTuning(
+              'f',
+              'A3,A3,E4,E4,A4,A4,D5,D5',
+              'mandolin 4 silver-lake',
+            )}
+            ${slTuning(
+              'f',
+              'E3,E3,D4,D4,A4,A4,E5,E5',
+              'mandolin 4 glory-in-the-meeting-house',
+            )}
+            ${slTuning(
+              'f',
+              'E3,E3,E4,E4,A4,A4,E5,E5',
+              'mandolin 4 get-up-in-the-cool',
+            )}
             ${slTuning('f', 'B3,E3,A2,D2,G1,C1', 'stick 6 bass')}
             ${slTuning('f', 'B1,E2,A2,D3,G3,C4', 'stick 6 guitar')}
             ${slTuning('f', 'A2,D2,G1,C1,F♯2,B2,E3,A3', 'stick 8 classic')}
+            ${slTuning('f', 'B0,E1,A1,D2,G2,C3,F3,B♭3', 'stick 8 b4')}
+            ${slTuning('f', 'B0,E1,A1,D2,G2,C3,E3,A3', 'stick 8 gi')}
+            ${slTuning('f', 'B0,E1,A1,D2,G2,B2,E3,A3', 'stick 8 glo')}
+            ${slTuning('f', 'A2,D2,G1,C1,E2,A2,D3,G3', 'stick 8 imr')}
+            ${slTuning('f', 'G♯2,C♯2,F♯1,B0,E1,A1,D2,G2', 'stick 8 idbr')}
             ${slTuning(
               'f',
               'E3,A2,D2,G1,C1,F♯2,B2,E3,A3,D4',
               'stick 10 classic',
             )}
+            ${slTuning('f', 'E3,A2,D2,G1,C1,E2,A2,D3,G3,C4', 'stick 10 mr')}
+            ${slTuning('f', 'E3,A2,D2,G1,C1,C♯2,F♯2,B2,E3,A3', 'stick 10 bm')}
+            ${slTuning('f', 'E3,A2,D2,G1,C1,B1,E2,A2,D3,G3', 'stick 10 dbm')}
+            ${slTuning('f', 'D3,G2,C2,F1,B♭0,D2,G2,C3,F3,B♭3', 'stick 10 dmr')}
+            ${slTuning('f', 'F♯3,B2,E2,A1,D1,F♯2,B2,E3,A3,D4', 'stick 10 rmr')}
+            ${slTuning('f', 'F♯3,B2,E2,A1,D1,C♯2,F♯2,B2,E3,A3', 'stick 10 fb')}
+            ${slTuning(
+              'f',
+              'D♯3,G♯2,C♯2,F♯1,B0,E2,A2,D3,G3,C4',
+              'stick 10 dbr',
+            )}
             ${slTuning(
               'f',
               'B3,E3,A2,D2,G1,C1,C♯2,F♯2,B2,E3,A3,D4',
               'stick 12 classic',
+            )}
+            ${slTuning(
+              'f',
+              'B3,E3,A2,D2,G1,C1,B1,E2,A2,D3,G3,C4',
+              'stick 12 mr',
+            )}
+            ${slTuning(
+              'f',
+              'A3,E3,A2,D2,G1,C1,B1,E2,A2,D3,G3,C4',
+              'stick 12 mrhb4',
+            )}
+            ${slTuning(
+              'f',
+              'A3,E3,A2,D2,G1,C1,C♯2,F♯2,B2,E3,A3,D4',
+              'stick 12 chb4',
+            )}
+            ${slTuning(
+              'f',
+              'A3,D3,G2,C2,F1,B♭0,A1,D2,G2,C3,F3,B♭3',
+              'stick 12 dmr',
+            )}
+            ${slTuning(
+              'f',
+              'C♯4,F♯3,B2,E2,A1,D1,C♯2,F♯2,B2,E3,A3,D4',
+              'stick 12 rmr',
+            )}
+            ${slTuning(
+              'f',
+              'B♭3,E♭3,A♭2,C♯1,F♯1,B1,E1,A1,D2,G2,C3,F3',
+              'stick 12 dbr',
+            )}
+            ${slTuning(
+              'f',
+              'F3,C3,G2,D2,A1,E1,B1,E2,A2,D3,G3,C4',
+              'stick 12 m4',
             )}
             ${slTuning('f', 'G4,C4,E4,A4', 'ukulele 4')}
             <!-- viola needs fretless -->

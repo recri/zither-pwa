@@ -64,15 +64,28 @@
 	Use 'music-note-beamed' for 'play instrument'.
 [?] Fix the background on the zither desktop icon theme color? ...
     I get white on IOS and gray on Android.
-[ ] Can detect touchscreen with media query:
+    I think I'm stuck with them.
+[x] Can detect touchscreen with media query:
     if(window.matchMedia("(pointer: coarse)").matches) {
       // touchscreen
     }
     https://www.w3.org/TR/mediaqueries-4/#descdef-media-any-pointer
     Can confess to the failings of the program on desktops and laptops.
+    Didn't work.
 [ ] Need a tone control that tracks the string's fundamental frequency.
+    https://faustlibraries.grame.fr/libs/filters/ faust filter library
+    has parts for assembling an equalizer.
 [ ] Don't need the nonlinear junk.
 [ ] Need stiffness.
 [ ] line of green at bottom of fretboard, off by one?
 [ ] resize the harp buttons, maybe tilt them from corner to corner to make
     more space.
+[ ] Make the 'tune' button on the fretboard only show after some time
+    without played notes, then it can fade back in, fade out as soon as
+    playing starts.
+[x] Fix the mandolin.
+[x] Eliminate the shorthand tunings.
+[ ] Reinstate the shorthand tunings, assuming you can translate all such guitar
+    tunings programatically.
+[x] Fix the 8 string bass tunings.
+[x] Add a bunch of harp tunings.

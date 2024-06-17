@@ -23,6 +23,7 @@ export class ZitherSplash extends LitElement {
       display: flex;
       justify-content: center;
       align-items: center;
+      text-color: white;
     }
     div.buttons {
       position: absolute;
@@ -32,6 +33,9 @@ export class ZitherSplash extends LitElement {
     sl-button {
       font-size: calc(16px + 2vmin);
       margin: 20px;
+    }
+    div.message {
+      display: none;
     }
   `;
 
@@ -51,6 +55,10 @@ export class ZitherSplash extends LitElement {
 
   render() {
     return html`<main>
+      <div class="message">
+        <p>This app is built for touch screen devices.</p>
+        <p>It won't be very interesting on a desktop or laptop.</p>
+      </div>
       <div class="buttons">
         <sl-button @click=${this.closeHandler} size="large" circle>
           <sl-icon name="x-lg" label="close instrument"></sl-icon>
