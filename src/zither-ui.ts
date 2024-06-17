@@ -22,6 +22,8 @@ import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/compone
 export class ZitherUi extends LitElement {
   @property() app!: ZitherApp;
 
+  @property() dspName!: string;
+    
   @property() velocity!: number;
 
   @property() tuning!: string;
@@ -85,6 +87,9 @@ export class ZitherUi extends LitElement {
         value: string;
       };
       switch (label) {
+        case 'dspName':
+          this.app.dspName = value;
+          break;
         case 'tuning':
           this.app.tuning = value;
           break;
@@ -169,6 +174,84 @@ export class ZitherUi extends LitElement {
 
   tuneHandler() {
     this.app.tuneHandler();
+  }
+
+  dspUi() {
+      if (this.dspName === 'eks2')
+	  return html`
+          <sl-range
+            label="pickangle"
+            value="${this.pickangle}"
+            min="0.0"
+            max="0.9"
+            step="0.1"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">pickangle</span>
+          </sl-range>
+          <sl-range
+            label="pickposition"
+            value="${this.pickposition}"
+            min="0.02"
+            max="0.98"
+            step="0.01"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">pickposition</span>
+          </sl-range>
+          <sl-range
+            label="decaytime"
+            value="${this.decaytime}"
+            min="0.0"
+            max="10.0"
+            step="0.01"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">decaytime</span>
+          </sl-range>
+          <sl-range
+            label="brightness"
+            value="${this.brightness}"
+            min="0.0"
+            max="1.0"
+            step="0.01"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">brightness</span>
+          </sl-range>
+
+          <sl-range
+            label="typemod"
+            value="${this.typemod}"
+            min="0"
+            max="4"
+            step="1"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">typemod</span>
+          </sl-range>
+          <sl-range
+            label="nonlinearity"
+            value="${this.nonlinearity}"
+            min="0"
+            max="1.0"
+            step="0.01"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">nonlinearity</span>
+          </sl-range>
+          <sl-range
+            label="freqmod"
+            value="${this.freqmod}"
+            min="20"
+            max="1000"
+            step="0.1"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">freqmod</span>
+          </sl-range>
+	  `;
+      return html``;
   }
 
   // ${slTuning('f', 'E2,G2,B2,E3,G3,B3,E4', 'guitar 7 all thirds')} is wrong
@@ -521,6 +604,26 @@ export class ZitherUi extends LitElement {
           </sl-select>
         </sl-tab-panel>
         <sl-tab-panel name="audio">
+          <sl-select
+            size="small"
+            label="dspName"
+            value="${this.dspName}"
+            @sl-change=${this.slChangeEventString}
+          >
+            <span class="label" slot="label">dspName</span>
+            ${[
+              'bass',
+              'eks2',
+              'eks',
+              'elecGuitar',
+              'ks',
+              'nylonGuitar',
+              'steelGuitar',
+            ].map(
+              dspName => html`<sl-option value="${dspName}">${dspName}</sl-option>`,
+            )}
+          </sl-select>
+        
           <sl-range
             label="velocity"
             value="${this.velocity}"
@@ -531,77 +634,7 @@ export class ZitherUi extends LitElement {
           >
             <span class="label" slot="label">velocity</span>
           </sl-range>
-          <sl-range
-            label="pickangle"
-            value="${this.pickangle}"
-            min="0.0"
-            max="0.9"
-            step="0.1"
-            @sl-change=${this.slChangeEventNumber}
-          >
-            <span class="label" slot="label">pickangle</span>
-          </sl-range>
-          <sl-range
-            label="pickposition"
-            value="${this.pickposition}"
-            min="0.02"
-            max="0.98"
-            step="0.01"
-            @sl-change=${this.slChangeEventNumber}
-          >
-            <span class="label" slot="label">pickposition</span>
-          </sl-range>
-          <sl-range
-            label="decaytime"
-            value="${this.decaytime}"
-            min="0.0"
-            max="10.0"
-            step="0.01"
-            @sl-change=${this.slChangeEventNumber}
-          >
-            <span class="label" slot="label">decaytime</span>
-          </sl-range>
-          <sl-range
-            label="brightness"
-            value="${this.brightness}"
-            min="0.0"
-            max="1.0"
-            step="0.01"
-            @sl-change=${this.slChangeEventNumber}
-          >
-            <span class="label" slot="label">brightness</span>
-          </sl-range>
-
-          <sl-range
-            label="typemod"
-            value="${this.typemod}"
-            min="0"
-            max="4"
-            step="1"
-            @sl-change=${this.slChangeEventNumber}
-          >
-            <span class="label" slot="label">typemod</span>
-          </sl-range>
-          <sl-range
-            label="nonlinearity"
-            value="${this.nonlinearity}"
-            min="0"
-            max="1.0"
-            step="0.01"
-            @sl-change=${this.slChangeEventNumber}
-          >
-            <span class="label" slot="label">nonlinearity</span>
-          </sl-range>
-          <sl-range
-            label="freqmod"
-            value="${this.freqmod}"
-            min="20"
-            max="1000"
-            step="0.1"
-            @sl-change=${this.slChangeEventNumber}
-          >
-            <span class="label" slot="label">freqmod</span>
-          </sl-range>
+	  ${this.dspUi()}
         </sl-tab-panel>
       </sl-tab-group>
       <div class="buttons">

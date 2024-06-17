@@ -89,3 +89,4 @@
     tunings programatically.
 [x] Fix the 8 string bass tunings.
 [x] Add a bunch of harp tunings.
+[ ] make the parameter code save to localstorage

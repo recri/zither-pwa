@@ -10,7 +10,13 @@ FILES=	$(TARGETDIR)/eks.html \
 	$(TARGETDIR)/steelGuitar.html \
 	$(TARGETDIR)/bass.html
 
-FILES=  $(TARGETDIR)/eks2.html
+FILES=  $(TARGETDIR)/eks.html \
+	$(TARGETDIR)/ks.html \
+	$(TARGETDIR)/eks2.html \
+	$(TARGETDIR)/elecGuitar.html \
+	$(TARGETDIR)/nylonGuitar.html \
+	$(TARGETDIR)/steelGuitar.html \
+	$(TARGETDIR)/bass.html
 
 $(TARGETDIR)/%.html: ./src/%.dsp
 	$(FAUSTWASM) $< $(TARGETDIR)

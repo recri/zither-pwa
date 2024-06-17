@@ -493,6 +493,7 @@ export const Constant = {
   defaultColors: 'gray',
   defaultOffscale: 'show',
   defaultLabels: 'note',
+  defaultDspName: 'steelGuitar',
   notes,
   nameToNote,
   octave,

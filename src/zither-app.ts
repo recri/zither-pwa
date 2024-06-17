@@ -113,7 +113,9 @@ export class ZitherApp extends LitElement {
   );
 
   // begin dsp properties
-  @property() dspName: string = 'eks2'; // name of dsp module
+  @property() dspName: string = ZitherApp.getProp(
+    'dspName',
+    Constant.defaultDspName);
 
   @property() velocity: number = ZitherApp.getIntProp(
     'velocity',
@@ -347,6 +349,7 @@ export class ZitherApp extends LitElement {
       <zither-log .app=${this}></zither-log>
       <zither-ui
         .app=${this}
+        .dspName=${this.dspName}
         .poly=${this.poly}
         .velocity=${this.velocity}
         .tuning=${this.tuning}
