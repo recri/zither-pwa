@@ -115,7 +115,8 @@ export class ZitherApp extends LitElement {
   // begin dsp properties
   @property() dspName: string = ZitherApp.getProp(
     'dspName',
-    Constant.defaultDspName);
+    Constant.defaultDspName,
+  );
 
   @property() velocity: number = ZitherApp.getIntProp(
     'velocity',
@@ -128,86 +129,89 @@ export class ZitherApp extends LitElement {
   );
 
   @property()
+  set spatialwidth(value) {
+    if (this.audioNode)
+      this.audioNode.setParamValue(
+        '/EKS/Output/center-panned_spatial_width',
+        value,
+      );
+  }
+
+  get spatialwidth() {
+    return this.audioNode
+      ? this.audioNode.getParamValue('/EKS/Output/center-panned_spatial_width')
+      : ZitherApp.getFloatProp('spatialwidth', Constant.defaults.pickangle);
+  }
+
+  @property()
+  set panangle(value) {
+    if (this.audioNode)
+      this.audioNode.setParamValue('/EKS/Output/pan_angle', value);
+  }
+
+  get panangle() {
+    return this.audioNode
+      ? this.audioNode.getParamValue('/EKS/Output/pan_angle')
+      : ZitherApp.getFloatProp('panangle', Constant.defaults.pickangle);
+  }
+
+  @property()
+  set dynamiclevel(value) {
+    if (this.audioNode)
+      this.audioNode.setParamValue('/EKS/Excitation/dynamic_level', value);
+  }
+
+  get dynamiclevel() {
+    return this.audioNode
+      ? this.audioNode.getParamValue('/EKS/Excitation/dynamic_level')
+      : ZitherApp.getFloatProp('pickangle', Constant.defaults.pickangle);
+  }
+
+  @property()
   set pickangle(value) {
     if (this.audioNode)
-      this.audioNode.setParamValue('/NLFeks2/pick_angle', value);
+      this.audioNode.setParamValue('/EKS/Excitation/pick_angle', value);
   }
 
   get pickangle() {
     return this.audioNode
-      ? this.audioNode.getParamValue('/NLFeks2/pick_angle')
+      ? this.audioNode.getParamValue('/EKS/Excitation/pick_angle')
       : ZitherApp.getFloatProp('pickangle', Constant.defaults.pickangle);
   }
 
   @property()
   set pickposition(value: number) {
     if (this.audioNode)
-      this.audioNode.setParamValue('/NLFeks2/pick_position', value);
+      this.audioNode.setParamValue('/EKS/Excitation/pick_position', value);
   }
 
   get pickposition() {
     return this.audioNode
-      ? this.audioNode.getParamValue('/NLFeks2/pick_position')
+      ? this.audioNode.getParamValue('/EKS/Excitation/pick_position')
       : ZitherApp.getFloatProp('pickposition', Constant.defaults.pickposition);
   }
 
   @property()
   set decaytime(value: number) {
-    if (this.audioNode)
-      this.audioNode.setParamValue('/NLFeks2/decaytime_T60', value);
+    if (this.audioNode) this.audioNode.setParamValue('/EKS/String/t60', value);
   }
 
   get decaytime() {
     return this.audioNode
-      ? this.audioNode.getParamValue('/NLFeks2/decaytime_T60')
+      ? this.audioNode.getParamValue('/EKS/String/t60')
       : ZitherApp.getFloatProp('decaytime', Constant.defaults.decaytime);
   }
 
   @property()
   set brightness(value: number) {
     if (this.audioNode)
-      this.audioNode.setParamValue('/NLFeks2/brightness', value);
+      this.audioNode.setParamValue('/EKS/String/brightness', value);
   }
 
   get brightness() {
     return this.audioNode
-      ? this.audioNode.getParamValue('/NLFeks2/brightness')
+      ? this.audioNode.getParamValue('/EKS/String/brightness')
       : ZitherApp.getFloatProp('brightness', Constant.defaults.brightness);
-  }
-
-  @property()
-  set typemod(value: number) {
-    if (this.audioNode)
-      this.audioNode.setParamValue('/NLFeks2/Nonlinear_Filter/typeMod', value);
-  }
-
-  get typemod() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/NLFeks2/Nonlinear_Filter/typeMod')
-      : ZitherApp.getFloatProp('typemod', Constant.defaults.typemod);
-  }
-
-  @property()
-  set nonlinearity(value: number) {
-    if (this.audioNode)
-      this.audioNode.setParamValue('/NLFeks2/Nonlinearity', value);
-  }
-
-  get nonlinearity() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/NLFeks2/Nonlinearity')
-      : ZitherApp.getFloatProp('nonlinearity', Constant.defaults.nonlinearity);
-  }
-
-  @property()
-  set freqmod(value: number) {
-    if (this.audioNode) this.audioNode.setParamValue('/NLFeks2/freqMod', value);
-  }
-
-  get freqmod() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/NLFeks2/freqMod')
-      : ZitherApp.getFloatProp('freqmod', Constant.defaults.freqmod);
   }
 
   // window properties
@@ -364,9 +368,9 @@ export class ZitherApp extends LitElement {
         .pickposition=${this.pickposition}
         .decaytime=${this.decaytime}
         .brightness=${this.brightness}
-        .typemod=${this.typemod}
-        .nonlinearity=${this.nonlinearity}
-        .freqmod=${this.freqmod}
+        .dynamiclevel=${this.dynamiclevel}
+        .spatialwidth=${this.spatialwidth}
+        .panangle=${this.panangle}
       ></zither-ui>
     `;
   }

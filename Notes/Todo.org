@@ -90,3 +90,4 @@
 [x] Fix the 8 string bass tunings.
 [x] Add a bunch of harp tunings.
 [ ] make the parameter code save to localstorage
+[ ] if you're at B0 on a bass fretboard, there is no octave below.

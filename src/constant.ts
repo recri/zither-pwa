@@ -476,9 +476,9 @@ const defaults: { [key: string]: number } = {
   transpose: 0, // in standard offset
   velocity: 114, // midi note on velocity
   poly: 10, // midi polyphony number of voices
-  typemod: 0, // type of nonlinear modulation
-  nonlinearity: 0, // degree of nonlinearity
-  freqmod: 220, // frequency of nonlinearity
+  pan_angle: 0.5, //
+  spatial_width: 0.5, //
+  dynamic_level: -10, // level for levelfilter
   brightness: 0.5, // brightness
   decaytime: 4, // decay time of notes
   pickangle: 0, // pick angle
@@ -487,13 +487,14 @@ const defaults: { [key: string]: number } = {
 
 export const Constant = {
   defaults,
-  defaultTuning: 'f,E2,A2,D3,G3,C4,F4', // all fourths tuning
+  //  defaultTuning: 'f,E2,A2,D3,G3,C4,F4', // all fourths tuning
+  defaultTuning: 'f,B0,E1,A1,D2,G2,C3,F3,A♯3', // 'bass 8 low'
   defaultTonic: 'C', // key of C
   defaultScale: 'ionian', // C Major scale
   defaultColors: 'gray',
   defaultOffscale: 'show',
   defaultLabels: 'note',
-  defaultDspName: 'steelGuitar',
+  defaultDspName: 'eks', // extended karplus strong from freeaxe
   notes,
   nameToNote,
   octave,

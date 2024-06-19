@@ -23,7 +23,7 @@ export class ZitherUi extends LitElement {
   @property() app!: ZitherApp;
 
   @property() dspName!: string;
-    
+
   @property() velocity!: number;
 
   @property() tuning!: string;
@@ -50,11 +50,11 @@ export class ZitherUi extends LitElement {
 
   @property() brightness!: number;
 
-  @property() typemod!: number;
+  @property() dynamiclevel!: number;
 
-  @property() nonlinearity!: number;
+  @property() spatialwidth!: number;
 
-  @property() freqmod!: number;
+  @property() panangle!: number;
 
   static styles = css`
     :host {
@@ -146,14 +146,14 @@ export class ZitherUi extends LitElement {
         case 'brightness':
           this.app.brightness = value;
           break;
-        case 'typemod':
-          this.app.typemod = value;
+        case 'dynamiclevel':
+          this.app.dynamiclevel = value;
           break;
-        case 'nonlinearity':
-          this.app.nonlinearity = value;
+        case 'spatialwidth':
+          this.app.spatialwidth = value;
           break;
-        case 'freqmod':
-          this.app.freqmod = value;
+        case 'panangle':
+          this.app.panangle = value;
           break;
         default:
           console.log(
@@ -177,81 +177,84 @@ export class ZitherUi extends LitElement {
   }
 
   dspUi() {
-      if (this.dspName === 'eks2')
-	  return html`
-          <sl-range
-            label="pickangle"
-            value="${this.pickangle}"
-            min="0.0"
-            max="0.9"
-            step="0.1"
-            @sl-change=${this.slChangeEventNumber}
-          >
-            <span class="label" slot="label">pickangle</span>
-          </sl-range>
-          <sl-range
-            label="pickposition"
-            value="${this.pickposition}"
-            min="0.02"
-            max="0.98"
-            step="0.01"
-            @sl-change=${this.slChangeEventNumber}
-          >
-            <span class="label" slot="label">pickposition</span>
-          </sl-range>
-          <sl-range
-            label="decaytime"
-            value="${this.decaytime}"
-            min="0.0"
-            max="10.0"
-            step="0.01"
-            @sl-change=${this.slChangeEventNumber}
-          >
-            <span class="label" slot="label">decaytime</span>
-          </sl-range>
-          <sl-range
-            label="brightness"
-            value="${this.brightness}"
-            min="0.0"
-            max="1.0"
-            step="0.01"
-            @sl-change=${this.slChangeEventNumber}
-          >
-            <span class="label" slot="label">brightness</span>
-          </sl-range>
+    if (this.dspName === 'eks')
+      return html`
+        <sl-range
+          label="pickangle"
+          value="${this.pickangle}"
+          min="0.0"
+          max="0.9"
+          step="0.1"
+          @sl-change=${this.slChangeEventNumber}
+        >
+          <span class="label" slot="label">pickangle</span>
+        </sl-range>
+        <sl-range
+          label="pickposition"
+          value="${this.pickposition}"
+          min="0.02"
+          max="0.98"
+          step="0.01"
+          @sl-change=${this.slChangeEventNumber}
+        >
+          <span class="label" slot="label">pickposition</span>
+        </sl-range>
+        <sl-range
+          label="decaytime"
+          value="${this.decaytime}"
+          min="0.0"
+          max="10.0"
+          step="0.01"
+          @sl-change=${this.slChangeEventNumber}
+        >
+          <span class="label" slot="label">decaytime</span>
+        </sl-range>
+        <sl-range
+          label="brightness"
+          value="${this.brightness}"
+          min="0.0"
+          max="1.0"
+          step="0.01"
+          @sl-change=${this.slChangeEventNumber}
+        >
+          <span class="label" slot="label">brightness</span>
+        </sl-range>
 
-          <sl-range
-            label="typemod"
-            value="${this.typemod}"
-            min="0"
-            max="4"
-            step="1"
-            @sl-change=${this.slChangeEventNumber}
-          >
-            <span class="label" slot="label">typemod</span>
-          </sl-range>
-          <sl-range
-            label="nonlinearity"
-            value="${this.nonlinearity}"
-            min="0"
-            max="1.0"
-            step="0.01"
-            @sl-change=${this.slChangeEventNumber}
-          >
-            <span class="label" slot="label">nonlinearity</span>
-          </sl-range>
-          <sl-range
-            label="freqmod"
-            value="${this.freqmod}"
-            min="20"
-            max="1000"
-            step="0.1"
-            @sl-change=${this.slChangeEventNumber}
-          >
-            <span class="label" slot="label">freqmod</span>
-          </sl-range>
-	  `;
-      return html``;
+        <sl-range
+          label="dynamiclevel"
+          value="${this.dynamiclevel}"
+          min="-60"
+          max="0"
+          step="1"
+          @sl-change=${this.slChangeEventNumber}
+        >
+          <span class="label" slot="label">dynamic_level</span>
+        </sl-range>
+
+        <!-- spatial width -->
+        <sl-range
+          label="spatialwidth"
+          value="${this.spatialwidth}"
+          min="0"
+          max="1"
+          step="0.01"
+          @sl-change=${this.slChangeEventNumber}
+        >
+          <span class="label" slot="label">spatialwidth</span>
+        </sl-range>
+        <!-- spatial pan -->
+        <sl-range
+          label="panangle"
+          value="${this.panangle}"
+          min="0"
+          max="1"
+          step="0.01"
+          @sl-change=${this.slChangeEventNumber}
+        >
+          <span class="label" slot="label">panangle</span>
+        </sl-range>
+      `;
+    return html``;
   }
 
   // ${slTuning('f', 'E2,G2,B2,E3,G3,B3,E4', 'guitar 7 all thirds')} is wrong
@@ -289,6 +292,7 @@ export class ZitherUi extends LitElement {
             ${slTuning('f', 'E4,D3,A3,D4,E', 'banjo 5 double-D*')}
             ${slTuning('f', 'E4,E3,A3,C#4,E', 'banjo 5 open-A*')}
             <!-- Also introduces the library of old-timey tunings named after songs -->
+
             ${slTuning('f', 'E1,A1,D2,G2', 'bass 4')}
             ${slTuning('f', 'B0,E1,A1,D2,G2', 'bass 5 low')}
             ${slTuning('f', 'E1,A1,D2,G2,C3', 'bass 5 high')}
@@ -611,19 +615,12 @@ export class ZitherUi extends LitElement {
             @sl-change=${this.slChangeEventString}
           >
             <span class="label" slot="label">dspName</span>
-            ${[
-              'bass',
-              'eks2',
-              'eks',
-              'elecGuitar',
-              'ks',
-              'nylonGuitar',
-              'steelGuitar',
-            ].map(
-              dspName => html`<sl-option value="${dspName}">${dspName}</sl-option>`,
+            ${['ks', 'eks'].map(
+              dspName =>
+                html`<sl-option value="${dspName}">${dspName}</sl-option>`,
             )}
           </sl-select>
-        
+
           <sl-range
             label="velocity"
             value="${this.velocity}"
@@ -634,7 +631,7 @@ export class ZitherUi extends LitElement {
           >
             <span class="label" slot="label">velocity</span>
           </sl-range>
-	  ${this.dspUi()}
+          ${this.dspUi()}
         </sl-tab-panel>
       </sl-tab-group>
       <div class="buttons">
