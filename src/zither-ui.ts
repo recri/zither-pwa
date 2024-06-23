@@ -16,21 +16,22 @@ import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/compone
 import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/select/select.js';
 import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/option/option.js';
 import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/range/range.js';
+import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/tooltip/tooltip.js';
 
 // The zither-app should parse the url for parameter setting
 @customElement('zither-ui')
 export class ZitherUi extends LitElement {
   @property() app!: ZitherApp;
 
-  @property() dspName!: string;
-
-  @property() velocity!: number;
+  // mechanics of instrument
 
   @property() tuning!: string;
 
   @property() frets!: number;
 
   @property() transpose!: number;
+
+  // decorations
 
   @property() tonic!: string;
 
@@ -42,6 +43,14 @@ export class ZitherUi extends LitElement {
 
   @property() colors!: string;
 
+  // audio dsp and effect properties
+
+  @property() dspName!: string;
+
+  @property() poly!: number;
+
+  @property() velocity!: number;
+
   @property() pickangle!: number;
 
   @property() pickposition!: number;
@@ -52,9 +61,7 @@ export class ZitherUi extends LitElement {
 
   @property() dynamiclevel!: number;
 
-  @property() spatialwidth!: number;
-
-  @property() panangle!: number;
+  //
 
   static styles = css`
     :host {
@@ -76,7 +83,7 @@ export class ZitherUi extends LitElement {
     }
     sl-button {
       font-size: calc(16px + 2vmin);
-      margin: 20px;
+      margin: 10px;
     }
   `;
 
@@ -130,6 +137,10 @@ export class ZitherUi extends LitElement {
         case 'transpose':
           this.app.transpose = value;
           break;
+
+        case 'poly':
+          this.app.poly = value;
+          break;
         case 'velocity':
           this.app.velocity = value;
           break;
@@ -149,12 +160,6 @@ export class ZitherUi extends LitElement {
         case 'dynamiclevel':
           this.app.dynamiclevel = value;
           break;
-        case 'spatialwidth':
-          this.app.spatialwidth = value;
-          break;
-        case 'panangle':
-          this.app.panangle = value;
-          break;
         default:
           console.log(
             `no numeric change event value handler for ${label} = ${value}`,
@@ -172,8 +177,12 @@ export class ZitherUi extends LitElement {
     this.app.playHandler();
   }
 
-  tuneHandler() {
-    this.app.tuneHandler();
+  exportHandler() {
+    this.app.exportHandler();
+  }
+
+  resetHandler() {
+    this.app.resetHandler();
   }
 
   dspUi() {
@@ -229,29 +238,6 @@ export class ZitherUi extends LitElement {
           @sl-change=${this.slChangeEventNumber}
         >
           <span class="label" slot="label">dynamic_level</span>
-        </sl-range>
-
-        <!-- spatial width -->
-        <sl-range
-          label="spatialwidth"
-          value="${this.spatialwidth}"
-          min="0"
-          max="1"
-          step="0.01"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span class="label" slot="label">spatialwidth</span>
-        </sl-range>
-        <!-- spatial pan -->
-        <sl-range
-          label="panangle"
-          value="${this.panangle}"
-          min="0"
-          max="1"
-          step="0.01"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span class="label" slot="label">panangle</span>
         </sl-range>
       `;
     return html``;
@@ -615,11 +601,22 @@ export class ZitherUi extends LitElement {
             @sl-change=${this.slChangeEventString}
           >
             <span class="label" slot="label">dspName</span>
-            ${['ks', 'eks'].map(
+            ${['eks'].map(
               dspName =>
                 html`<sl-option value="${dspName}">${dspName}</sl-option>`,
             )}
           </sl-select>
+
+          <sl-range
+            label="poly"
+            value="${this.poly}"
+            min="0"
+            max="64"
+            step="1"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">poly</span>
+          </sl-range>
 
           <sl-range
             label="velocity"
@@ -635,12 +632,26 @@ export class ZitherUi extends LitElement {
         </sl-tab-panel>
       </sl-tab-group>
       <div class="buttons">
-        <sl-button @click=${this.closeHandler} size="large" circle>
-          <sl-icon name="x-lg" label="close instrument"></sl-icon>
-        </sl-button>
-        <sl-button @click=${this.playHandler} size="large" circle>
-          <sl-icon name="music-note-beamed" label="play instrument"></sl-icon>
-        </sl-button>
+        <sl-tooltip content="exit to the splash page">
+          <sl-button @click=${this.closeHandler} circle>
+            <sl-icon name="x-lg" label="close instrument"></sl-icon>
+          </sl-button>
+        </sl-tooltip>
+        <sl-tooltip content="reset the instrument to default parameter values">
+          <sl-button @click=${this.resetHandler} circle>
+            <sl-icon name="restore" label="reset instrument"></sl-icon>
+          </sl-button>
+        </sl-tooltip>
+        <sl-tooltip content="export the current instrument to the clipboard">
+          <sl-button @click=${this.exportHandler} circle>
+            <sl-icon name="box-arrow-up" label="export instrument"></sl-icon>
+          </sl-button>
+        </sl-tooltip>
+        <sl-tooltip content="go to the fretboard page and play">
+          <sl-button @click=${this.playHandler} circle>
+            <sl-icon name="music-note-beamed" label="play instrument"></sl-icon>
+          </sl-button>
+        </sl-tooltip>
       </div>
     `;
   }

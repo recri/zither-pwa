@@ -10,8 +10,7 @@ FILES=	$(TARGETDIR)/eks.html \
 	$(TARGETDIR)/steelGuitar.html \
 	$(TARGETDIR)/bass.html
 
-FILES=  $(TARGETDIR)/ks.html \
-	$(TARGETDIR)/eks.html
+FILES=	$(TARGETDIR)/eks.html
 
 
 $(TARGETDIR)/%.html: ./src/%.dsp

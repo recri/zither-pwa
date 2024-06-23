@@ -78,141 +78,163 @@ export class ZitherApp extends LitElement {
 
   // begin instrument properties
 
-  @property() tuning: string = ZitherApp.getProp(
-    'tuning',
-    Constant.defaultTuning,
-  );
+  /* eslint-disable class-methods-use-this */
+  @property()
+  set tuning(value) {
+    ZitherApp.putProp('tuning', value);
+  }
 
-  @property() frets: number = ZitherApp.getIntProp(
-    'frets',
-    Constant.defaults.frets,
-  );
+  get tuning() {
+    return ZitherApp.getProp('tuning', Constant.sdef.tuning);
+  }
 
-  @property() transpose: number = ZitherApp.getIntProp(
-    'transpose',
-    Constant.defaults.transpose,
-  );
+  @property()
+  set frets(value) {
+    ZitherApp.putIntProp('frets', value);
+  }
 
-  @property() tonic: string = ZitherApp.getProp('tonic', Constant.defaultTonic);
+  get frets() {
+    return ZitherApp.getIntProp('frets', Constant.ndef.frets);
+  }
 
-  @property() scale: string = ZitherApp.getProp('scale', Constant.defaultScale);
+  @property()
+  set transpose(value) {
+    ZitherApp.putIntProp('transpose', value);
+  }
 
-  @property() colors: string = ZitherApp.getProp(
-    'colors',
-    Constant.defaultColors,
-  );
+  get transpose() {
+    return ZitherApp.getIntProp('transpose', Constant.ndef.transpose);
+  }
 
-  @property() offscale: string = ZitherApp.getProp(
-    'offscale',
-    Constant.defaultOffscale,
-  );
+  @property()
+  set tonic(value) {
+    ZitherApp.putProp('tonic', value);
+  }
 
-  @property() labels: string = ZitherApp.getProp(
-    'labels',
-    Constant.defaultLabels,
-  );
+  get tonic() {
+    return ZitherApp.getProp('tonic', Constant.sdef.tonic);
+  }
+
+  @property()
+  set scale(value) {
+    ZitherApp.putProp('scale', value);
+  }
+
+  get scale() {
+    return ZitherApp.getProp('scale', Constant.sdef.scale);
+  }
+
+  @property()
+  set colors(value) {
+    ZitherApp.putProp('colors', value);
+  }
+
+  get colors() {
+    return ZitherApp.getProp('colors', Constant.sdef.colors);
+  }
+
+  @property()
+  set offscale(value) {
+    ZitherApp.putProp('offscale', value);
+  }
+
+  get offscale() {
+    return ZitherApp.getProp('offscale', Constant.sdef.offscale);
+  }
+
+  @property()
+  set labels(value) {
+    ZitherApp.putProp('labels', value);
+  }
+
+  get labels() {
+    return ZitherApp.getProp('labels', Constant.sdef.labels);
+  }
 
   // begin dsp properties
-  @property() dspName: string = ZitherApp.getProp(
-    'dspName',
-    Constant.defaultDspName,
-  );
-
-  @property() velocity: number = ZitherApp.getIntProp(
-    'velocity',
-    Constant.defaults.velocity,
-  );
-
-  @property() poly: number = ZitherApp.getIntProp(
-    'poly',
-    Constant.defaults.poly,
-  );
-
   @property()
-  set spatialwidth(value) {
-    if (this.audioNode)
-      this.audioNode.setParamValue(
-        '/EKS/Output/center-panned_spatial_width',
-        value,
-      );
+  set dspName(value) {
+    ZitherApp.putProp('dspName', value);
   }
 
-  get spatialwidth() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/EKS/Output/center-panned_spatial_width')
-      : ZitherApp.getFloatProp('spatialwidth', Constant.defaults.pickangle);
+  get dspName() {
+    return ZitherApp.getProp('dspName', Constant.sdef.dspName);
   }
 
   @property()
-  set panangle(value) {
-    if (this.audioNode)
-      this.audioNode.setParamValue('/EKS/Output/pan_angle', value);
+  set poly(value) {
+    ZitherApp.putIntProp('poly', value);
   }
 
-  get panangle() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/EKS/Output/pan_angle')
-      : ZitherApp.getFloatProp('panangle', Constant.defaults.pickangle);
+  get poly() {
+    return ZitherApp.getIntProp('poly', Constant.ndef.poly);
   }
+
+  @property()
+  set velocity(value) {
+    ZitherApp.putIntProp('velocity', value);
+  }
+
+  get velocity() {
+    return ZitherApp.getIntProp('velocity', Constant.ndef.velocity);
+  }
+
+  // begin dsp dsp propertiies
 
   @property()
   set dynamiclevel(value) {
+    ZitherApp.putFloatProp('dynamiclevel', value);
     if (this.audioNode)
       this.audioNode.setParamValue('/EKS/Excitation/dynamic_level', value);
   }
 
   get dynamiclevel() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/EKS/Excitation/dynamic_level')
-      : ZitherApp.getFloatProp('pickangle', Constant.defaults.pickangle);
+    return ZitherApp.getFloatProp('dynamiclevel', Constant.ndef.dynamiclevel);
   }
 
   @property()
   set pickangle(value) {
+    ZitherApp.putFloatProp('pickangle', value);
     if (this.audioNode)
       this.audioNode.setParamValue('/EKS/Excitation/pick_angle', value);
   }
 
   get pickangle() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/EKS/Excitation/pick_angle')
-      : ZitherApp.getFloatProp('pickangle', Constant.defaults.pickangle);
+    return ZitherApp.getFloatProp('pickangle', Constant.ndef.pickangle);
   }
 
   @property()
   set pickposition(value: number) {
+    ZitherApp.putFloatProp('pickposition', value);
     if (this.audioNode)
       this.audioNode.setParamValue('/EKS/Excitation/pick_position', value);
   }
 
   get pickposition() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/EKS/Excitation/pick_position')
-      : ZitherApp.getFloatProp('pickposition', Constant.defaults.pickposition);
+    return ZitherApp.getFloatProp('pickposition', Constant.ndef.pickposition);
   }
 
   @property()
   set decaytime(value: number) {
+    ZitherApp.putFloatProp('decaytime', value);
     if (this.audioNode) this.audioNode.setParamValue('/EKS/String/t60', value);
   }
 
   get decaytime() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/EKS/String/t60')
-      : ZitherApp.getFloatProp('decaytime', Constant.defaults.decaytime);
+    return ZitherApp.getFloatProp('decaytime', Constant.ndef.decaytime);
   }
 
   @property()
   set brightness(value: number) {
+    ZitherApp.putFloatProp('brightness', value);
     if (this.audioNode)
       this.audioNode.setParamValue('/EKS/String/brightness', value);
   }
 
   get brightness() {
-    return this.audioNode
-      ? this.audioNode.getParamValue('/EKS/String/brightness')
-      : ZitherApp.getFloatProp('brightness', Constant.defaults.brightness);
+    return ZitherApp.getFloatProp('brightness', Constant.ndef.brightness);
   }
+  /* eslint-enable class-methods-use-this */
 
   // window properties
 
@@ -231,13 +253,11 @@ export class ZitherApp extends LitElement {
 
   constructor() {
     super();
-    // window.localStorage.clear();
     /** @type {typeof AudioContext} */
     const AudioCtx = window.AudioContext; // || window.webkitAudioContext;
-
     const audioContext = new AudioCtx({ latencyHint: 0.00001 }); // , echoCancellation: false, autoGainControl: false, noiseSuppression: false
-    audioContext.destination.channelInterpretation = 'discrete';
     audioContext.suspend();
+    audioContext.destination.channelInterpretation = 'discrete';
     this.audioContext = audioContext;
   }
 
@@ -285,11 +305,42 @@ export class ZitherApp extends LitElement {
   }
 
   /* eslint-disable class-methods-use-this */
+  exportHandler() {
+    const items = [
+      `tuning=${this.tuning}`,
+      `frets=${this.frets}`,
+      `transpose=${this.transpose}`,
+      `tonic=${this.tonic}`,
+      `scale=${this.scale}`,
+      `colors=${this.colors}`,
+      `offscale=${this.offscale}`,
+      `labels=${this.labels}`,
+      `dspName=${this.dspName}`,
+      `poly=${this.poly}`,
+      `velocity=${this.velocity}`,
+      `dynamiclevel=${this.dynamiclevel}`,
+      `pickangle=${this.pickangle}`,
+      `pickposition=${this.pickposition}`,
+      `decaytime=${this.decaytime}`,
+      `brightness=${this.brightness}`,
+    ].join('&');
+    const location = `${window.location.protocol}//${window.location.host}/?${items}`;
+    // console.log(`exportHandler ${location}`);
+    navigator.clipboard.writeText(location);
+  }
+
+  resetHandler() {
+    window.localStorage.clear();
+    window.location.assign(
+      `${window.location.protocol}//${window.location.host}/`,
+    );
+  }
+  /* eslint-enable class-methods-use-this */
+
   closeHandler() {
     if (this.zitherState === 'splash') window.close();
     else this.zitherState = 'splash';
   }
-  /* eslint-enable class-methods-use-this */
 
   render() {
     return html`
@@ -369,8 +420,6 @@ export class ZitherApp extends LitElement {
         .decaytime=${this.decaytime}
         .brightness=${this.brightness}
         .dynamiclevel=${this.dynamiclevel}
-        .spatialwidth=${this.spatialwidth}
-        .panangle=${this.panangle}
       ></zither-ui>
     `;
   }

@@ -3,6 +3,7 @@ import { property, customElement } from 'lit/decorators.js';
 
 import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/icon/icon.js';
 import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/button/button.js';
+import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/tooltip/tooltip.js';
 
 import { ZitherApp } from './zither-app.js';
 
@@ -32,7 +33,7 @@ export class ZitherSplash extends LitElement {
     }
     sl-button {
       font-size: calc(16px + 2vmin);
-      margin: 20px;
+      margin: 10px;
     }
     div.message {
       display: none;
@@ -60,15 +61,21 @@ export class ZitherSplash extends LitElement {
         <p>It won't be very interesting on a desktop or laptop.</p>
       </div>
       <div class="buttons">
-        <sl-button @click=${this.closeHandler} size="large" circle>
-          <sl-icon name="x-lg" label="close instrument"></sl-icon>
-        </sl-button>
-        <sl-button @click=${this.tuneHandler} size="large" circle>
-          <sl-icon name="gear" label="tune instrument"></sl-icon>
-        </sl-button>
-        <sl-button @click=${this.playHandler} size="large" circle>
-          <sl-icon name="music-note-beamed" label="play instrument"></sl-icon>
-        </sl-button>
+        <sl-tooltip content="exit the app, if possible">
+          <sl-button @click=${this.closeHandler} circle>
+            <sl-icon name="x-lg" label="close instrument"></sl-icon>
+          </sl-button>
+        </sl-tooltip>
+        <sl-tooltip content="go to the settings page">
+          <sl-button @click=${this.tuneHandler} circle>
+            <sl-icon name="gear" label="tune instrument"></sl-icon>
+          </sl-button>
+        </sl-tooltip>
+        <sl-tooltip content="go to the fretboard page and play">
+          <sl-button @click=${this.playHandler} circle>
+            <sl-icon name="music-note-beamed" label="play instrument"></sl-icon>
+          </sl-button>
+        </sl-tooltip>
       </div>
     </main>`;
   }

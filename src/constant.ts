@@ -471,30 +471,37 @@ const palettes: { [key: string]: Array<string> } = {
 
 // default values
 
-const defaults: { [key: string]: number } = {
+// default numeric values
+const ndef: { [key: string]: number } = {
   frets: 13, // one octave to start
   transpose: 0, // in standard offset
   velocity: 114, // midi note on velocity
   poly: 10, // midi polyphony number of voices
-  pan_angle: 0.5, //
-  spatial_width: 0.5, //
-  dynamic_level: -10, // level for levelfilter
+  panangle: 0.5, //
+  spatialwidth: 0.5, //
+  dynamiclevel: -10, // level for levelfilter
   brightness: 0.5, // brightness
   decaytime: 4, // decay time of notes
   pickangle: 0, // pick angle
   pickposition: 0.13, // pick position
+  markkeytime: 5, // seconds of inactivity before tune button reappears
+};
+
+// default string values
+const sdef: { [key: string]: string } = {
+  //  defaultTuning: 'f,E2,A2,D3,G3,C4,F4', // all fourths tuning
+  tuning: 'f,B0,E1,A1,D2,G2,C3,F3,A♯3', // 'bass 8 low'
+  tonic: 'C', // key of C
+  scale: 'ionian', // C Major scale
+  colors: 'gray',
+  offscale: 'show',
+  labels: 'note',
+  dspName: 'eks', // extended karplus strong from freeaxe
 };
 
 export const Constant = {
-  defaults,
-  //  defaultTuning: 'f,E2,A2,D3,G3,C4,F4', // all fourths tuning
-  defaultTuning: 'f,B0,E1,A1,D2,G2,C3,F3,A♯3', // 'bass 8 low'
-  defaultTonic: 'C', // key of C
-  defaultScale: 'ionian', // C Major scale
-  defaultColors: 'gray',
-  defaultOffscale: 'show',
-  defaultLabels: 'note',
-  defaultDspName: 'eks', // extended karplus strong from freeaxe
+  ndef,
+  sdef,
   notes,
   nameToNote,
   octave,

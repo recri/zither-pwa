@@ -1,8 +1,9 @@
-import { LitElement, html, css } from 'lit';
-import { property, customElement } from 'lit/decorators.js';
+import { LitElement, html, css, unsafeCSS } from 'lit';
+import { property, state, customElement } from 'lit/decorators.js';
 
 import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/icon/icon.js';
 import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/button/button.js';
+import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/tooltip/tooltip.js';
 
 import { ZitherApp } from './zither-app.js';
 import { Constant } from './constant.js';
@@ -55,6 +56,10 @@ export class Fretboard extends LitElement {
   // the colors of the notes
   @property({ type: String }) colors!: string;
 
+  // the time since last key event
+  @state()
+  private lastKeyTime: number = 0;
+
   static styles = css`
     :host {
       background-color: var(--zither-app-background-color);
@@ -76,9 +81,37 @@ export class Fretboard extends LitElement {
     }
     sl-button {
       font-size: calc(16px + 2vmin);
-      margin: 20px;
+      margin: 10px;
     }
   `;
+
+  private intervalIdentifier = 0;
+
+  markKeyTime() {
+    this.lastKeyTime = Constant.ndef.markkeytime;
+  }
+
+  intervalHandler() {
+    if (this.lastKeyTime > 0) {
+      this.lastKeyTime -= 1;
+      // console.log(`lastKeyTime = ${this.lastKeyTime}`);
+    }
+  }
+
+  /* eslint-disable wc/guard-super-call */
+  connectedCallback() {
+    super.connectedCallback();
+    this.intervalIdentifier = window.setInterval(
+      () => this.intervalHandler(),
+      1011,
+    );
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.clearInterval(this.intervalIdentifier);
+  }
+  /* eslint-enable wc/guard-super-call */
 
   // fretboard management
   tuningNotes: Array<number> = [];
@@ -142,6 +175,14 @@ export class Fretboard extends LitElement {
 
   landscapeStyle = html``;
 
+  buttonStyle() {
+    return css`
+      div.buttons {
+        display: ${unsafeCSS(this.lastKeyTime > 0 ? 'none' : 'block')};
+      }
+    `;
+  }
+
   // compute sizes based on the array of strings and frets
   // construct the style sheets for portrait and landscape
   computeSizes() {
@@ -155,7 +196,7 @@ export class Fretboard extends LitElement {
       this.fontSize = Math.min(noteHeight, noteWidth) * 0.5;
       this.landscapeStyle = html`
         <style>
-          div.fretboard {
+          ${this.buttonStyle()} div.fretboard {
             width: 100%;
             height: 100%;
             flex-direction: column;
@@ -192,7 +233,7 @@ export class Fretboard extends LitElement {
       this.fontSize = Math.min(noteHeight, noteWidth) * 0.5;
       this.portraitStyle = html`
         <style>
-          div.fretboard {
+          ${this.buttonStyle()} div.fretboard {
             width: ${width}px;
             height: ${height}px;
             flex-direction: row;
@@ -382,9 +423,11 @@ export class Fretboard extends LitElement {
     return html`
       ${!this.isPortrait ? this.landscapeStyle : this.portraitStyle}
       <div class="buttons">
-        <sl-button @click=${this.tuneHandler} size="large" circle>
-          <sl-icon name="gear" label="tune instrument"></sl-icon>
-        </sl-button>
+        <sl-tooltip content="go back to the settings page">
+          <sl-button @click=${this.tuneHandler} circle>
+            <sl-icon name="gear" label="tune instrument"></sl-icon>
+          </sl-button>
+        </sl-tooltip>
       </div>
       ${this.isAllFrettedString()
         ? this.allFretted()

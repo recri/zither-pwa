@@ -44,18 +44,21 @@ export class Fretnote extends LitElement {
   start_handler(ev: TouchEvent) {
     ev.preventDefault();
     this.fretboard.app.audioNode!.keyOn(1, this.note, this.velocity);
+    this.fretboard.markKeyTime();
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
   move_handler(ev: TouchEvent) {
     ev.preventDefault();
     const node = this.fretboard.app.audioNode;
+    this.fretboard.markKeyTime();
   }
   /* eslint-enable @typescript-eslint/no-unused-vars */
 
   end_handler(ev: TouchEvent) {
     ev.preventDefault();
     this.fretboard.app.audioNode!.keyOff(1, this.note, 0);
+    this.fretboard.markKeyTime();
   }
 
   render() {

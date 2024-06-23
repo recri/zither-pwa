@@ -1,4 +1,4 @@
-// third hack - drop the effects
+// first hacked version inside faustide
 declare name "EKS Electric Guitar Synth";
 declare author "Julius Smith";
 declare version "1.0"; // LAC-2008 version is 1.0
@@ -7,7 +7,6 @@ declare copyright "Julius Smith";
 declare reference "http://ccrma.stanford.edu/~jos/pasp/vegf.html";
 // -> Virtual\_Electric\_Guitars\_Faust.html";
 
-import("stdfaust.lib"); // for everything namespaced
 import("music.lib");    // Define SR, delay
 import("filter.lib");   // smooth, ffcombfilter,fdelay4
 import("effect.lib");   // levelfilter
@@ -16,15 +15,11 @@ import("effect.lib");   // levelfilter
 
 // standard MIDI voice parameters:
 // NOTE: The labels MUST be "freq", "gain", and "gate" for faust2pd
-freq = nentry("[1]freq", 440, 20, 7040, 1);  // Hz
+freq = nentry("[1]freq", 440, 20, 7040, 0.1);  // Hz
 gain = nentry("[2]gain", 1, 0, 10, 0.01);    // 0 to 1
 gate = button("[3]gate");                    // 0 or 1
 
-// Additional parameters (MIDI "controllers"):
-
-// Dynamic level specified as dB level desired at Nyquist limit:
-L = hslider("[4]dynamic_level", -10, -60, 0, 1) : db2linear;
-// Note: A lively clavier is obtained by tying L to gain (MIDI velocity).
+// Additional parameters (MIDI "ui = vgroup("EKS", freq, gain, gate, dynamic_level, brightness, t60);
 
 // String decay time in seconds:
 t60 = hslider("[5]t60", 4, 0, 10, 0.01);  // -60db decay time (sec)
@@ -34,6 +29,10 @@ B = hslider("[6]brightness [midi:ctrl 0x74]", 0.5, 0, 1, 0.01);// 0-1
     // MIDI Controller 0x74 is often "brightness" 
     // (or VCF lowpass cutoff freq)
 
+// Dynamic level specified as dB level desired at Nyquist limit:
+L = hslider("[4]dynamic_level", -10, -60, 0, 1) : db2linear;
+// Note: A lively clavier is obtained by tying L to gain (MIDI velocity).
+
 //==================== SIGNAL PROCESSING ================
 
 //----------------------- noiseburst -------------------------
@@ -41,10 +40,14 @@ B = hslider("[6]brightness [midi:ctrl 0x74]", 0.5, 0, 1, 0.01);// 0-1
 // Requires music.lib (for noise)
 noiseburst(gate,P) = noise : *(gate : trigger(P))
 with {
-  diffgtz(x) = (x-x') > 0;
-  decay(n,x) = x - (x>0)/n;
-  release(n) = + ~ decay(n);
-  trigger(n) = diffgtz : release(n) : > (0.0);
+  diffgtz(x) = (x-x') > 0;	  // rising edge trigger
+  decay(n,x) = x - (x>0)/n;	  // decay positive signal by 1/n, non-positive by 0/n
+  release(n) = + ~ decay(n);	  // ramp of n samples decreasing from 1 to 0
+  // but note that n * 1/n may not exactly equal 1, so it may not reach exactly 0
+  // might try different pulse sizes for excitation, there's nothing magic about n,
+  // more than n overwrites previously computed samples, less than n leaves some samples
+  // untouched
+  trigger(n) = diffgtz : release(n) : > (0.0); // latch a rising edge, release it over n steps
 };
 
 P = SR/freq; // fundamental period in samples
@@ -70,8 +73,9 @@ stringloop = (+ : fdelay4(Pmax, P-2)) ~ (loopfilter);
 //Adequate when when brightness or dynamic level are sufficiently low:
 //stringloop = (+ : fdelay1(Pmax, P-2)) ~ (loopfilter);
 
-process = hgroup("EKS",
-	vgroup("[1]Excitation",filtered_excitation) : 
-	vgroup("[2]String",stringloop));
+instrument = filtered_excitation : stringloop;
 
+// post processing effects: eq and reverb and spatialize
 effect = _ <: _,_;
+
+process = hgroup("EKS", vgroup("Instrument", instrument) : vgroup("Effect", effect));

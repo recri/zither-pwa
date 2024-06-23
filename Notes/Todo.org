@@ -7,7 +7,7 @@
 [ ] recheck performance limits
 [x] implement the mechanical properties page (strings, courses, frets, tunings, etc.)
 [x] implement the audio device properties page.
-[ ] implement the audio device selection page.
+[x] implement the audio device selection page.
 [ ] make a zither layout
 [ ] the position of the touch between the frets could modulate the pick position filter.
 [ ] the instantaneous velocity of the finger at contact could modulate pick direction.
@@ -19,34 +19,34 @@
 [ ] Send each note on its own channel, so it will have its own channel messages.
     Not sure if the channel is implemented, half remember that it isn't.
     But make it work by making 16 synths with no sharing.
-[ ] switching on device rotation is very disruptive.
-[ ] rotating from portrait to landscape and back reduces the fretlabels to microscopic
+[?] switching orientation on device rotation is very disruptive.
+[x] rotating from portrait to landscape and back reduces the fretlabels to microscopic
     in portrait.  The sizes are stable after the first two swaps.
     Other oddities arise, too, the control panel resizes and relocates to mid screen.
-[ ] eks - don't see why the pick position is restricted to 0.5 max, maybe it's symmetric
+[x] eks - don't see why the pick position is restricted to 0.5 max, maybe it's symmetric
     around the midpoint?
-[ ] the pm guitar models appear to use string models, bridge models, nut models, pick
+[?] the pm guitar models appear to use string models, bridge models, nut models, pick
     position, direction, angle, pickup location.  I'm not seeing that they share a parameter
     space, between the different guitars.  tweak the string stiffness.  Well work at
     figuring it out.
 ------------------------------------------------------------------------
-[ ] I like the Obsidian idea of pushing everything into an infinite canvas,
+[?] I like the Obsidian idea of pushing everything into an infinite canvas,
     rather than imposing some predefined structuring onto the set of possibilities.
-[ ] So we start with a keyboard/fretboard/whatever playing surface, and a patch
+[?] So we start with a keyboard/fretboard/whatever playing surface, and a patch
     for the sound engine.  Pinch to zoom shrinks the current patch/surface to its
     representation on the infinite canvas, where push to scroll, pinch to zoom, and
     drag to move allow you to rearrange.
 [ ] A scrolling gesture can retune the fretboard, either by moving the nut up or down
-	or by scrolling to add another string.
+	or by side scrolling to change the strings.
 [ ] A pinch to zoom gesture could change the number of strings, or adjust the fret spacing.
 [ ] A scroll of a single string could retune the string 
-[ ] the toplevel faust directory needs to clone and set up the faustwasm application
+[x] the toplevel faust directory needs to clone and set up the faustwasm application
 	and use it to do the processing.  Rather than depending on the clone that I
 	made manually.  I don't know if it depends on the faust installation, I think
-	not but I should test.
-[ ] The models need to be as lean as possible.  Multi notes choke the ONN tablet.
-[ ] there's a thought about sharing the delay line between instances of the synth.
-[ ] The pixel 7a choked after a while
+	not but I should test.  Use faustwasm as a dev dependency
+[?] The models need to be as lean as possible.  Multi notes choke the ONN tablet.
+[?] there's a thought about sharing the delay line between instances of the synth.
+[?] The pixel 7a choked after a while
 ------------------------------------------------------------------------
 [x] Does the full screen API give better control over miscellaneous chrome?
     Well, some of the chrome hangs around on the iPad, but it really cleans up
@@ -55,13 +55,14 @@
     required to recreate out-tsc and dist from scratch.
 [x] PWA can exit with window.close().
     Only on more recent devices.  SE failed to exit or even make noise.  Moto
-    failed to exit.
+    failed to exit. 
 [x] PWA can be forced to update by changes to webmanifest or service worker.
 [x] Can solve button accessibility problems with sl-button, and use the
     sl-icon library, too.  
 	Use 'gear' settings icon for 'tune instrument'.
 	Use 'x-large' for 'close instrument'.
 	Use 'music-note-beamed' for 'play instrument'.
+[ ] Add help text.
 [?] Fix the background on the zither desktop icon theme color? ...
     I get white on IOS and gray on Android.
     I think I'm stuck with them.
@@ -75,19 +76,26 @@
 [ ] Need a tone control that tracks the string's fundamental frequency.
     https://faustlibraries.grame.fr/libs/filters/ faust filter library
     has parts for assembling an equalizer.
-[ ] Don't need the nonlinear junk.
+[x] Don't need the nonlinear junk.
 [ ] Need stiffness.
-[ ] line of green at bottom of fretboard, off by one?
+[ ] line of green at bottom of fretboard, off by one?  On the IPad mini
 [ ] resize the harp buttons, maybe tilt them from corner to corner to make
     more space.
-[ ] Make the 'tune' button on the fretboard only show after some time
+[x] Make the 'tune' button on the fretboard only show after some time
     without played notes, then it can fade back in, fade out as soon as
-    playing starts.
+    playing starts.  No fade, simply comes or goes.
 [x] Fix the mandolin.
 [x] Eliminate the shorthand tunings.
 [ ] Reinstate the shorthand tunings, assuming you can translate all such guitar
     tunings programatically.
 [x] Fix the 8 string bass tunings.
 [x] Add a bunch of harp tunings.
-[ ] make the parameter code save to localstorage
+[x] make the parameter code save to localstorage
 [ ] if you're at B0 on a bass fretboard, there is no octave below.
+    Maybe transpose is the lowest midi note tuned, cannot go below 0
+[ ] Build a half-sample-rate delay line to handle low notes, 
+    if P > Pmax && P < Pmax*2, then build a divide by two buffer which gets
+    filled with copies of eks on one clock, then drained of copies on the
+    other clocks.
+[x] Add an export link to clipboard, box-arrow-up icon    
+[x] Cleaned out effect code from active eks.dsp
