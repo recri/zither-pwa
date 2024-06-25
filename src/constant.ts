@@ -501,7 +501,7 @@ const sdef: { [key: string]: string } = {
 
 // default array of string values
 const adef: { [key: string]: Array<string> } = {
-  dspNames: [ 'eks' ],
+  dspNames: ['eks'],
 };
 
 export const Constant = {

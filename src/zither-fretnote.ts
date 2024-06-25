@@ -118,8 +118,8 @@ export class Fretnote extends LitElement {
       `;
 
     if (!this.isinscale && this.offscale === 'hide')
-	//           @touchmove=${this.move_handler}
-	// 	     @mousemove=${this.mousemove_handler}
+      //           @touchmove=${this.move_handler}
+      // 	     @mousemove=${this.mousemove_handler}
       return html`
         ${style}
         <svg
@@ -127,8 +127,8 @@ export class Fretnote extends LitElement {
           preserveAspectRatio="none"
           @touchstart=${this.start_handler}
           @touchend=${this.end_handler}
-	  @mousedown=${this.mousedown_handler}
-	  @mouseup=${this.mouseup_handler}
+          @mousedown=${this.mousedown_handler}
+          @mouseup=${this.mouseup_handler}
         ></svg>
       `;
 
@@ -142,7 +142,7 @@ export class Fretnote extends LitElement {
         @touchstart=${this.start_handler}
         @touchend=${this.end_handler}
         @mousedown=${this.mousedown_handler}
-	@mouseup=${this.mouseup_handler}
+        @mouseup=${this.mouseup_handler}
       >
         <path
           d="M 5,25 Q 5,50 5,75 5,95 25,95 50,95 75,95 95,95 95,75 95,50 95,25 95,5 75,5 50,5 25,5 5,5 5,25 Z"

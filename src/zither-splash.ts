@@ -72,7 +72,7 @@ export class ZitherSplash extends LitElement {
           </sl-button>
         </sl-tooltip>
         <sl-tooltip content="go to the fretboard page and play">
-          <sl-button size="small"xsgxs @click=${this.playHandler} circle>
+          <sl-button size="small" @click=${this.playHandler} circle>
             <sl-icon name="music-note-beamed" label="play instrument"></sl-icon>
           </sl-button>
         </sl-tooltip>
