@@ -61,6 +61,32 @@ export class Fretnote extends LitElement {
     this.fretboard.markKeyTime();
   }
 
+  mousedown_handler(ev: MouseEvent) {
+    ev.preventDefault();
+    this.fretboard.app.audioNode!.keyOn(1, this.note, this.velocity);
+    this.fretboard.markKeyTime();
+    this.fretboard.markMouseTime();
+    // console.log(`mousedown`);
+  }
+
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  mousemove_handler(ev: MouseEvent) {
+    ev.preventDefault();
+    const node = this.fretboard.app.audioNode;
+    this.fretboard.markKeyTime();
+    this.fretboard.markMouseTime();
+    // console.log(`mousemove`);
+  }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
+
+  mouseup_handler(ev: MouseEvent) {
+    ev.preventDefault();
+    this.fretboard.app.audioNode!.keyOff(1, this.note, 0);
+    this.fretboard.markKeyTime();
+    this.fretboard.markMouseTime();
+    // console.log(`mouseup`);
+  }
+
   render() {
     const style = html`
       <style>
@@ -92,24 +118,31 @@ export class Fretnote extends LitElement {
       `;
 
     if (!this.isinscale && this.offscale === 'hide')
+	//           @touchmove=${this.move_handler}
+	// 	     @mousemove=${this.mousemove_handler}
       return html`
         ${style}
         <svg
           viewbox="0 0 100 100"
           preserveAspectRatio="none"
           @touchstart=${this.start_handler}
-          @touchmove=${this.move_handler}
           @touchend=${this.end_handler}
+	  @mousedown=${this.mousedown_handler}
+	  @mouseup=${this.mouseup_handler}
         ></svg>
       `;
+
+    //        @touchmove=${this.move_handler}
+    //        @mousemove=${this.mousemove_handler}
 
     return html` ${style}
       <svg
         viewbox="0 0 100 100"
         preserveAspectRatio="none"
         @touchstart=${this.start_handler}
-        @touchmove=${this.move_handler}
         @touchend=${this.end_handler}
+        @mousedown=${this.mousedown_handler}
+	@mouseup=${this.mouseup_handler}
       >
         <path
           d="M 5,25 Q 5,50 5,75 5,95 25,95 50,95 75,95 95,95 95,75 95,50 95,25 95,5 75,5 50,5 25,5 5,5 5,25 Z"

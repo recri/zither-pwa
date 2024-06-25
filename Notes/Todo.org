@@ -38,6 +38,8 @@
     drag to move allow you to rearrange.
 [ ] A scrolling gesture can retune the fretboard, either by moving the nut up or down
 	or by side scrolling to change the strings.
+    This could be active when the gear pages are active.  Change individual string tunings
+    by sliding the string.  Change the transpose by grabbing several strings and sliding them.
 [ ] A pinch to zoom gesture could change the number of strings, or adjust the fret spacing.
 [ ] A scroll of a single string could retune the string 
 [x] the toplevel faust directory needs to clone and set up the faustwasm application
@@ -62,7 +64,7 @@
 	Use 'gear' settings icon for 'tune instrument'.
 	Use 'x-large' for 'close instrument'.
 	Use 'music-note-beamed' for 'play instrument'.
-[ ] Add help text.
+[ ] Add more help text.
 [?] Fix the background on the zither desktop icon theme color? ...
     I get white on IOS and gray on Android.
     I think I'm stuck with them.
@@ -73,7 +75,9 @@
     https://www.w3.org/TR/mediaqueries-4/#descdef-media-any-pointer
     Can confess to the failings of the program on desktops and laptops.
     Didn't work.
-[ ] Need a tone control that tracks the string's fundamental frequency.
+[x] Implement mouse events which happen when the mouse isn't emulating touch.
+[ ] Detect lack of touchscreen by seeing the corresponding mouse events.
+[?] Need a tone control that tracks the string's fundamental frequency.
     https://faustlibraries.grame.fr/libs/filters/ faust filter library
     has parts for assembling an equalizer.
 [x] Don't need the nonlinear junk.

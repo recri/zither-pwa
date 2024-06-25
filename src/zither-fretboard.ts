@@ -60,6 +60,9 @@ export class Fretboard extends LitElement {
   @state()
   private lastKeyTime: number = 0;
 
+  @state()
+  private lastMouseTime: number = 0;
+
   static styles = css`
     :host {
       background-color: var(--zither-app-background-color);
@@ -86,6 +89,10 @@ export class Fretboard extends LitElement {
   `;
 
   private intervalIdentifier = 0;
+
+  markMouseTime() {
+    this.lastMouseTime += 1;
+  }
 
   markKeyTime() {
     this.lastKeyTime = Constant.ndef.markkeytime;
