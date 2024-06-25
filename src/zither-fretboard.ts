@@ -303,9 +303,9 @@ export class Fretboard extends LitElement {
       /* eslint-disable no-nested-ternary */
       this.texts[c] =
         this.labels === 'note'
-          ? noteToName(c + this.tonicNote, this.tonicNote)
+          ? noteToName(c + this.tonicNote, this.tonic)
           : this.labels === 'solfege'
-            ? noteToSolfege(c + this.tonicNote, this.tonicNote)
+            ? noteToSolfege(c + this.tonicNote, this.tonic)
             : '';
       this.textColors[c] = this.textColor;
       /* eslint-enable no-nested-ternary */

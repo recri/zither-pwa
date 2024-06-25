@@ -30,17 +30,17 @@ export const mtof = (note: number): number =>
 // the second translates both flatted and sharped notes
 export const noteToName = (
   note: number,
-  key: number = Constant.notes.C0,
+  key: string = 'C',
 ): string =>
-  (Constant.key.isflat[key % 12]
+  (Constant.key.isflat[key]
     ? Constant.octave.flat
     : Constant.octave.sharp)[note % 12];
 
 export const noteToSolfege = (
   note: number,
-  key: number = Constant.notes.C0,
+  key: string = 'C',
 ): string =>
-  (Constant.key.isflat[key % 12]
+  (Constant.key.isflat[key]
     ? Constant.solfege.lowered
     : Constant.solfege.raised)[note % 12];
 
@@ -57,7 +57,7 @@ export const octaveToNote = (octave: number): number =>
 // put the two above together
 export const noteToNameOctave = (
   note: number,
-  key: number = Constant.notes.C0,
+    key: string = 'C',
 ) => noteToName(note, key) + noteToOctave(note);
 
 const noteRegExp = /^([A-G][♯♭#b]?)(-1|[0-9])$/;

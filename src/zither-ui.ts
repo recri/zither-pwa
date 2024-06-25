@@ -188,64 +188,6 @@ export class ZitherUi extends LitElement {
     this.app.resetHandler();
   }
 
-  dspUi() {
-    if (this.dspName === 'eks')
-      return html`
-        <sl-range
-          label="pickangle"
-          value="${this.pickangle}"
-          min="0.0"
-          max="0.9"
-          step="0.1"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span class="label" slot="label">pickangle</span>
-        </sl-range>
-        <sl-range
-          label="pickposition"
-          value="${this.pickposition}"
-          min="0.02"
-          max="0.98"
-          step="0.01"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span class="label" slot="label">pickposition</span>
-        </sl-range>
-        <sl-range
-          label="decaytime"
-          value="${this.decaytime}"
-          min="0.0"
-          max="10.0"
-          step="0.01"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span class="label" slot="label">decaytime</span>
-        </sl-range>
-        <sl-range
-          label="brightness"
-          value="${this.brightness}"
-          min="0.0"
-          max="1.0"
-          step="0.01"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span class="label" slot="label">brightness</span>
-        </sl-range>
-
-        <sl-range
-          label="dynamiclevel"
-          value="${this.dynamiclevel}"
-          min="-60"
-          max="0"
-          step="1"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span class="label" slot="label">dynamic_level</span>
-        </sl-range>
-      `;
-    return html``;
-  }
-
   // ${slTuning('f', 'E2,G2,B2,E3,G3,B3,E4', 'guitar 7 all thirds')} is wrong
   // E F F♯ G G♯ is a third
   // G♯ A A♯ B C is a third
@@ -261,6 +203,8 @@ export class ZitherUi extends LitElement {
         <sl-tab slot="nav" panel="scale">Scale</sl-tab>
         <sl-tab slot="nav" panel="style">Style</sl-tab>
         <sl-tab slot="nav" panel="audio">Audio</sl-tab>
+        <sl-tab slot="nav" panel="excite">Excite</sl-tab>
+        <sl-tab slot="nav" panel="loop">Loop</sl-tab>
 
         <sl-tab-panel name="tuning">
           <sl-select
@@ -687,7 +631,61 @@ export class ZitherUi extends LitElement {
           >
             <span class="label" slot="label">velocity</span>
           </sl-range>
-          ${this.dspUi()}
+        </sl-tab-panel>
+
+        <sl-tab-panel name="excite">
+        <sl-range
+          label="pickangle"
+          value="${this.pickangle}"
+          min="0.0"
+          max="0.9"
+          step="0.1"
+          @sl-change=${this.slChangeEventNumber}
+        >
+          <span class="label" slot="label">pickangle</span>
+        </sl-range>
+        <sl-range
+          label="pickposition"
+          value="${this.pickposition}"
+          min="0.02"
+          max="0.98"
+          step="0.01"
+          @sl-change=${this.slChangeEventNumber}
+        >
+          <span class="label" slot="label">pickposition</span>
+        </sl-range>
+        <sl-range
+          label="dynamiclevel"
+          value="${this.dynamiclevel}"
+          min="-60"
+          max="0"
+          step="1"
+          @sl-change=${this.slChangeEventNumber}
+        >
+          <span class="label" slot="label">dynamic_level</span>
+        </sl-range>
+        </sl-tab-panel>
+        <sl-tab-panel name="loop">
+        <sl-range
+          label="decaytime"
+          value="${this.decaytime}"
+          min="0.0"
+          max="10.0"
+          step="0.01"
+          @sl-change=${this.slChangeEventNumber}
+        >
+          <span class="label" slot="label">decaytime</span>
+        </sl-range>
+        <sl-range
+          label="brightness"
+          value="${this.brightness}"
+          min="0.0"
+          max="1.0"
+          step="0.01"
+          @sl-change=${this.slChangeEventNumber}
+        >
+          <span class="label" slot="label">brightness</span>
+        </sl-range>
         </sl-tab-panel>
       </sl-tab-group>
       <div class="buttons">

@@ -67,8 +67,10 @@
 [x] Add an export link to clipboard, box-arrow-up icon    
 [x] Cleaned out effect code from active eks.dsp
 [x] Clean up color palettes, make contrasting text color.
+[x] Make poly a parameter
+[x] sharp/flat preferences by key are not working, all come out sharps.
+[x] Break the Audio panel into pieces.  Audio/Excite/Loop
 ------------------------------------------------------------------------
-[ ] Break the Audio panel into pieces.  Comm/Trigger/Loop
 [ ] may want a soft touch limit, might even be able to run a test to find it, virtual
 	tapping at various rates, record successful tests in the database, record the
 	start of unsuccessful tests in the database, choose boundaries from 
@@ -78,19 +80,22 @@
 [ ] make the 5-string banjo work
 [ ] make an 8-string mandolin
 [ ] make a 12-string guitar
+[ ] make fretless instruments
+    but still tapping interface versions, not bowed or plucked.
+[ ] make an oud
 [ ] use the position of the touch on the fretnote to modulate trigger parameters,
     pick direction from position above or below the string,
-    pick position from position between the frets,
-[ ] test whether touch contains shape information that might work for a barre.
-[ ] make a muting interface to quiet the strings
-[ ] Send each note on its own channel, so it will have its own channel messages.
-    Try and see if it works on the existing polyphony implementation, or make it
-    work by loading multiple eks and allocating them to touches
+    pick position from location between the frets,
 [ ] A scrolling gesture can retune the fretboard, either by moving the nut up or down
 	or by side scrolling to change the strings.
     This could be active when the gear pages are active.  Change individual string tunings
     by sliding the string.  Change the transpose by grabbing several strings and sliding them.
 [ ] A pinch to zoom gesture could change the number of strings, or adjust the fret spacing.
+[ ] test whether touch contains shape information that might work for a barre.
+[ ] make a muting interface to quiet the strings
+[ ] Send each note on its own channel, so it will have its own channel messages.
+    Try and see if it works on the existing polyphony implementation, or make it
+    work by loading multiple eks and allocating them to touches
 [ ] make sure that pwa builds from github, may have lost some of the copy logic
     required to recreate out-tsc and dist from scratch.
 [ ] Add more help text.
@@ -113,3 +118,8 @@
     if P > Pmax && P < Pmax*2, then build a divide by two buffer which gets
     filled with copies of eks on one clock, then drained of copies on the
     other clocks.
+[ ] shaped noise pulses. use pulse length which decays to zero
+[ ] shaped noise pulses. sparse pulses
+[ ] shaped noise pulses. pulses with envelopes
+[ ] set up A/B experiments to compare strings with different voicings
+[ ] multiple pickups combined with variable gain.
