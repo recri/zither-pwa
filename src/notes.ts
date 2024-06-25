@@ -28,18 +28,12 @@ export const mtof = (note: number): number =>
 
 // compute a note name of a midi note number, and vice versa
 // the second translates both flatted and sharped notes
-export const noteToName = (
-  note: number,
-  key: string = 'C',
-): string =>
-  (Constant.key.isflat[key]
-    ? Constant.octave.flat
-    : Constant.octave.sharp)[note % 12];
+export const noteToName = (note: number, key: string = 'C'): string =>
+  (Constant.key.isflat[key] ? Constant.octave.flat : Constant.octave.sharp)[
+    note % 12
+  ];
 
-export const noteToSolfege = (
-  note: number,
-  key: string = 'C',
-): string =>
+export const noteToSolfege = (note: number, key: string = 'C'): string =>
   (Constant.key.isflat[key]
     ? Constant.solfege.lowered
     : Constant.solfege.raised)[note % 12];
@@ -55,10 +49,8 @@ export const octaveToNote = (octave: number): number =>
   (octaveClamp(octave) + 1) * 12;
 
 // put the two above together
-export const noteToNameOctave = (
-  note: number,
-    key: string = 'C',
-) => noteToName(note, key) + noteToOctave(note);
+export const noteToNameOctave = (note: number, key: string = 'C') =>
+  noteToName(note, key) + noteToOctave(note);
 
 const noteRegExp = /^([A-G][♯♭#b]?)(-1|[0-9])$/;
 

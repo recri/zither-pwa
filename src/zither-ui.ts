@@ -634,58 +634,58 @@ export class ZitherUi extends LitElement {
         </sl-tab-panel>
 
         <sl-tab-panel name="excite">
-        <sl-range
-          label="pickangle"
-          value="${this.pickangle}"
-          min="0.0"
-          max="0.9"
-          step="0.1"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span class="label" slot="label">pickangle</span>
-        </sl-range>
-        <sl-range
-          label="pickposition"
-          value="${this.pickposition}"
-          min="0.02"
-          max="0.98"
-          step="0.01"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span class="label" slot="label">pickposition</span>
-        </sl-range>
-        <sl-range
-          label="dynamiclevel"
-          value="${this.dynamiclevel}"
-          min="-60"
-          max="0"
-          step="1"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span class="label" slot="label">dynamic_level</span>
-        </sl-range>
+          <sl-range
+            label="pickangle"
+            value="${this.pickangle}"
+            min="0.0"
+            max="0.9"
+            step="0.1"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">pickangle</span>
+          </sl-range>
+          <sl-range
+            label="pickposition"
+            value="${this.pickposition}"
+            min="0.02"
+            max="0.98"
+            step="0.01"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">pickposition</span>
+          </sl-range>
+          <sl-range
+            label="dynamiclevel"
+            value="${this.dynamiclevel}"
+            min="-60"
+            max="0"
+            step="1"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">dynamic_level</span>
+          </sl-range>
         </sl-tab-panel>
         <sl-tab-panel name="loop">
-        <sl-range
-          label="decaytime"
-          value="${this.decaytime}"
-          min="0.0"
-          max="10.0"
-          step="0.01"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span class="label" slot="label">decaytime</span>
-        </sl-range>
-        <sl-range
-          label="brightness"
-          value="${this.brightness}"
-          min="0.0"
-          max="1.0"
-          step="0.01"
-          @sl-change=${this.slChangeEventNumber}
-        >
-          <span class="label" slot="label">brightness</span>
-        </sl-range>
+          <sl-range
+            label="decaytime"
+            value="${this.decaytime}"
+            min="0.0"
+            max="10.0"
+            step="0.01"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">decaytime</span>
+          </sl-range>
+          <sl-range
+            label="brightness"
+            value="${this.brightness}"
+            min="0.0"
+            max="1.0"
+            step="0.01"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">brightness</span>
+          </sl-range>
         </sl-tab-panel>
       </sl-tab-group>
       <div class="buttons">
