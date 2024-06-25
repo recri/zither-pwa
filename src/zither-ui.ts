@@ -45,6 +45,8 @@ export class ZitherUi extends LitElement {
 
   // audio dsp and effect properties
 
+  @property() dspNames!: Array<string>;
+
   @property() dspName!: string;
 
   @property() poly!: number;
@@ -82,8 +84,8 @@ export class ZitherUi extends LitElement {
       right: 0;
     }
     sl-button {
-      font-size: calc(16px + 2vmin);
-      margin: 10px;
+      font-size: calc(10px + 2vmin);
+      margin: 5px;
     }
   `;
 
@@ -244,19 +246,22 @@ export class ZitherUi extends LitElement {
   }
 
   // ${slTuning('f', 'E2,G2,B2,E3,G3,B3,E4', 'guitar 7 all thirds')} is wrong
-  // E F F# G G# is a third
-  // G# A A# B C is a third
-  // C C# D D# E is a third
-  //  ${slTuning('f', 'E2,G#2,C3,E3,G#3,C4,E4', 'guitar 7 all thirds')} should be right
+  // E F F♯ G G♯ is a third
+  // G♯ A A♯ B C is a third
+  // C C♯ D D♯ E is a third
+  //  ${slTuning('f', 'E2,G♯2,C3,E3,G♯3,C4,E4', 'guitar 7 all thirds')} should be right
   render() {
     const slTuning = (fretting: string, tuning: string, text: string) =>
       html`<sl-option value="${fretting},${tuning}">${text}</sl-option>`;
     // console.log(`this.tuning.startsWith('o,') -> ${this.tuning.startsWith('o,')}`);
     return html`
       <sl-tab-group>
-        <sl-tab slot="nav" panel="mechanical">Mechanical</sl-tab>
+        <sl-tab slot="nav" panel="tuning">Tuning</sl-tab>
+        <sl-tab slot="nav" panel="scale">Scale</sl-tab>
+        <sl-tab slot="nav" panel="style">Style</sl-tab>
         <sl-tab slot="nav" panel="audio">Audio</sl-tab>
-        <sl-tab-panel name="mechanical">
+
+        <sl-tab-panel name="tuning">
           <sl-select
             size="small"
             label="tuning"
@@ -274,9 +279,9 @@ export class ZitherUi extends LitElement {
             ${slTuning('f', 'D4,C3,G3,B3,D4', 'banjo 5 open-G-alt*')}
             ${slTuning('f', 'D4,C3,G3,C4,D4', 'banjo 5 double-C*')}
             ${slTuning('f', 'D4,D3,G3,C4,D4', 'banjo 5 sawmill*')}
-            ${slTuning('f', 'C#4,D3,F#3,A3,D4', 'banjo 5 open-D*')}
+            ${slTuning('f', 'C♯4,D3,F♯3,A3,D4', 'banjo 5 open-D*')}
             ${slTuning('f', 'E4,D3,A3,D4,E', 'banjo 5 double-D*')}
-            ${slTuning('f', 'E4,E3,A3,C#4,E', 'banjo 5 open-A*')}
+            ${slTuning('f', 'E4,E3,A3,C♯4,E', 'banjo 5 open-A*')}
             <!-- Also introduces the library of old-timey tunings named after songs -->
 
             ${slTuning('f', 'E1,A1,D2,G2', 'bass 4')}
@@ -290,34 +295,14 @@ export class ZitherUi extends LitElement {
             ${slTuning('f', 'E2,A2,D3,G3,B3,E4', 'guitar 6')}
             ${slTuning('f', 'E2,A2,D3,G3,C4,F4', 'guitar 6 all fourths')}
             ${slTuning('f', 'E2,G♯2,C3,E3,G♯3,C4,E4', 'guitar 7 all thirds')}
-            ${slTuning(
-              'o',
-              'C7,B6,A6,G6,F6,E6,D6,C6,B5,A5,G5,F5,E5,D5,C5,B4,A4,G4,F4,E4,D4,C4',
-              'lute harp',
-            )}
-            ${slTuning(
-              'o',
-              'E5,D♯5,C5,B4,A4,G4,F♯4,E4,D♯4,C4,B3,A3,G3,F♯3,E3',
-              'nevel harp',
-            )}
-            ${slTuning(
-              'o',
-              'G5,F♯5,E5,D♯5,C5,B4,A4,G4,F♯4,E4',
-              'mini kinnor harp',
-            )}
-            ${slTuning('o', 'G4,F♯4,E4,D♯4,C4,B3,A3,G3,F♯3,E3', 'kinnor harp')}
-            ${slTuning('o', 'E4,F4,G♯4,A4,B4,C5,D5,E5', 'lyre harp')}
-            ${slTuning(
-              'o',
-              'D3,E3,F♯3,G3,A3,B3,C♯4,D4,E4,F♯4,G4,A4,B4,C♯5,D5,E5',
-              'lyre harp',
-            )}
-            ${slTuning('o', 'F5,E5,D5,C5,B4,A4,G♯4,F4,E4,D4', 'lyre harp')}
-            ${slTuning(
-              'o',
-              'B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5,C6,D6,E6,F6,G6,A6,B6,C7',
-              'harp 23',
-            )}
+            ${slTuning('o', 'C7,B6,A6,G6,F6,E6,D6,C6,B5,A5,G5,F5,E5,D5,C5,B4,A4,G4,F4,E4,D4,C4', 'lute harp 22')}
+            ${slTuning('o', 'E5,D♯5,C5,B4,A4,G4,F♯4,E4,D♯4,C4,B3,A3,G3,F♯3,E3', 'nevel harp 15')}
+            ${slTuning('o', 'G5,F♯5,E5,D♯5,C5,B4,A4,G4,F♯4,E4', 'mini kinnor harp 10')}
+            ${slTuning('o', 'G4,F♯4,E4,D♯4,C4,B3,A3,G3,F♯3,E3', 'kinnor harp 10')}
+            ${slTuning('o', 'E4,F4,G♯4,A4,B4,C5,D5,E5', 'lyre harp 8')}
+            ${slTuning('o', 'D3,E3,F♯3,G3,A3,B3,C♯4,D4,E4,F♯4,G4,A4,B4,C♯5,D5,E5', 'lyre harp 16')}
+            ${slTuning('o', 'F5,E5,D5,C5,B4,A4,G♯4,F4,E4,D4', 'lyre harp 10')}
+	    ${slTuning('o', 'B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5,C6,D6,E6,F6,G6,A6,B6,C7', 'harp 23')}
             ${slTuning(
               'o',
               'G2,A2,B2,C3,D3,E3,F3,G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5,B5,C6,D6,E6,F6,G6,A6',
@@ -339,98 +324,46 @@ export class ZitherUi extends LitElement {
               'G3,A3,B3,C4,D4,E4,F4,G4,A4,B4,C5,D5,E5,F5,G5,A5',
               'lyre 16',
             )}
-            ${slTuning('f', 'G3,G3,D4,D4,A4,A4,E5,E5', 'mandolin 4 standard')}
-            ${slTuning('f', 'F3,F3,C4,C4,G4,G4,D5,D5', 'mandolin 4 cajun')}
-            ${slTuning('f', 'G3,G3,D4,D4,G4,G4,B4,B4', 'mandolin 4 open-G')}
-            ${slTuning('f', 'G3,G3,D4,D4,G4,G4,D5,D5', 'mandolin 4 sawmill')}
-            ${slTuning('f', 'G3,G3,D4,D4,A4,A4,D5,D5', 'mandolin 4 geedad')}
-            ${slTuning('f', 'D3,D3,D4,D4,A4,A4,D5,D5', 'mandolin 4 open-D')}
-            ${slTuning('f', 'A3,A3,D4,D4,A4,A4,E5,E5', 'mandolin 4 high bass')}
-            ${slTuning(
-              'f',
-              'A3,A3,E4,E4,A4,A4,E5,E5',
-              'mandolin 4 cross-tuning',
-            )}
-            ${slTuning('f', 'A3,A3,E4,E4,A4,A4,C♯5,C♯5', 'mandolin 4 open-A')}
-            ${slTuning(
-              'f',
-              'A3,A3,E4,E4,A4,A4,D5,D5',
-              'mandolin 4 silver-lake',
-            )}
-            ${slTuning(
-              'f',
-              'E3,E3,D4,D4,A4,A4,E5,E5',
-              'mandolin 4 glory-in-the-meeting-house',
-            )}
-            ${slTuning(
-              'f',
-              'E3,E3,E4,E4,A4,A4,E5,E5',
-              'mandolin 4 get-up-in-the-cool',
-            )}
+            <!-- mandolin as doubled strings needs change of fingering technique -->
+            ${slTuning('f','G3,D4,A4,E5','mandolin 4 standard')}
+            ${slTuning('f','F3,C4,G4,D5','mandolin 4 cajun')}
+            ${slTuning('f','G3,D4,G4,B4','mandolin 4 open-G')}
+            ${slTuning('f','G3,D4,G4,D5','mandolin 4 sawmill')}
+            ${slTuning('f','G3,D4,A4,D5','mandolin 4 geedad')}
+            ${slTuning('f','D3,D4,A4,D5','mandolin 4 open-D')}
+            ${slTuning('f','A3,D4,A4,E5','mandolin 4 high bass')}
+            ${slTuning('f','A3,E4,A4,E5','mandolin 4 cross-tuning')}
+	    ${slTuning('f','A3,E4,A4,C♯5','mandolin 4 open-A')}
+            ${slTuning('f','A3,E4,A4,D5','mandolin 4 silver-lake')}
+            ${slTuning('f','E3,D4,A4,E5','mandolin 4 glory-in-the-meeting-house')}
+            ${slTuning('f','E3,E4,A4,E5','mandolin 4 get-up-in-the-cool')}
+
             ${slTuning('f', 'B3,E3,A2,D2,G1,C1', 'stick 6 bass')}
             ${slTuning('f', 'B1,E2,A2,D3,G3,C4', 'stick 6 guitar')}
+
             ${slTuning('f', 'A2,D2,G1,C1,F♯2,B2,E3,A3', 'stick 8 classic')}
-            ${slTuning('f', 'B0,E1,A1,D2,G2,C3,F3,B♭3', 'stick 8 b4')}
-            ${slTuning('f', 'B0,E1,A1,D2,G2,C3,E3,A3', 'stick 8 gi')}
-            ${slTuning('f', 'B0,E1,A1,D2,G2,B2,E3,A3', 'stick 8 glo')}
-            ${slTuning('f', 'A2,D2,G1,C1,E2,A2,D3,G3', 'stick 8 imr')}
-            ${slTuning('f', 'G♯2,C♯2,F♯1,B0,E1,A1,D2,G2', 'stick 8 idbr')}
-            ${slTuning(
-              'f',
-              'E3,A2,D2,G1,C1,F♯2,B2,E3,A3,D4',
-              'stick 10 classic',
-            )}
-            ${slTuning('f', 'E3,A2,D2,G1,C1,E2,A2,D3,G3,C4', 'stick 10 mr')}
-            ${slTuning('f', 'E3,A2,D2,G1,C1,C♯2,F♯2,B2,E3,A3', 'stick 10 bm')}
-            ${slTuning('f', 'E3,A2,D2,G1,C1,B1,E2,A2,D3,G3', 'stick 10 dbm')}
-            ${slTuning('f', 'D3,G2,C2,F1,B♭0,D2,G2,C3,F3,B♭3', 'stick 10 dmr')}
-            ${slTuning('f', 'F♯3,B2,E2,A1,D1,F♯2,B2,E3,A3,D4', 'stick 10 rmr')}
-            ${slTuning('f', 'F♯3,B2,E2,A1,D1,C♯2,F♯2,B2,E3,A3', 'stick 10 fb')}
-            ${slTuning(
-              'f',
-              'D♯3,G♯2,C♯2,F♯1,B0,E2,A2,D3,G3,C4',
-              'stick 10 dbr',
-            )}
-            ${slTuning(
-              'f',
-              'B3,E3,A2,D2,G1,C1,C♯2,F♯2,B2,E3,A3,D4',
-              'stick 12 classic',
-            )}
-            ${slTuning(
-              'f',
-              'B3,E3,A2,D2,G1,C1,B1,E2,A2,D3,G3,C4',
-              'stick 12 mr',
-            )}
-            ${slTuning(
-              'f',
-              'A3,E3,A2,D2,G1,C1,B1,E2,A2,D3,G3,C4',
-              'stick 12 mrhb4',
-            )}
-            ${slTuning(
-              'f',
-              'A3,E3,A2,D2,G1,C1,C♯2,F♯2,B2,E3,A3,D4',
-              'stick 12 chb4',
-            )}
-            ${slTuning(
-              'f',
-              'A3,D3,G2,C2,F1,B♭0,A1,D2,G2,C3,F3,B♭3',
-              'stick 12 dmr',
-            )}
-            ${slTuning(
-              'f',
-              'C♯4,F♯3,B2,E2,A1,D1,C♯2,F♯2,B2,E3,A3,D4',
-              'stick 12 rmr',
-            )}
-            ${slTuning(
-              'f',
-              'B♭3,E♭3,A♭2,C♯1,F♯1,B1,E1,A1,D2,G2,C3,F3',
-              'stick 12 dbr',
-            )}
-            ${slTuning(
-              'f',
-              'F3,C3,G2,D2,A1,E1,B1,E2,A2,D3,G3,C4',
-              'stick 12 m4',
-            )}
+            ${slTuning('f', 'B0,E1,A1,D2,G2,C3,F3,B♭3', 'stick 8 standard bass 4ths')}
+            ${slTuning('f', 'B0,E1,A1,D2,G2,C3,E3,A3', 'stick 8 guitar intervals')}
+            ${slTuning('f', 'B0,E1,A1,D2,G2,B2,E3,A3', 'stick 8 guitar lower octave')}
+            ${slTuning('f', 'A2,D2,G1,C1,E2,A2,D3,G3', 'stick 8 interior matched reciprocal')}
+            ${slTuning('f', 'G♯2,C♯2,F♯1,B0,E1,A1,D2,G2', 'stick 8 interior dual bass reciprocal')}
+            ${slTuning('f', 'E3,A2,D2,G1,C1,F♯2,B2,E3,A3,D4', 'stick 10 classic')}
+            ${slTuning('f', 'E3,A2,D2,G1,C1,E2,A2,D3,G3,C4', 'stick 10 matched reciprocal')}
+            ${slTuning('f', 'E3,A2,D2,G1,C1,C♯2,F♯2,B2,E3,A3', 'stick 10 baritone melody')}
+            ${slTuning('f', 'E3,A2,D2,G1,C1,B1,E2,A2,D3,G3', 'stick 10 deep baritone melody')}
+            ${slTuning('f', 'D3,G2,C2,F1,B♭0,D2,G2,C3,F3,B♭3', 'stick 10 deep matched reciprocal')}
+            ${slTuning('f', 'F♯3,B2,E2,A1,D1,F♯2,B2,E3,A3,D4', 'stick 10 raised matched reciprocal')}
+            ${slTuning('f', 'F♯3,B2,E2,A1,D1,C♯2,F♯2,B2,E3,A3', 'stick 10 full baritone')}
+            ${slTuning('f', 'D♯3,G♯2,C♯2,F♯1,B0,E2,A2,D3,G3,C4', 'stick 10 dual bass reciprocal')}
+            ${slTuning('f', 'B3,E3,A2,D2,G1,C1,C♯2,F♯2,B2,E3,A3,D4', 'stick 12 classic')}
+            ${slTuning('f', 'B3,E3,A2,D2,G1,C1,B1,E2,A2,D3,G3,C4', 'stick 12 matched reciprocal')}
+            ${slTuning('f', 'A3,E3,A2,D2,G1,C1,B1,E2,A2,D3,G3,C4', 'stick 12 matched reciprocal with high bass 4th')}
+            ${slTuning('f', 'A3,E3,A2,D2,G1,C1,C♯2,F♯2,B2,E3,A3,D4', 'stick 12 classic with high bass 4th')}
+            ${slTuning('f', 'A3,D3,G2,C2,F1,B♭0,A1,D2,G2,C3,F3,B♭3', 'stick 12 deep matched reciprocal')}
+            ${slTuning('f', 'C♯4,F♯3,B2,E2,A1,D1,C♯2,F♯2,B2,E3,A3,D4', 'stick 12 raised matched reciprocal')}
+            ${slTuning('f', 'B♭3,E♭3,A♭2,C♯1,F♯1,B1,E1,A1,D2,G2,C3,F3', 'stick 12 dual bass reciprocal')}
+            ${slTuning('f', 'F3,C3,G2,D2,A1,E1,B1,E2,A2,D3,G3,C4', 'stick 12 mirrored 4ths')}
+
             ${slTuning('f', 'G4,C4,E4,A4', 'ukulele 4')}
             <!-- viola needs fretless -->
             <!-- violin needs fretless -->
@@ -485,6 +418,9 @@ export class ZitherUi extends LitElement {
           >
             <span class="label" slot="label">transpose</span>
           </sl-range>
+        </sl-tab-panel>
+
+        <sl-tab-panel name="scale">
           <sl-select
             size="small"
             label="tonic"
@@ -557,6 +493,9 @@ export class ZitherUi extends LitElement {
             <sl-option value="mute">mute</sl-option>
             <sl-option value="cover">cover</sl-option>
           </sl-select>
+        </sl-tab-panel>
+
+        <sl-tab-panel name="style">
           <sl-select
             size="small"
             label="labels"
@@ -594,6 +533,10 @@ export class ZitherUi extends LitElement {
           </sl-select>
         </sl-tab-panel>
         <sl-tab-panel name="audio">
+
+	${this.dspNames.length <= 1 ?
+	html`` :
+        html`
           <sl-select
             size="small"
             label="dspName"
@@ -601,11 +544,11 @@ export class ZitherUi extends LitElement {
             @sl-change=${this.slChangeEventString}
           >
             <span class="label" slot="label">dspName</span>
-            ${['eks'].map(
+            ${this.dspNames.map(
               dspName =>
                 html`<sl-option value="${dspName}">${dspName}</sl-option>`,
             )}
-          </sl-select>
+          </sl-select>`}
 
           <sl-range
             label="poly"
@@ -633,22 +576,22 @@ export class ZitherUi extends LitElement {
       </sl-tab-group>
       <div class="buttons">
         <sl-tooltip content="exit to the splash page">
-          <sl-button @click=${this.closeHandler} circle>
+          <sl-button size="small" @click=${this.closeHandler} circle>
             <sl-icon name="x-lg" label="close instrument"></sl-icon>
           </sl-button>
         </sl-tooltip>
         <sl-tooltip content="reset the instrument to default parameter values">
-          <sl-button @click=${this.resetHandler} circle>
+          <sl-button size="small" @click=${this.resetHandler} circle>
             <sl-icon name="restore" label="reset instrument"></sl-icon>
           </sl-button>
         </sl-tooltip>
         <sl-tooltip content="export the current instrument to the clipboard">
-          <sl-button @click=${this.exportHandler} circle>
+          <sl-button size="small" @click=${this.exportHandler} circle>
             <sl-icon name="box-arrow-up" label="export instrument"></sl-icon>
           </sl-button>
         </sl-tooltip>
         <sl-tooltip content="go to the fretboard page and play">
-          <sl-button @click=${this.playHandler} circle>
+          <sl-button size="small" @click=${this.playHandler} circle>
             <sl-icon name="music-note-beamed" label="play instrument"></sl-icon>
           </sl-button>
         </sl-tooltip>

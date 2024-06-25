@@ -80,8 +80,8 @@ export class Fretboard extends LitElement {
       right: 0;
     }
     sl-button {
-      font-size: calc(16px + 2vmin);
-      margin: 10px;
+      font-size: calc(10px + 2vmin);
+      margin: 5px;
     }
   `;
 
@@ -424,7 +424,7 @@ export class Fretboard extends LitElement {
       ${!this.isPortrait ? this.landscapeStyle : this.portraitStyle}
       <div class="buttons">
         <sl-tooltip content="go back to the settings page">
-          <sl-button @click=${this.tuneHandler} circle>
+          <sl-button size="small" @click=${this.tuneHandler} circle>
             <sl-icon name="gear" label="tune instrument"></sl-icon>
           </sl-button>
         </sl-tooltip>

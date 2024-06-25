@@ -32,8 +32,8 @@ export class ZitherSplash extends LitElement {
       right: 0;
     }
     sl-button {
-      font-size: calc(16px + 2vmin);
-      margin: 10px;
+      font-size: calc(10px + 2vmin);
+      margin: 5px;
     }
     div.message {
       display: none;
@@ -62,17 +62,17 @@ export class ZitherSplash extends LitElement {
       </div>
       <div class="buttons">
         <sl-tooltip content="exit the app, if possible">
-          <sl-button @click=${this.closeHandler} circle>
-            <sl-icon name="x-lg" label="close instrument"></sl-icon>
+          <sl-button size="small" @click=${this.closeHandler} circle>
+            <sl-icon name="x-lg" label="close small instrument"></sl-icon>
           </sl-button>
         </sl-tooltip>
         <sl-tooltip content="go to the settings page">
-          <sl-button @click=${this.tuneHandler} circle>
+          <sl-button size="small" @click=${this.tuneHandler} circle>
             <sl-icon name="gear" label="tune instrument"></sl-icon>
           </sl-button>
         </sl-tooltip>
         <sl-tooltip content="go to the fretboard page and play">
-          <sl-button @click=${this.playHandler} circle>
+          <sl-button size="small"xsgxs @click=${this.playHandler} circle>
             <sl-icon name="music-note-beamed" label="play instrument"></sl-icon>
           </sl-button>
         </sl-tooltip>

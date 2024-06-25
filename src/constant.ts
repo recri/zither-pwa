@@ -499,9 +499,15 @@ const sdef: { [key: string]: string } = {
   dspName: 'eks', // extended karplus strong from freeaxe
 };
 
+// default array of string values
+const adef: { [key: string]: Array<string> } = {
+  dspNames: [ 'eks' ],
+};
+
 export const Constant = {
   ndef,
   sdef,
+  adef,
   notes,
   nameToNote,
   octave,

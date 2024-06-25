@@ -404,6 +404,7 @@ export class ZitherApp extends LitElement {
       <zither-log .app=${this}></zither-log>
       <zither-ui
         .app=${this}
+	.dspNames=${Constant.adef.dspNames}
         .dspName=${this.dspName}
         .poly=${this.poly}
         .velocity=${this.velocity}
