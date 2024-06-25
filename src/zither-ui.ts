@@ -634,18 +634,17 @@ export class ZitherUi extends LitElement {
           >
             <span class="label" slot="label">colors</span>
             ${[
+              'none',
+              'gray',
+              'blue',
+              'green',
+              'magenta',
+              'fire',
               'bamO',
               'brocO',
               'corkO',
               'romaO',
               'vikO',
-              'blue',
-              'green',
-              'magenta',
-              'gray1',
-              'gray',
-              'fire',
-              'none',
             ].map(
               color => html`<sl-option value="${color}">${color}</sl-option>`,
             )}

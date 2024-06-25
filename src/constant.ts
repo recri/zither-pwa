@@ -425,20 +425,6 @@ const palettes: { [key: string]: Array<string> } = {
     '#ba0091',
     '#c6009c',
   ],
-  gray1: [
-    '#282828',
-    '#353535',
-    '#434343',
-    '#505050',
-    '#5e5e5e',
-    '#6b6b6b',
-    '#797979',
-    '#868686',
-    '#949494',
-    '#a1a1a1',
-    '#afafaf',
-    '#bcbcbc',
-  ],
   gray: [
     '#000000',
     '#060606',
@@ -467,6 +453,20 @@ const palettes: { [key: string]: Array<string> } = {
     '#000000',
     '#000000',
   ],
+};
+
+const textForPalettes: { [key: string]: string } = {
+  bamO: 'gray',
+  brocO: 'gray',
+  corkO: 'gray',
+  romaO: 'gray',
+  vikO: 'gray',
+  blue: 'white',
+  green: 'white',
+  fire: 'gray',
+  magenta: 'white',
+  gray: 'white',
+  none: 'white',
 };
 
 // default values
@@ -516,4 +516,5 @@ export const Constant = {
   key,
   scales,
   palettes,
+  textForPalettes,
 };

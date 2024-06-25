@@ -135,6 +135,8 @@ export class Fretboard extends LitElement {
 
   palette: Array<string> = [];
 
+  textColor: string = 'white';
+
   isAllFrettedString() {
     return Array.from(this.fretting).every(x => x === 'f');
   }
@@ -168,6 +170,8 @@ export class Fretboard extends LitElement {
       console.log(`hybrid fretted open not implemented`);
     }
     this.palette = Constant.palettes[this.colors];
+    this.textColor = Constant.textForPalettes[this.colors];
+    // console.log(`processInputs colors=${this.colors}, palette=${this.palette}, textColor=${this.textColor}`);
   }
 
   stringNumbers: Array<number> = [];
@@ -303,6 +307,7 @@ export class Fretboard extends LitElement {
           : this.labels === 'solfege'
             ? noteToSolfege(c + this.tonicNote, this.tonicNote)
             : '';
+      this.textColors[c] = this.textColor;
       /* eslint-enable no-nested-ternary */
       // is in the scale of our mode
       this.isInScale[c] = this.scaleNotes.includes(c);
@@ -312,11 +317,6 @@ export class Fretboard extends LitElement {
       this.fillColors[c] = this.palette[c];
       /* eslint-disable no-nested-ternary */
       this.strokeColors[c] = isTonic
-        ? 'white'
-        : this.isInScale[c]
-          ? 'lightgray'
-          : 'darkgray';
-      this.textColors[c] = isTonic
         ? 'white'
         : this.isInScale[c]
           ? 'lightgray'
