@@ -123,3 +123,4 @@
 [ ] shaped noise pulses. pulses with envelopes
 [ ] set up A/B experiments to compare strings with different voicings
 [ ] multiple pickups combined with variable gain.
+[ ] no sound on iphone, need to select output maybe?

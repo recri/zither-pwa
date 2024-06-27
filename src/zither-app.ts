@@ -184,8 +184,7 @@ export class ZitherApp extends LitElement {
   @property()
   set dynamiclevel(value) {
     ZitherApp.putFloatProp('dynamiclevel', value);
-    if (this.audioNode)
-      this.audioNode.setParamValue('/EKS/Excitation/dynamic_level', value);
+    this.audioNode?.setParamValue('/EKS/Excitation/dynamic_level', value);
   }
 
   get dynamiclevel() {
@@ -195,8 +194,7 @@ export class ZitherApp extends LitElement {
   @property()
   set pickangle(value) {
     ZitherApp.putFloatProp('pickangle', value);
-    if (this.audioNode)
-      this.audioNode.setParamValue('/EKS/Excitation/pick_angle', value);
+    this.audioNode?.setParamValue('/EKS/Excitation/pick_angle', value);
   }
 
   get pickangle() {
@@ -206,8 +204,7 @@ export class ZitherApp extends LitElement {
   @property()
   set pickposition(value: number) {
     ZitherApp.putFloatProp('pickposition', value);
-    if (this.audioNode)
-      this.audioNode.setParamValue('/EKS/Excitation/pick_position', value);
+    this.audioNode?.setParamValue('/EKS/Excitation/pick_position', value);
   }
 
   get pickposition() {
@@ -217,7 +214,7 @@ export class ZitherApp extends LitElement {
   @property()
   set decaytime(value: number) {
     ZitherApp.putFloatProp('decaytime', value);
-    if (this.audioNode) this.audioNode.setParamValue('/EKS/String/t60', value);
+    this.audioNode?.setParamValue('/EKS/String/t60', value);
   }
 
   get decaytime() {
@@ -227,8 +224,7 @@ export class ZitherApp extends LitElement {
   @property()
   set brightness(value: number) {
     ZitherApp.putFloatProp('brightness', value);
-    if (this.audioNode)
-      this.audioNode.setParamValue('/EKS/String/brightness', value);
+    this.audioNode?.setParamValue('/EKS/String/brightness', value);
   }
 
   get brightness() {
@@ -401,7 +397,6 @@ export class ZitherApp extends LitElement {
         .width=${this.width}
         .height=${this.height}
       ></zither-fretboard>
-      <zither-log .app=${this}></zither-log>
       <zither-ui
         .app=${this}
         .dspNames=${Constant.adef.dspNames}
@@ -422,6 +417,7 @@ export class ZitherApp extends LitElement {
         .brightness=${this.brightness}
         .dynamiclevel=${this.dynamiclevel}
       ></zither-ui>
+      <zither-log .app=${this}></zither-log>
     `;
   }
 }
