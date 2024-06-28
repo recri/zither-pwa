@@ -3,6 +3,10 @@ import { property, customElement } from 'lit/decorators.js';
 
 import type { FaustPolyAudioWorkletNode } from './faust/faustwasm/index.js';
 
+import {
+    observeUrl, putProp, getProp, putIntProp, getIntProp,
+    putBoolProp, getBoolProp, putFloatProp, getFloatProp 
+} from './props.js';
 import { Constant } from './constant.js';
 import './zither-splash.js';
 import './zither-ui.js';
@@ -15,54 +19,6 @@ export type ZitherStateType = 'tune' | 'play' | 'splash';
 // The zither-app should parse the url for parameter setting
 @customElement('zither-app')
 export class ZitherApp extends LitElement {
-  /**
-   ** Code to implement parameters from url
-   ** and from local storage.
-   */
-
-  /* eslint-disable no-nested-ternary */
-  static urlSearchParams: URLSearchParams = new URL(window.location.href)
-    .searchParams;
-
-  static hasProp = (name: string): boolean =>
-    ZitherApp.urlSearchParams.has(name) ||
-    window.localStorage.getItem(name) !== null;
-
-  // modify this to store new property values to window.localStorage
-  static getProp = (name: string, defValue: string): string =>
-    ZitherApp.urlSearchParams.has(name)
-      ? ZitherApp.urlSearchParams.get(name)!
-      : window.localStorage.getItem(name) !== null
-        ? window.localStorage.getItem(name)!
-        : defValue;
-
-  static putProp = (name: string, value: string) =>
-    window.localStorage.setItem(name, value);
-
-  static getIntProp = (name: string, defValue: number): number =>
-    ZitherApp.hasProp(name)
-      ? parseInt(ZitherApp.getProp(name, '')!, 10)
-      : defValue;
-
-  static putIntProp = (name: string, value: number) =>
-    ZitherApp.putProp(name, `${value}`);
-
-  static getFloatProp = (name: string, defValue: number): number =>
-    ZitherApp.hasProp(name)
-      ? parseFloat(ZitherApp.getProp(name, '')!)
-      : defValue;
-
-  static putFloatProp = (name: string, value: number) =>
-    ZitherApp.putProp(name, `${value}`);
-
-  static getBoolProp = (name: string, defValue: boolean): boolean =>
-    ZitherApp.hasProp(name)
-      ? ZitherApp.getProp(name, `${defValue}`) === 'true'
-      : defValue;
-
-  static putBoolProp = (name: string, value: boolean) =>
-    ZitherApp.putProp(name, `${value}`);
-  /* eslint-enable no-nested-ternary */
 
   /**
    ** properties
@@ -80,156 +36,102 @@ export class ZitherApp extends LitElement {
 
   /* eslint-disable class-methods-use-this */
   @property()
-  set tuning(value) {
-    ZitherApp.putProp('tuning', value);
-  }
+  set tuning(value) { putProp('tuning', value); }
 
-  get tuning() {
-    return ZitherApp.getProp('tuning', Constant.sdef.tuning);
-  }
+  get tuning() { return getProp('tuning'); }
 
   @property()
-  set frets(value) {
-    ZitherApp.putIntProp('frets', value);
-  }
+  set frets(value) { putIntProp('frets', value); }
 
-  get frets() {
-    return ZitherApp.getIntProp('frets', Constant.ndef.frets);
-  }
+  get frets() { return getIntProp('frets'); }
 
   @property()
-  set transpose(value) {
-    ZitherApp.putIntProp('transpose', value);
-  }
+  set transpose(value) { putIntProp('transpose', value); }
 
-  get transpose() {
-    return ZitherApp.getIntProp('transpose', Constant.ndef.transpose);
-  }
+  get transpose() { return getIntProp('transpose'); }
 
   @property()
-  set tonic(value) {
-    ZitherApp.putProp('tonic', value);
-  }
+  set tonic(value) { putProp('tonic', value); }
 
-  get tonic() {
-    return ZitherApp.getProp('tonic', Constant.sdef.tonic);
-  }
+  get tonic() { return getProp('tonic'); }
 
   @property()
-  set scale(value) {
-    ZitherApp.putProp('scale', value);
-  }
+  set scale(value) { putProp('scale', value); }
 
-  get scale() {
-    return ZitherApp.getProp('scale', Constant.sdef.scale);
-  }
+  get scale() { return getProp('scale'); }
 
   @property()
-  set colors(value) {
-    ZitherApp.putProp('colors', value);
-  }
+  set colors(value) { putProp('colors', value); }
 
-  get colors() {
-    return ZitherApp.getProp('colors', Constant.sdef.colors);
-  }
+  get colors() { return getProp('colors'); }
 
   @property()
-  set offscale(value) {
-    ZitherApp.putProp('offscale', value);
-  }
+  set offscale(value) { putProp('offscale', value); }
 
-  get offscale() {
-    return ZitherApp.getProp('offscale', Constant.sdef.offscale);
-  }
+  get offscale() { return getProp('offscale'); }
 
   @property()
-  set labels(value) {
-    ZitherApp.putProp('labels', value);
-  }
+  set labels(value) { putProp('labels', value); }
 
-  get labels() {
-    return ZitherApp.getProp('labels', Constant.sdef.labels);
-  }
+  get labels() { return getProp('labels'); }
 
   // begin dsp properties
   @property()
-  set dspName(value) {
-    ZitherApp.putProp('dspName', value);
-  }
+  set dspName(value) { putProp('dspName', value); }
 
-  get dspName() {
-    return ZitherApp.getProp('dspName', Constant.sdef.dspName);
-  }
+  get dspName() { return getProp('dspName'); }
 
   @property()
-  set poly(value) {
-    ZitherApp.putIntProp('poly', value);
-  }
+  set poly(value) { putIntProp('poly', value); }
 
-  get poly() {
-    return ZitherApp.getIntProp('poly', Constant.ndef.poly);
-  }
+  get poly() { return getIntProp('poly'); }
 
   @property()
-  set velocity(value) {
-    ZitherApp.putIntProp('velocity', value);
-  }
+  set velocity(value) { putIntProp('velocity', value); }
 
-  get velocity() {
-    return ZitherApp.getIntProp('velocity', Constant.ndef.velocity);
-  }
+  get velocity() { return getIntProp('velocity'); }
 
   // begin dsp dsp propertiies
 
   @property()
   set dynamiclevel(value) {
-    ZitherApp.putFloatProp('dynamiclevel', value);
+    putFloatProp('dynamiclevel', value);
     this.audioNode?.setParamValue('/EKS/Excitation/dynamic_level', value);
   }
 
-  get dynamiclevel() {
-    return ZitherApp.getFloatProp('dynamiclevel', Constant.ndef.dynamiclevel);
-  }
+  get dynamiclevel() { return getFloatProp('dynamiclevel'); }
 
   @property()
   set pickangle(value) {
-    ZitherApp.putFloatProp('pickangle', value);
+    putFloatProp('pickangle', value);
     this.audioNode?.setParamValue('/EKS/Excitation/pick_angle', value);
   }
 
-  get pickangle() {
-    return ZitherApp.getFloatProp('pickangle', Constant.ndef.pickangle);
-  }
+  get pickangle() { return getFloatProp('pickangle'); }
 
   @property()
   set pickposition(value: number) {
-    ZitherApp.putFloatProp('pickposition', value);
+    putFloatProp('pickposition', value);
     this.audioNode?.setParamValue('/EKS/Excitation/pick_position', value);
   }
 
-  get pickposition() {
-    return ZitherApp.getFloatProp('pickposition', Constant.ndef.pickposition);
-  }
+  get pickposition() { return getFloatProp('pickposition'); }
 
   @property()
   set decaytime(value: number) {
-    ZitherApp.putFloatProp('decaytime', value);
+    putFloatProp('decaytime', value);
     this.audioNode?.setParamValue('/EKS/String/t60', value);
   }
 
-  get decaytime() {
-    return ZitherApp.getFloatProp('decaytime', Constant.ndef.decaytime);
-  }
+  get decaytime() { return getFloatProp('decaytime'); }
 
   @property()
   set brightness(value: number) {
-    ZitherApp.putFloatProp('brightness', value);
+    putFloatProp('brightness', value);
     this.audioNode?.setParamValue('/EKS/String/brightness', value);
   }
 
-  get brightness() {
-    return ZitherApp.getFloatProp('brightness', Constant.ndef.brightness);
-  }
+  get brightness() { return getFloatProp('brightness'); }
   /* eslint-enable class-methods-use-this */
 
   // window properties
@@ -255,6 +157,7 @@ export class ZitherApp extends LitElement {
     audioContext.suspend();
     audioContext.destination.channelInterpretation = 'discrete';
     this.audioContext = audioContext;
+    observeUrl(Constant.defaultValues)
   }
 
   handleResize() {
@@ -399,7 +302,7 @@ export class ZitherApp extends LitElement {
       ></zither-fretboard>
       <zither-ui
         .app=${this}
-        .dspNames=${Constant.adef.dspNames}
+        .dspNames=${Constant.dspNames}
         .dspName=${this.dspName}
         .poly=${this.poly}
         .velocity=${this.velocity}

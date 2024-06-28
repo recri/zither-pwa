@@ -471,24 +471,19 @@ const textForPalettes: { [key: string]: string } = {
 
 // default values
 
-// default numeric values
-const ndef: { [key: string]: number } = {
-  frets: 13, // one octave to start
-  transpose: 0, // in standard offset
-  velocity: 114, // midi note on velocity
-  poly: 10, // midi polyphony number of voices
-  panangle: 0.5, //
-  spatialwidth: 0.5, //
-  dynamiclevel: -10, // level for levelfilter
-  brightness: 0.5, // brightness
-  decaytime: 4, // decay time of notes
-  pickangle: 0, // pick angle
-  pickposition: 0.13, // pick position
-  markkeytime: 5, // seconds of inactivity before tune button reappears
-};
-
-// default string values
-const sdef: { [key: string]: string } = {
+const defaultValues: {[key: string]: string} = {
+  frets: '13', // one octave to start
+  transpose: '0', // in standard offset
+  velocity: '114', // midi note on velocity
+  poly: '10', // midi polyphony number of voices
+  panangle: '0.5', //
+  spatialwidth: '0.5', //
+  dynamiclevel: '-10', // level for levelfilter
+  brightness: '0.5', // brightness
+  decaytime: '4', // decay time of notes
+  pickangle: '0', // pick angle
+  pickposition: '0.13', // pick position
+  markkeytime: '5',// seconds of inactivity before tune button reappears
   //  defaultTuning: 'f,E2,A2,D3,G3,C4,F4', // all fourths tuning
   tuning: 'f,B0,E1,A1,D2,G2,C3,F3,A♯3', // 'bass 8 low'
   tonic: 'C', // key of C
@@ -499,15 +494,9 @@ const sdef: { [key: string]: string } = {
   dspName: 'eks', // extended karplus strong from freeaxe
 };
 
-// default array of string values
-const adef: { [key: string]: Array<string> } = {
-  dspNames: ['eks'],
-};
-
 export const Constant = {
-  ndef,
-  sdef,
-  adef,
+  defaultValues,
+  dspNames: ['eks'],
   notes,
   nameToNote,
   octave,

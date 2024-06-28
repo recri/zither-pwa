@@ -95,7 +95,7 @@ export class Fretboard extends LitElement {
   }
 
   markKeyTime() {
-    this.lastKeyTime = Constant.ndef.markkeytime;
+    this.lastKeyTime = parseInt(Constant.defaultValues.markkeytime, 10);
   }
 
   intervalHandler() {
