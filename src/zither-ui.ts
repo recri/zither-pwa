@@ -44,6 +44,14 @@ export class ZitherUi extends LitElement {
 
   @property() colors!: string;
 
+  @property() top: number = 0;
+
+  @property() right: number = 0;
+
+  @property() bottom: number = 0;
+
+  @property() left: number = 0;
+
   // audio dsp and effect properties
 
   @property() dspNames!: Array<string>;
@@ -72,17 +80,35 @@ export class ZitherUi extends LitElement {
       border: none;
       padding: 0px;
       margin: none;
+      overflow: hidden;
     }
     .label {
       font-size: calc(10px + 2vmin);
     }
+    div.ui-content {
+display: flex;
+flex-direction: column;
+      height: 100%;
+      width: 100%;
+    }
+    sl-tab-group {
+      height: 100%;
+      width: 100%;
+    }
     sl-tab-panel {
-      padding: 5px;
+      height: 100%;
+      width: 100%;
+      /* padding: 5px; */
+    }
+    div.content {
+      height: 100%;
+      width: 100%;
+      overflow-y: scroll;
     }
     div.buttons {
-      position: absolute;
-      bottom: 0;
-      right: 0;
+      /* position: absolute; */
+      /* bottom: 0; */
+      /* right: 0; */
     }
     sl-button {
       font-size: calc(10px + 2vmin);
@@ -172,20 +198,13 @@ export class ZitherUi extends LitElement {
     }
   }
 
-  closeHandler() {
-    this.app.closeHandler();
-  }
+  closeHandler() { this.app.closeHandler(); }
 
-  playHandler() {
-    this.app.playHandler();
-  }
+  playHandler() { this.app.playHandler(); }
 
-  exportHandler() {
-    this.app.exportHandler();
-  }
+  exportHandler() { this.app.exportHandler(); }
 
-  resetHandler() {
-    this.app.resetHandler();
+  resetHandler() { this.app.resetHandler();
   }
 
   // ${slTuning('f', 'E2,G2,B2,E3,G3,B3,E4', 'guitar 7 all thirds')} is wrong
@@ -198,15 +217,15 @@ export class ZitherUi extends LitElement {
       html`<sl-option value="${fretting},${tuning}">${text}</sl-option>`;
     // console.log(`this.tuning.startsWith('o,') -> ${this.tuning.startsWith('o,')}`);
     return html`
+      <div class="ui-content">     
       <sl-tab-group>
         <sl-tab slot="nav" panel="tuning">Tuning</sl-tab>
-        <sl-tab slot="nav" panel="scale">Scale</sl-tab>
-        <sl-tab slot="nav" panel="style">Style</sl-tab>
         <sl-tab slot="nav" panel="audio">Audio</sl-tab>
-        <sl-tab slot="nav" panel="excite">Excite</sl-tab>
-        <sl-tab slot="nav" panel="loop">Loop</sl-tab>
+        <sl-tab slot="nav" panel="style">Style</sl-tab>
+        <sl-tab slot="nav" panel="preset">Preset</sl-tab>
 
-        <sl-tab-panel name="tuning">
+        <sl-tab-panel name="tuning"><div class="content">
+
           <sl-select
             size="small"
             label="tuning"
@@ -452,6 +471,7 @@ export class ZitherUi extends LitElement {
             )}
             <!-- concert and alpine zithers are more complicated -->
           </sl-select>
+
           ${this.tuning && this.tuning.startsWith('o,')
             ? html`<sl-range
                 label="frets"
@@ -472,6 +492,7 @@ export class ZitherUi extends LitElement {
               >
                 <span class="label" slot="label">frets</span>
               </sl-range>`}
+
           <sl-range
             label="transpose"
             value="${this.transpose}"
@@ -481,9 +502,7 @@ export class ZitherUi extends LitElement {
           >
             <span class="label" slot="label">transpose</span>
           </sl-range>
-        </sl-tab-panel>
 
-        <sl-tab-panel name="scale">
           <sl-select
             size="small"
             label="tonic"
@@ -510,6 +529,7 @@ export class ZitherUi extends LitElement {
               tonic => html`<sl-option value="${tonic}">${tonic}</sl-option>`,
             )}
           </sl-select>
+
           <sl-select
             size="small"
             label="scale"
@@ -544,6 +564,7 @@ export class ZitherUi extends LitElement {
               scale => html`<sl-option value="${scale}">${scale}</sl-option>`,
             )}
           </sl-select>
+
           <sl-select
             size="small"
             label="offscale"
@@ -556,9 +577,7 @@ export class ZitherUi extends LitElement {
             <sl-option value="mute">mute</sl-option>
             <sl-option value="cover">cover</sl-option>
           </sl-select>
-        </sl-tab-panel>
 
-        <sl-tab-panel name="style">
           <sl-select
             size="small"
             label="labels"
@@ -570,6 +589,7 @@ export class ZitherUi extends LitElement {
             <sl-option value="note">note</sl-option>
             <sl-option value="solfege">solfege</sl-option>
           </sl-select>
+
           <sl-select
             size="small"
             label="colors"
@@ -593,8 +613,10 @@ export class ZitherUi extends LitElement {
               color => html`<sl-option value="${color}">${color}</sl-option>`,
             )}
           </sl-select>
-        </sl-tab-panel>
-        <sl-tab-panel name="audio">
+
+        </div></sl-tab-panel>
+
+        <sl-tab-panel name="audio"><div class="content">
           ${this.dspNames.length <= 1
             ? html``
             : html` <sl-select
@@ -631,9 +653,7 @@ export class ZitherUi extends LitElement {
           >
             <span class="label" slot="label">velocity</span>
           </sl-range>
-        </sl-tab-panel>
 
-        <sl-tab-panel name="excite">
           <sl-range
             label="pickangle"
             value="${this.pickangle}"
@@ -664,8 +684,6 @@ export class ZitherUi extends LitElement {
           >
             <span class="label" slot="label">dynamic_level</span>
           </sl-range>
-        </sl-tab-panel>
-        <sl-tab-panel name="loop">
           <sl-range
             label="decaytime"
             value="${this.decaytime}"
@@ -686,8 +704,51 @@ export class ZitherUi extends LitElement {
           >
             <span class="label" slot="label">brightness</span>
           </sl-range>
-        </sl-tab-panel>
+        </div></sl-tab-panel>
+
+        <sl-tab-panel name="style"><div class="ui-content">
+          <sl-range
+            label="top"
+            value="${this.top}"
+            min="0"
+            max="64"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">top</span>
+          </sl-range>
+
+          <sl-range
+            label="right"
+            value="${this.right}"
+            min="0"
+            max="64"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">right</span>
+          </sl-range>
+
+          <sl-range
+            label="bottom"
+            value="${this.bottom}"
+            min="0"
+            max="64"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">bottom</span>
+          </sl-range>
+
+          <sl-range
+            label="left"
+            value="${this.left}"
+            min="0"
+            max="64"
+            @sl-change=${this.slChangeEventNumber}
+          >
+            <span class="label" slot="label">left</span>
+          </sl-range>
+        </div></sl-tab-panel>
       </sl-tab-group>
+
       <div class="buttons">
         <sl-tooltip content="exit to the splash page">
           <sl-button size="small" @click=${this.closeHandler} circle>
@@ -709,6 +770,7 @@ export class ZitherUi extends LitElement {
             <sl-icon name="music-note-beamed" label="play instrument"></sl-icon>
           </sl-button>
         </sl-tooltip>
+      </div>
       </div>
     `;
   }

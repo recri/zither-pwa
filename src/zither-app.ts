@@ -149,6 +149,7 @@ export class ZitherApp extends LitElement {
       border: none;
       padding: 0px;
       margin: none;
+      overflow: hidden;
     }
   `;
 
