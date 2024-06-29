@@ -1,14 +1,22 @@
 
 /**
  ** Code to implement parameters from url
- ** and from local storage.
+ ** or from persistent local storage.
  */
 
+// default values for props, used when nothing stored in localStorage.
+let defaults: {[key: string]: string} = {};
+
+// clear all localStorage values.
+export const resetProps = () =>
+  window.localStorage.clear();
+
+// is there a property with the given name
 export const hasProp = (name: string): boolean =>
   window.localStorage.getItem(name) !== null;
 
 export const getProp = (name: string): string =>
-  window.localStorage.getItem(name)!;
+  hasProp(name) ? window.localStorage.getItem(name)! : defaults[name];
 
 export const putProp = (name: string, value: string) =>
   window.localStorage.setItem(name, value);
@@ -32,16 +40,16 @@ export const putBoolProp = (name: string, value: boolean) =>
   putProp(name, `${value}`);
 
 export const observeUrl = (defaultValues: {[key: string]: string}) => {
+  defaults = defaultValues;
   let oldHref = document.location.href;
   const update = () => {
     oldHref = document.location.href;
-    const params = new URL(oldHref).searchParams;
-    Object.keys(defaultValues).forEach(key => {
-      if (params.has(key)) 
-	putProp(key, params.get(key)!);
-      else if (window.localStorage.getItem(key) !== null)
-        putProp(key, defaultValues[key]);
-    });
+    for (const [key, value] of new URL(oldHref).searchParams.entries()) {
+      if (key === 'reset')
+	resetProps();
+      else 
+	putProp(key, value);
+    }
   }
   update();
   const body = document.querySelector("body");
@@ -51,3 +59,16 @@ export const observeUrl = (defaultValues: {[key: string]: string}) => {
   observer.observe(body!, { childList: true, subtree: true });
 };
 
+export const exportProps = (reset: boolean) => {
+  const items = [];
+  if (reset) items.push('reset')
+  Object.keys(defaults).forEach(key => {
+    if (hasProp(key) && getProp(key) !== defaults[key])
+      items.push(`${key}=${getProp(key)}`);
+  });
+
+  const location = `${window.location.protocol}//${window.location.host}/?${items.join('&')}`;
+  // console.log(`exportProps(${reset}) returns ${location}`);
+  return location;
+}
+    

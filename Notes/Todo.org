@@ -102,12 +102,14 @@
 [ ] Detect lack of touchscreen by seeing the corresponding mouse events.
 [ ] Need stiffness.
 [ ] line of green at bottom of fretboard, off by one?  On the IPad mini
+[ ] fretboard showing at bottom of splash, on the IPad Mini
 [ ] resize the harp buttons, maybe tilt them from corner to corner to make
     more space.
 [ ] Reinstate the shorthand tunings, assuming you can translate all such guitar
     tunings programatically.
 [ ] if you're at B0 on a bass fretboard, there is no octave below.
-    Maybe transpose is the lowest midi note tuned, cannot go below 0
+    Maybe transpose is the lowest midi note tuned, cannot go below 0, but we don't show that
+    we only allow +/- relative semitone adjustments of transpose.
 [ ] midi output
 [ ] midi input
 [ ] osc output
@@ -124,3 +126,7 @@
 [ ] set up A/B experiments to compare strings with different voicings
 [ ] multiple pickups combined with variable gain.
 [ ] no sound on iphone, need to select output maybe?
+[ ] make the contents of the tab panels inf the ui be scrollable.
+[ ] recombine the tab panels recently split
+[ ] make a pref tab panel which saves, edits, names, deletes, and runs urls
+[ ] write elf.org/zither/index.html to explain 

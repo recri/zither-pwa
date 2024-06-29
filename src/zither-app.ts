@@ -4,10 +4,13 @@ import { property, customElement } from 'lit/decorators.js';
 import type { FaustPolyAudioWorkletNode } from './faust/faustwasm/index.js';
 
 import {
-    observeUrl, putProp, getProp, putIntProp, getIntProp,
-    putBoolProp, getBoolProp, putFloatProp, getFloatProp 
+    putProp, getProp, putIntProp, getIntProp,
+    putBoolProp, getBoolProp, putFloatProp, getFloatProp,
+    observeUrl, resetProps, exportProps
 } from './props.js';
+
 import { Constant } from './constant.js';
+
 import './zither-splash.js';
 import './zither-ui.js';
 import './zither-fretboard.js';
@@ -205,31 +208,11 @@ export class ZitherApp extends LitElement {
 
   /* eslint-disable class-methods-use-this */
   exportHandler() {
-    const items = [
-      `tuning=${this.tuning}`,
-      `frets=${this.frets}`,
-      `transpose=${this.transpose}`,
-      `tonic=${this.tonic}`,
-      `scale=${this.scale}`,
-      `colors=${this.colors}`,
-      `offscale=${this.offscale}`,
-      `labels=${this.labels}`,
-      `dspName=${this.dspName}`,
-      `poly=${this.poly}`,
-      `velocity=${this.velocity}`,
-      `dynamiclevel=${this.dynamiclevel}`,
-      `pickangle=${this.pickangle}`,
-      `pickposition=${this.pickposition}`,
-      `decaytime=${this.decaytime}`,
-      `brightness=${this.brightness}`,
-    ].join('&');
-    const location = `${window.location.protocol}//${window.location.host}/?${items}`;
-    // console.log(`exportHandler ${location}`);
-    navigator.clipboard.writeText(location);
+    navigator.clipboard.writeText(exportProps(true));
   }
 
   resetHandler() {
-    window.localStorage.clear();
+    resetProps();
     window.location.assign(
       `${window.location.protocol}//${window.location.host}/`,
     );
