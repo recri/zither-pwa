@@ -70,11 +70,25 @@
 [x] Make poly a parameter
 [x] sharp/flat preferences by key are not working, all come out sharps.
 [x] Break the Audio panel into pieces.  Audio/Excite/Loop
+[x] make the contents of the tab panels inf the ui be scrollable.
+    This didn't work out in the current incarnation, not sure why.
+[x] recombine the tab panels recently split
+[-] Reinstate the shorthand tunings, assuming you can translate all such guitar
+    tunings programatically.  No, use presets for such alternate namings.
 ------------------------------------------------------------------------
 [ ] may want a soft touch limit, might even be able to run a test to find it, virtual
 	tapping at various rates, record successful tests in the database, record the
 	start of unsuccessful tests in the database, choose boundaries from 
 [ ] recheck performance limits
+[ ] configure poly to the machine capabilities
+---
+[ ] test whether touch contains shape information that might work for a barre.
+[ ] make sure that pwa builds from github, may have lost some of the copy logic
+    required to recreate out-tsc and dist from scratch.
+[ ] Detect lack of touchscreen by seeing the corresponding mouse events.
+[ ] line of green at bottom of fretboard, off by one?  On the IPad mini
+[ ] fretboard showing at bottom of splash, on the IPad Mini
+---
 [ ] make a zither layout
 [ ] make a dulcimer layout
 [ ] make the 5-string banjo work
@@ -83,50 +97,44 @@
 [ ] make fretless instruments
     but still tapping interface versions, not bowed or plucked.
 [ ] make an oud
+[ ] midi output
+[ ] midi input
+[ ] osc output
+[ ] osc input
+---
 [ ] use the position of the touch on the fretnote to modulate trigger parameters,
     pick direction from position above or below the string,
     pick position from location between the frets,
+[ ] Need stiffness.
+[ ] make a muting interface to quiet the strings
+---
 [ ] A scrolling gesture can retune the fretboard, either by moving the nut up or down
 	or by side scrolling to change the strings.
     This could be active when the gear pages are active.  Change individual string tunings
     by sliding the string.  Change the transpose by grabbing several strings and sliding them.
 [ ] A pinch to zoom gesture could change the number of strings, or adjust the fret spacing.
-[ ] test whether touch contains shape information that might work for a barre.
-[ ] make a muting interface to quiet the strings
+---
 [ ] Send each note on its own channel, so it will have its own channel messages.
     Try and see if it works on the existing polyphony implementation, or make it
     work by loading multiple eks and allocating them to touches
-[ ] make sure that pwa builds from github, may have lost some of the copy logic
-    required to recreate out-tsc and dist from scratch.
-[ ] Add more help text.
-[ ] Detect lack of touchscreen by seeing the corresponding mouse events.
-[ ] Need stiffness.
-[ ] line of green at bottom of fretboard, off by one?  On the IPad mini
-[ ] fretboard showing at bottom of splash, on the IPad Mini
 [ ] resize the harp buttons, maybe tilt them from corner to corner to make
     more space.
-[ ] Reinstate the shorthand tunings, assuming you can translate all such guitar
-    tunings programatically.
 [ ] if you're at B0 on a bass fretboard, there is no octave below.
     Maybe transpose is the lowest midi note tuned, cannot go below 0, but we don't show that
     we only allow +/- relative semitone adjustments of transpose.
-[ ] midi output
-[ ] midi input
-[ ] osc output
-[ ] osc input
-[ ] add preset page, bookmarks for different instruments
-[ ] excitation pulse with P that actually decays to zero
-[ ] Build a half-sample-rate delay line to handle low notes, 
-    if P > Pmax && P < Pmax*2, then build a divide by two buffer which gets
-    filled with copies of eks on one clock, then drained of copies on the
-    other clocks.
-[ ] shaped noise pulses. use pulse length which decays to zero
-[ ] shaped noise pulses. sparse pulses
-[ ] shaped noise pulses. pulses with envelopes
-[ ] set up A/B experiments to compare strings with different voicings
-[ ] multiple pickups combined with variable gain.
-[ ] no sound on iphone, need to select output maybe?
-[ ] make the contents of the tab panels inf the ui be scrollable.
-[ ] recombine the tab panels recently split
-[ ] make a pref tab panel which saves, edits, names, deletes, and runs urls
+---
+[ ] make a preset tab panel which saves, edits, names, deletes, and runs urls
+	1) List of named urls.  Scrollable.
+        2) "Select" invokes the url, sets zither to that preset.
+	3) "Add" adds url for current setting, prompts for name.
+	4) "Delete" deletes selected url from list.
+	5) "Move" selected up/down list.
+	6) "Edit" selected to modify url/name.
+	7) "Export" to upload list to where?
+    need to use localStorage to store the presets, so need to separate preset
+    storage from rest of localStorage usages, and separated param reset from
+    complete localStorage.clear.
+---
+[ ] Add more help text.
 [ ] write elf.org/zither/index.html to explain 
+[ ] eliminate splash, go direct to fretboard, make ui fill screen

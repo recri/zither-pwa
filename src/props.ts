@@ -2,24 +2,53 @@
 /**
  ** Code to implement parameters from url
  ** or from persistent local storage.
+ ** store prop 'name' as 'prop:name'
+ ** store pref 'name' as 'pref:name'
  */
+
+const resetPrefixed = (prefix: string) => {
+  const store = window.localStorage;
+  for (let i = store.length; --i >= 0; )
+    if (store.key(i) !== null && store.key(i)!.startsWith(prefix))
+      store.removeItem(store.key(i)!);
+}
+
+const hasPrefixed = (prefix: string, name: string): boolean =>
+  window.localStorage.getItem(`${prefix}${name}`) !== null;
+
+const getPrefixed = (prefix: string, name: string): string =>
+  window.localStorage.getItem(`${prefix}${name}`) || '';
+
+const putPrefixed = (prefix: string, name: string, value: string) =>
+  window.localStorage.setItem(`${prefix}${name}`, value);
+
+export const findPrefixed = (prefix: string): string[] => {
+  const presets: Array<string> = [];
+  for (let i = 0; i < window.localStorage.length; i += 1)
+    if (window.localStorage.key(i) !== null && window.localStorage.key(i)!.startsWith(prefix))
+      presets.push(window.localStorage.key(i)!.slice(prefix.length));
+  return presets;
+}
 
 // default values for props, used when nothing stored in localStorage.
 let defaults: {[key: string]: string} = {};
 
-// clear all localStorage values.
+// props prefix
+const propsPrefix = 'prop:';
+
+// clear all props
 export const resetProps = () =>
-  window.localStorage.clear();
+  resetPrefixed(propsPrefix);
 
 // is there a property with the given name
 export const hasProp = (name: string): boolean =>
-  window.localStorage.getItem(name) !== null;
+  hasPrefixed(propsPrefix, name);
 
 export const getProp = (name: string): string =>
-  hasProp(name) ? window.localStorage.getItem(name)! : defaults[name];
+    hasProp(name) ? getPrefixed(propsPrefix, name) : defaults[name];
 
 export const putProp = (name: string, value: string) =>
-  window.localStorage.setItem(name, value);
+  putPrefixed(propsPrefix, name, value);
 
 export const getIntProp = (name: string): number =>
   parseInt(getProp(name)!, 10);
@@ -63,7 +92,7 @@ export const exportProps = (reset: boolean) => {
   const items = [];
   if (reset) items.push('reset')
   Object.keys(defaults).forEach(key => {
-    if (hasProp(key) && getProp(key) !== defaults[key])
+    if (getProp(key) && getProp(key) !== defaults[key])
       items.push(`${key}=${getProp(key)}`);
   });
 
@@ -71,4 +100,25 @@ export const exportProps = (reset: boolean) => {
   // console.log(`exportProps(${reset}) returns ${location}`);
   return location;
 }
-    
+
+// preset prefix
+const presetPrefix = 'preset:';
+
+// get the preset names as an array
+export const findPreset = (): string[] =>
+  findPrefixed(presetPrefix);
+
+// clear all presets
+export const resetPreset = () =>
+  resetPrefixed(presetPrefix);
+
+// is there a preset
+export const hasPreset = (name: string): boolean =>
+  hasPrefixed(presetPrefix, name);
+
+export const getPreset = (name: string): string =>
+  hasPrefixed(presetPrefix, name) ? getPrefixed(presetPrefix, name) : window.location.origin;
+
+export const putPreset = (name: string, value: string) =>
+  putPrefixed(presetPrefix, name, value);
+

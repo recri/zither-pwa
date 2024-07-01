@@ -158,7 +158,8 @@ export class ZitherApp extends LitElement {
     /** @type {typeof AudioContext} */
     const AudioCtx = window.AudioContext; // || window.webkitAudioContext;
     const audioContext = new AudioCtx({ latencyHint: 0.00001 }); // , echoCancellation: false, autoGainControl: false, noiseSuppression: false
-    audioContext.suspend();
+      console.log(`create audioContext, state: ${audioContext.state}`);
+      // audioContext.suspend();
     audioContext.destination.channelInterpretation = 'discrete';
     this.audioContext = audioContext;
     observeUrl(Constant.defaultValues)
