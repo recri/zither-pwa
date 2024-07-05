@@ -6,7 +6,7 @@
   "display": "standalone",
   "theme_color": "#070707",
   "background_color": "#070707",
-  "app_version": "12",
+  "app_version": "13",
   "icons": [
     {
       "src": "iconsvg",

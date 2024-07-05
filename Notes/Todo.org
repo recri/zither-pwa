@@ -75,6 +75,12 @@
 [x] recombine the tab panels recently split
 [-] Reinstate the shorthand tunings, assuming you can translate all such guitar
     tunings programatically.  No, use presets for such alternate namings.
+[x] Add the counted string format to tuning, ie o15 means a course of 15 open strings
+    zithers, basic is f5o12o12, concert is f5o12o12o6, alpine is f5o12o12o6o3
+    mountain dulcimer is d3 or d4 or d5
+    hammered dulcimer is o12o13o13, o11o12o12, o14o15o15, o15o16o16
+[x] eliminate splash, go direct to fretboard, make ui fill screen
+[x] make a zither layout
 ------------------------------------------------------------------------
 [ ] may want a soft touch limit, might even be able to run a test to find it, virtual
 	tapping at various rates, record successful tests in the database, record the
@@ -89,7 +95,6 @@
 [ ] line of green at bottom of fretboard, off by one?  On the IPad mini
 [ ] fretboard showing at bottom of splash, on the IPad Mini
 ---
-[ ] make a zither layout
 [ ] make a dulcimer layout
 [ ] make the 5-string banjo work
 [ ] make an 8-string mandolin
@@ -106,7 +111,10 @@
     pick direction from position above or below the string,
     pick position from location between the frets,
 [ ] Need stiffness.
-[ ] make a muting interface to quiet the strings
+[ ] make a muting interface to quiet the strings.
+[ ] Redo muting/key ratio in the harps, more key less mute.
+[ ] hammered dulcimer can use multiple mutes of different banks of strings
+[ ] in general, selective mute could be used
 ---
 [ ] A scrolling gesture can retune the fretboard, either by moving the nut up or down
 	or by side scrolling to change the strings.
@@ -121,7 +129,8 @@
     more space.
 [ ] if you're at B0 on a bass fretboard, there is no octave below.
     Maybe transpose is the lowest midi note tuned, cannot go below 0, but we don't show that
-    we only allow +/- relative semitone adjustments of transpose.
+    we only allow +/- relative semitone adjustments of transpose, but we clamp the result to
+    a reasonable range.
 ---
 [ ] make a preset tab panel which saves, edits, names, deletes, and runs urls
 	1) List of named urls.  Scrollable.
@@ -137,4 +146,4 @@
 ---
 [ ] Add more help text.
 [ ] write elf.org/zither/index.html to explain 
-[ ] eliminate splash, go direct to fretboard, make ui fill screen
+[ ] but being able to twiddle fretnotes while twiddling controls is important

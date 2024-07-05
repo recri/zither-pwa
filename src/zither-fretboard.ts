@@ -7,16 +7,11 @@ import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/compone
 
 import { ZitherApp } from './zither-app.js';
 import { Constant } from './constant.js';
-import { expandTuning, expandFretting } from './tuning.js';
-import { noteToName, noteToSolfege, mtof } from './notes.js';
+import { expand } from './tuning.js';
+import { noteToName, noteToSolfege, mtof, noteClamp } from './notes.js';
+import { rangeFromZeroToLast } from './util.js';
 import './zither-fretnote.js';
 import './zither-fretmute.js';
-
-const rangeFromZeroToLast = (last: number) =>
-  Array.from(Array(last + 1).keys());
-
-const clamp = (value: number, min: number, max: number): number =>
-  Math.max(min, Math.min(max, value));
 
 @customElement('zither-fretboard')
 export class Fretboard extends LitElement {
@@ -79,12 +74,11 @@ export class Fretboard extends LitElement {
     }
     div.buttons {
       position: absolute;
-      bottom: 0;
       right: 0;
     }
     sl-button {
       font-size: calc(10px + 2vmin);
-      margin: 5px;
+      margin: 20px;
     }
   `;
 
@@ -121,54 +115,53 @@ export class Fretboard extends LitElement {
   /* eslint-enable wc/guard-super-call */
 
   // fretboard management
-  tuningNotes: Array<number> = [];
+  tNotes: number[][] = [];
 
-  fretting: string = 'f';
+  tFretting: string = 'f';
 
+  tStrings: number = 0;
+
+  tPositions: number = 1;
+
+  // style issues
   tonicNote: number = 0;
 
   scaleNotes: Array<number> = [];
-
-  strings: number = 0;
-
-  positions: number = 1;
 
   palette: Array<string> = [];
 
   textColor: string = 'white';
 
   isAllFrettedString() {
-    return Array.from(this.fretting).every(x => x === 'f');
+    return this.tFretting.match(/^[fbcdt]+$/);
   }
 
   isFrettedString(string: number) {
-    return this.fretting[string] === 'f';
+    return this.tFretting[string] === 'f';
   }
 
   isAllOpenString() {
-    return Array.from(this.fretting).every(x => x === 'o');
+    return this.tFretting.match(/^[o]+$/);
   }
 
   isOpenString(string: number) {
-    return this.fretting[string] === 'o';
+    return this.tFretting[string] === 'o';
   }
 
   processInputs() {
-    this.tuningNotes = expandTuning(this.tuning);
-    this.fretting = expandFretting(this.tuning, this.tuningNotes);
-    // console.log(`fretting ${this.fretting} tuning ${this.tuningNotes}`);
+    // expand tuning
+    const [tFretting, tNotes, tStrings, tPositions] = expand(
+      this.tuning,
+      this.frets,
+    );
+    this.tFretting = tFretting;
+    this.tNotes = tNotes;
+    this.tStrings = tStrings;
+    this.tPositions = tPositions;
+
+    // decode tonic and scale
     this.tonicNote = Constant.key.keys[this.tonic];
     this.scaleNotes = Constant.scales[this.scale];
-    // assuming only fretted or open for the moment
-    if (this.isAllFrettedString()) {
-      this.strings = this.tuningNotes.length;
-      this.positions = this.frets;
-    } else if (this.isAllOpenString()) {
-      this.strings = 3;
-      this.positions = this.tuningNotes.length;
-    } else {
-      console.log(`hybrid fretted open not implemented`);
-    }
     this.palette = Constant.palettes[this.colors];
     this.textColor = Constant.textForPalettes[this.colors];
     // console.log(`processInputs colors=${this.colors}, palette=${this.palette}, textColor=${this.textColor}`);
@@ -197,13 +190,13 @@ export class Fretboard extends LitElement {
   // compute sizes based on the array of strings and frets
   // construct the style sheets for portrait and landscape
   computeSizes() {
-    const { width, height, strings, positions } = this;
+    const { width, height, tStrings, tPositions } = this;
     this.isPortrait = width < height;
-    this.stringNumbers = rangeFromZeroToLast(strings - 1);
-    this.positionNumbers = rangeFromZeroToLast(positions - 1);
+    this.stringNumbers = rangeFromZeroToLast(tStrings - 1);
+    this.positionNumbers = rangeFromZeroToLast(tPositions - 1);
     if (!this.isPortrait) {
-      const noteWidth = width / positions;
-      const noteHeight = height / strings;
+      const noteWidth = width / tPositions;
+      const noteHeight = height / tStrings;
       this.fontSize = Math.min(noteHeight, noteWidth) * 0.5;
       this.landscapeStyle = html`
         <style>
@@ -233,14 +226,20 @@ export class Fretboard extends LitElement {
           zither-fretnote.x4 {
             width: ${4 * noteWidth}px;
           }
+          zither-fretnote.x5 {
+            width: ${5 * noteWidth}px;
+          }
+          zither-fretnote.x6 {
+            width: ${6 * noteWidth}px;
+          }
           zither-fretmute {
             width: ${width}px;
           }
         </style>
       `;
     } else {
-      const noteWidth = width / strings;
-      const noteHeight = height / positions;
+      const noteWidth = width / tStrings;
+      const noteHeight = height / tPositions;
       this.fontSize = Math.min(noteHeight, noteWidth) * 0.5;
       this.portraitStyle = html`
         <style>
@@ -270,6 +269,12 @@ export class Fretboard extends LitElement {
           zither-fretnote.x4 {
             height: ${4 * noteHeight}px;
           }
+          zither-fretnote.x5 {
+            height: ${5 * noteHeight}px;
+          }
+          zither-fretnote.x6 {
+            height: ${6 * noteHeight}px;
+          }
           zither-fretmute {
             height: ${height}px;
           }
@@ -297,7 +302,7 @@ export class Fretboard extends LitElement {
     this.strokeColors = new Array(12);
     this.textColors = new Array(12);
     this.strokeWidths = new Array(12);
-    // interate over chromatic degrees in our current key
+    // interate over chromatic scale degrees in our current key
     for (let c = 0; c < 12; c += 1) {
       // the text label for the note in the key of C
       /* eslint-disable no-nested-ternary */
@@ -326,20 +331,17 @@ export class Fretboard extends LitElement {
     }
   }
 
-  makeNote(string: number, position: number) {
+  makeNote(tString: number, tPosition: number) {
     // these have to be done in reverse order when loading into a column
     // from top to botton.
     /* eslint-disable no-param-reassign */
-    if (!this.isPortrait) string = this.strings - string - 1;
+    if (!this.isPortrait) tString = this.tStrings - tString - 1;
+    if (tPosition >= this.tNotes[tString].length) return html``;
     /* eslint-enable no-param-reassign */
-    // the midi note to be sounded
-    const midiNote: number = clamp(
-      (this.isFrettedString(string)
-        ? this.tuningNotes[string] + position
-        : this.tuningNotes[position]) + this.transpose,
-      0,
-      127,
-    );
+    // the midi note to be sounded in the base tuning
+    const tMidi = this.tNotes[tString][tPosition];
+    // the midi note to be sounded offset by transpose
+    const midiNote: number = noteClamp(this.transpose + tMidi);
     // the frequency to be keyed
     const freq: number = mtof(midiNote);
     // the chromatic note class for this notes in the key of C
@@ -349,10 +351,10 @@ export class Fretboard extends LitElement {
     // implement cover
     // count how many omitted fretnotes precede this one
     let cover = 0;
-    if (this.isFrettedString(string) && this.offscale === 'cover') {
+    if (this.isFrettedString(tString) && this.offscale === 'cover') {
       if (this.isInScale[chromaticDegreeInKey] === false) return html``; // omit offscale fretnote
       while (
-        position > cover &&
+        tPosition > cover &&
         !this.isInScale[(chromaticDegreeInKey - cover - 1 + 12) % 12]
       ) {
         cover += 1;
@@ -376,51 +378,19 @@ export class Fretboard extends LitElement {
   }
 
   makeMute() {
-    return html` <zither-fretmute
-      class="fretmute"
-      .fretboard=${this}
-      .fillColor="grey"
-      .strokeColor="grey"
-      .strokeWidth="1"
-    ></zither-fretnote>`;
+    return html`
+      <zither-fretmute
+        class="fretmute"
+        .fretboard=${this}
+        .fillColor="grey"
+        .strokeColor="grey"
+        .strokeWidth="1"
+      ></zither-fretnote>`;
   }
 
   tuneHandler() {
     this.app.tuneHandler();
   }
-
-  allFretted() {
-    return html`
-      <div class="fretboard">
-        ${this.stringNumbers.map(
-          string =>
-            html`<div class="string">
-              ${this.positionNumbers.map(position =>
-                this.makeNote(string, position),
-              )}
-            </div>`,
-        )}
-      </div>
-    `;
-  }
-
-  allOpen() {
-    return html`
-      <div class="fretboard">
-        <div class="mute">${this.makeMute()}</div>
-        <div class="string">
-          ${this.positionNumbers.map(position => this.makeNote(0, position))}
-        </div>
-        <div class="mute">${this.makeMute()}</div>
-      </div>
-    `;
-  }
-
-  /* eslint-disable class-methods-use-this */
-  hybridFrettedOpen() {
-    return html``;
-  }
-  /* eslint-enable class-methods-use-this */
 
   /* eslint-disable no-nested-ternary */
   render() {
@@ -436,11 +406,16 @@ export class Fretboard extends LitElement {
           </sl-button>
         </sl-tooltip>
       </div>
-      ${this.isAllFrettedString()
-        ? this.allFretted()
-        : this.isAllOpenString()
-          ? this.allOpen()
-          : this.hybridFrettedOpen()}
+      <div class="fretboard">
+        ${this.stringNumbers.map(
+          tString =>
+            html`<div class="string">
+              ${this.positionNumbers.map(tPosition =>
+                this.makeNote(tString, tPosition),
+              )}
+            </div>`,
+        )}
+      </div>
     `;
   }
   /* eslint-enable no-nested-ternary */

@@ -1,30 +1,23 @@
 import { Constant } from './constant.js';
+import { rangeFromZeroToLast, clamp } from './util.js';
 
 // unicode ♭ flat symbol, microscopic
 // unicode ♯ sharp symbol, also microscopic
 // clamp an octave value to the working range
-export const octaveClamp = (octave: number): number =>
-  Math.min(9, Math.max(0, octave));
+export const octaveClamp = (octave: number): number => clamp(octave, 0, 9);
 
 // clamp a note value to the working range
-export const noteClamp = (note: number): number =>
-  Math.min(127, Math.max(0, note));
+export const noteClamp = (note: number): number => clamp(note, 0, 127);
 
 // compute the standard frequency of a midi note number
 export const noteToHz = (note: number): number =>
   440.0 * 2 ** ((noteClamp(note) - Constant.notes.A_440) / 12.0);
 
 // cache noteToHz values
-const mtofCache = Array(128).fill(0);
-
-function updateMtofCache(note: number): number {
-  mtofCache[note] = noteToHz(note);
-  return mtofCache[note];
-}
+const mtofCache = rangeFromZeroToLast(127).map(note => noteToHz(note));
 
 // convert a midi note into a frequency in Hertz
-export const mtof = (note: number): number =>
-  mtofCache[note] === 0 ? updateMtofCache(note) : mtofCache[note];
+export const mtof = (note: number): number => mtofCache[note];
 
 // compute a note name of a midi note number, and vice versa
 // the second translates both flatted and sharped notes

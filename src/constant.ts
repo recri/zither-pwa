@@ -471,7 +471,7 @@ const textForPalettes: { [key: string]: string } = {
 
 // default values
 
-const defaultValues: {[key: string]: string} = {
+const defaultValues: { [key: string]: string } = {
   frets: '13', // one octave to start
   transpose: '0', // in standard offset
   velocity: '114', // midi note on velocity
@@ -483,7 +483,7 @@ const defaultValues: {[key: string]: string} = {
   decaytime: '4', // decay time of notes
   pickangle: '0', // pick angle
   pickposition: '0.13', // pick position
-  markkeytime: '5',// seconds of inactivity before tune button reappears
+  markkeytime: '5', // seconds of inactivity before tune button reappears
   //  defaultTuning: 'f,E2,A2,D3,G3,C4,F4', // all fourths tuning
   tuning: 'f,B0,E1,A1,D2,G2,C3,F3,A♯3', // 'bass 8 low'
   tonic: 'C', // key of C
@@ -492,6 +492,10 @@ const defaultValues: {[key: string]: string} = {
   offscale: 'show',
   labels: 'note',
   dspName: 'eks', // extended karplus strong from freeaxe
+  top: '1',
+  right: '1',
+  bottom: '1',
+  left: '1',
 };
 
 export const Constant = {
