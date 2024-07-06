@@ -247,23 +247,65 @@ export class ZitherUi extends LitElement {
                 <!-- see https://zeppmusic.com/banjo/aktuning.htm for many more tunings -->
                 <!-- 5 string banjo is tricky because the 5th string starts at the 5th fret -->
                 <!-- if it started where the rest of the strings start, it would be D4 -->
-                ${slTuning('f', 'D4,C3,G3,B3,D4', 'banjo 5 standard*')}
-                ${slTuning('f', 'D4,D3,G3,B3,D4', 'banjo 5 open-G*')}
-                ${slTuning('f', 'D4,C3,G3,B3,D4', 'banjo 5 open-G-alt*')}
-                ${slTuning('f', 'D4,C3,G3,C4,D4', 'banjo 5 double-C*')}
-                ${slTuning('f', 'D4,D3,G3,C4,D4', 'banjo 5 sawmill*')}
-                ${slTuning('f', 'C♯4,D3,F♯3,A3,D4', 'banjo 5 open-D*')}
-                ${slTuning('f', 'E4,D3,A3,D4,E4', 'banjo 5 double-D*')}
-                ${slTuning('f', 'E4,E3,A3,C♯4,E4', 'banjo 5 open-A*')}
+                ${slTuning('b', 'D4,C3,G3,B3,D4', 'banjo 5 standard*')}
+                ${slTuning('b', 'D4,D3,G3,B3,D4', 'banjo 5 open-G*')}
+                ${slTuning('b', 'D4,C3,G3,B3,D4', 'banjo 5 open-G-alt*')}
+                ${slTuning('b', 'D4,C3,G3,C4,D4', 'banjo 5 double-C*')}
+                ${slTuning('b', 'D4,D3,G3,C4,D4', 'banjo 5 sawmill*')}
+                ${slTuning('b', 'C♯4,D3,F♯3,A3,D4', 'banjo 5 open-D*')}
+                ${slTuning('b', 'E4,D3,A3,D4,E4', 'banjo 5 double-D*')}
+                ${slTuning('b', 'E4,E3,A3,C♯4,E4', 'banjo 5 open-A*')}
                 <sl-divider></sl-divider>
                 ${slTuning('f', 'E1,A1,D2,G2', 'bass 4')}
                 ${slTuning('f', 'B0,E1,A1,D2,G2', 'bass 5 low')}
                 ${slTuning('f', 'E1,A1,D2,G2,C3', 'bass 5 high')}
                 ${slTuning('f', 'B0,E1,A1,D2,G2,C3,F3,A♯3', 'bass 8 low')}
                 ${slTuning('f', 'E1,A1,D2,G2,C3,F3,A♯3,D♯4', 'bass 8 high')}
-                <sl-divider></sl-divider>
                 <!-- cello needs fretless -->
                 <!-- dulcimer needs diatonic fretting -->
+                <sl-divider></sl-divider>
+		${slTuning('d', 'G3,G3,C3', 'dulcimer GGC')}
+		${slTuning('d', 'C4,G3,C3', 'dulcimer CGC')}
+		${slTuning('d', 'G4,F3,C3', 'dulcimer GFC')}
+		${slTuning('d', 'A3,A3,D3', 'dulcimer AAD')}
+		${slTuning('d', 'D4,A3,D3', 'dulcimer DAD')}
+		${slTuning('d', 'D4,G3,D3', 'dulcimer DGD')}
+                <sl-divider></sl-divider>
+		${slTuning('t', 'G3,G3,C3', 'dulcimer GGC (traditional)')}
+                ${slTuning('t', 'C4,G3,C3', 'dulcimer CGC (traditional)')}
+		${slTuning('t', 'G4,F3,C3', 'dulcimer GFC (traditional)')}
+		${slTuning('t', 'A3,A3,D3', 'dulcimer AAD (traditional)')}
+		${slTuning('t', 'D4,A3,D3', 'dulcimer DAD (traditional)')}
+		${slTuning('t', 'D4,G3,D3', 'dulcimer DGD (traditional)')}
+                <sl-divider></sl-divider>
+		${slTuning('f', 'G3,G3,C3', 'dulcimer GGC (chromatic)')}
+                ${slTuning('f', 'C4,G3,C3', 'dulcimer CGC (chromatic)')}
+		${slTuning('f', 'G4,F3,C3', 'dulcimer GFC (chromatic)')}
+		${slTuning('f', 'A3,A3,D3', 'dulcimer AAD (chromatic)')}
+		${slTuning('f', 'D4,A3,D3', 'dulcimer DAD (chromatic)')}
+		${slTuning('f', 'D4,G3,D3', 'dulcimer DGD (chromatic)')}
+                <sl-divider></sl-divider>
+	        ${slTuning('d', 'G3,G3,G3,C3', 'dulcimer GGGC')}
+	        ${slTuning('d', 'C4,C4,G3,C3', 'dulcimer CCGC')}
+	        ${slTuning('d', 'G4,G4,F3,C3', 'dulcimer GGFC')}
+	        ${slTuning('d', 'A3,A3,A3,D3', 'dulcimer AAAD')}
+	        ${slTuning('d', 'D4,D4,A3,D3', 'dulcimer DDAD')}
+	        ${slTuning('d', 'D4,D4,G3,D3', 'dulcimer DDGD')}
+                <sl-divider></sl-divider>
+	        ${slTuning('t', 'G3,G3,G3,C3', 'dulcimer GGGC (traditional)')}
+	        ${slTuning('t', 'C4,C4,G3,C3', 'dulcimer CCGC (traditional)')}
+	        ${slTuning('t', 'G4,G4,F3,C3', 'dulcimer GGFC (traditional)')}
+	        ${slTuning('t', 'A3,A3,A3,D3', 'dulcimer AAAD (traditional)')}
+	        ${slTuning('t', 'D4,D4,A3,D3', 'dulcimer DDAD (traditional)')}
+	        ${slTuning('t', 'D4,D4,G3,D3', 'dulcimer DDGD (traditional)')}
+                <sl-divider></sl-divider>
+	        ${slTuning('f', 'G3,G3,G3,C3', 'dulcimer GGGC (chromatic)')}
+	        ${slTuning('f', 'C4,C4,G3,C3', 'dulcimer CCGC (chromatic)')}
+	        ${slTuning('f', 'G4,G4,F3,C3', 'dulcimer GGFC (chromatic)')}
+	        ${slTuning('f', 'A3,A3,A3,D3', 'dulcimer AAAD (chromatic)')}
+	        ${slTuning('f', 'D4,D4,A3,D3', 'dulcimer DDAD (chromatic)')}
+	        ${slTuning('f', 'D4,D4,G3,D3', 'dulcimer DDGD (chromatic)')}
+                <sl-divider></sl-divider>
                 <!-- also clarity on order of strings in tuning names -->
                 ${slTuning('f', 'E2,A2,D3,G3,B3,E4', 'guitar 6')}
                 ${slTuning('f', 'E2,A2,D3,G3,C4,F4', 'guitar 6 all fourths')}
