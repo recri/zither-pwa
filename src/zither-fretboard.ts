@@ -1,14 +1,14 @@
 import { LitElement, html, css, unsafeCSS } from 'lit';
 import { property, state, customElement } from 'lit/decorators.js';
 
-import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/icon/icon.js';
-import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/button/button.js';
-import 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/components/tooltip/tooltip.js';
+import '@shoelace-style/shoelace/dist/components/icon/icon.js';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 
 import { ZitherApp } from './zither-app.js';
 import { Constant } from './constant.js';
 import { expand } from './tuning.js';
-import { noteToName, noteToSolfege, mtof, noteClamp } from './notes.js';
+import { noteToName, noteToSolfege, mtof } from './notes.js'; // , noteClamp, noteToNameOctave
 import { rangeFromZeroToLast } from './util.js';
 import './zither-fretnote.js';
 import './zither-fretmute.js';
@@ -117,6 +117,8 @@ export class Fretboard extends LitElement {
   // fretboard management
   tNotes: number[][] = [];
 
+  tCover: boolean[][] = [];
+
   tFretting: string = 'f';
 
   tStrings: number = 0;
@@ -130,22 +132,81 @@ export class Fretboard extends LitElement {
 
   palette: Array<string> = [];
 
-  textColor: string = 'white';
+  theTextColor: string = 'white';
 
-  isAllFrettedString() {
-    return this.tFretting.match(/^[fbcdt]+$/);
-  }
+  stringNumbers: number[] = [];
+
+  positionNumbers: number[] = [];
 
   isFrettedString(string: number) {
-    return this.tFretting[string] === 'f';
-  }
-
-  isAllOpenString() {
-    return this.tFretting.match(/^[o]+$/);
+    return this.tFretting[string].match(/^[fb]/);
   }
 
   isOpenString(string: number) {
     return this.tFretting[string] === 'o';
+  }
+
+  // per fretnote data computed from midiNote
+
+  /* eslint-disable class-methods-use-this */
+  scale_degree_in_C(midiNote: number) {
+    return (midiNote + 120 - Constant.notes.middle_C) % 12;
+  }
+
+  scale_degree_in_key(midiNote: number) {
+    return ((midiNote % 12) - this.tonicNote + 12) % 12;
+  }
+  /* eslint-enable class-methods-use-this */
+
+  // scale degree is in the scale of our mode
+  isInScale(c: number) {
+    return this.scaleNotes.includes(c);
+  }
+
+  // scale degree is the tonic of our key
+  /* eslint-disable class-methods-use-this */
+  isTonic(c: number) {
+    return c === 0;
+  }
+  /* eslint-enable class-methods-use-this */
+
+  // the text label for the scale degree
+  text(c: number) {
+    switch (this.labels) {
+      case 'note':
+        return noteToName(c + this.tonicNote, this.tonic);
+      case 'solfege absolute':
+        return noteToSolfege(c + this.tonicNote, this.tonic);
+      case 'solfege relative':
+        return noteToSolfege(c, this.tonic);
+      case 'solfege':
+        return noteToSolfege(c, this.tonic);
+      default:
+        return '';
+    }
+  }
+
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  textColor(c: number) {
+    return this.theTextColor;
+  }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
+
+  // fill colors, might be filtered by color preferences
+  fillColor(c: number) {
+    return this.palette[c];
+  }
+
+  strokeColor(c: number) {
+    if (this.isTonic(c)) return 'white';
+    if (this.isInScale(c)) return 'lightgray';
+    return 'darkgray';
+  }
+
+  strokeWidth(c: number) {
+    if (this.isTonic(c)) return 3;
+    if (this.isInScale(c)) return 2;
+    return 1;
   }
 
   processInputs() {
@@ -153,23 +214,55 @@ export class Fretboard extends LitElement {
     const [tFretting, tNotes, tStrings, tPositions] = expand(
       this.tuning,
       this.frets,
+      this.transpose,
     );
+    // console.log(`post expand tNotes ${tNotes.map(col => noteToNameOctave(col[0]))}`);
+    // copy the results of the expanded tuning
     this.tFretting = tFretting;
     this.tNotes = tNotes;
     this.tStrings = tStrings;
     this.tPositions = tPositions;
 
-    // decode tonic and scale
+    // decode tonic and scale and palette and color
     this.tonicNote = Constant.key.keys[this.tonic];
     this.scaleNotes = Constant.scales[this.scale];
     this.palette = Constant.palettes[this.colors];
-    this.textColor = Constant.textForPalettes[this.colors];
+    this.theTextColor = Constant.textForPalettes[this.colors];
+
+    // build the index arrays
+    this.stringNumbers = rangeFromZeroToLast(tStrings - 1);
+    this.positionNumbers = rangeFromZeroToLast(this.tPositions - 1);
+
+    // a boolean for each note to indicate whether it's covered,
+    // ie omitted from fretboard, muted, and subsumed into the
+    // button for the next uncovered note.
+    this.tCover = this.stringNumbers.map(() =>
+      new Array(tPositions).fill(false),
+    );
+    for (let s = 0; s < tStrings; s += 1)
+      if (this.isFrettedString(s) && this.offscale === 'cover')
+        for (let p = 0; p < tPositions; p += 1)
+          this.tCover[s][p] = this.isInScale(this.tNotes[s][p]);
+
+    // implement 5 string banjo
+    if (tFretting.match(/^b+$/)) {
+      for (let p = 0; p < 5; p += 1) this.tCover[0][p] = true;
+    }
+    // implement typical diatonic mountain dulcimer
+    //     set dulcimer-frets {0 2 4 5 7 9 10 11 12}
+    if (tFretting.match(/^d+$/)) {
+      for (let s = 0; s < tStrings; s += 1)
+        for (let p = 0; p < tPositions; p += 1)
+          this.tCover[s][p] = [0, 2, 4, 5, 7, 9, 10, 11].includes(p % 12);
+    }
+    // implement traditional diatonic mountain dulcimer
+    if (tFretting.match(/^t+$/)) {
+      for (let s = 0; s < tStrings; s += 1)
+        for (let p = 0; p < tPositions; p += 1)
+          this.tCover[s][p] = [0, 2, 4, 5, 7, 9, 10].includes(p % 12);
+    }
     // console.log(`processInputs colors=${this.colors}, palette=${this.palette}, textColor=${this.textColor}`);
   }
-
-  stringNumbers: Array<number> = [];
-
-  positionNumbers: Array<number> = [];
 
   isPortrait: boolean = true;
 
@@ -192,8 +285,6 @@ export class Fretboard extends LitElement {
   computeSizes() {
     const { width, height, tStrings, tPositions } = this;
     this.isPortrait = width < height;
-    this.stringNumbers = rangeFromZeroToLast(tStrings - 1);
-    this.positionNumbers = rangeFromZeroToLast(tPositions - 1);
     if (!this.isPortrait) {
       const noteWidth = width / tPositions;
       const noteHeight = height / tStrings;
@@ -231,6 +322,9 @@ export class Fretboard extends LitElement {
           }
           zither-fretnote.x6 {
             width: ${6 * noteWidth}px;
+          }
+          zither-fretnote.x7 {
+            width: ${7 * noteWidth}px;
           }
           zither-fretmute {
             width: ${width}px;
@@ -275,6 +369,9 @@ export class Fretboard extends LitElement {
           zither-fretnote.x6 {
             height: ${6 * noteHeight}px;
           }
+          zither-fretnote.x7 {
+            height: ${7 * noteHeight}px;
+          }
           zither-fretmute {
             height: ${height}px;
           }
@@ -283,97 +380,45 @@ export class Fretboard extends LitElement {
     }
   }
 
-  texts: Array<string> = [];
-
-  fillColors: Array<string> = [];
-
-  strokeColors: Array<string> = [];
-
-  textColors: Array<string> = [];
-
-  strokeWidths: Array<number> = [];
-
-  isInScale: Array<boolean> = [];
-
-  // compute arrays with values per scale degree
-  computeArrays() {
-    this.texts = new Array(12);
-    this.fillColors = new Array(12);
-    this.strokeColors = new Array(12);
-    this.textColors = new Array(12);
-    this.strokeWidths = new Array(12);
-    // interate over chromatic scale degrees in our current key
-    for (let c = 0; c < 12; c += 1) {
-      // the text label for the note in the key of C
-      /* eslint-disable no-nested-ternary */
-      this.texts[c] =
-        this.labels === 'note'
-          ? noteToName(c + this.tonicNote, this.tonic)
-          : this.labels === 'solfege'
-            ? noteToSolfege(c + this.tonicNote, this.tonic)
-            : '';
-      this.textColors[c] = this.textColor;
-      /* eslint-enable no-nested-ternary */
-      // is in the scale of our mode
-      this.isInScale[c] = this.scaleNotes.includes(c);
-      // is the tonic of our key
-      const isTonic: boolean = c === 0;
-      // colors, might be filtered by color preferences
-      this.fillColors[c] = this.palette[c];
-      /* eslint-disable no-nested-ternary */
-      this.strokeColors[c] = isTonic
-        ? 'white'
-        : this.isInScale[c]
-          ? 'lightgray'
-          : 'darkgray';
-      this.strokeWidths[c] = isTonic ? 3 : this.isInScale[c] ? 2 : 1;
-      /* eslint-enable no-nested-ternary */
-    }
-  }
-
   makeNote(tString: number, tPosition: number) {
     // these have to be done in reverse order when loading into a column
     // from top to botton.
     /* eslint-disable no-param-reassign */
     if (!this.isPortrait) tString = this.tStrings - tString - 1;
-    if (tPosition >= this.tNotes[tString].length) return html``;
     /* eslint-enable no-param-reassign */
-    // the midi note to be sounded in the base tuning
-    const tMidi = this.tNotes[tString][tPosition];
+
+    // nothing if our column ended early
+    if (tPosition >= this.tNotes[tString].length) return html``;
+
     // the midi note to be sounded offset by transpose
-    const midiNote: number = noteClamp(this.transpose + tMidi);
+    const midiNote = this.tNotes[tString][tPosition];
+
     // the frequency to be keyed
     const freq: number = mtof(midiNote);
-    // the chromatic note class for this notes in the key of C
-    const chromaticDegree: number = midiNote % 12;
+
     // the chromatic note class for these notes in the current key, not needed? or needed?
-    const chromaticDegreeInKey = (chromaticDegree - this.tonicNote + 12) % 12;
-    // implement cover
-    // count how many omitted fretnotes precede this one
+    const c = this.scale_degree_in_key(midiNote);
+
+    // if this fretnote is covered, omit
+    if (this.tCover[tString][tPosition]) return html``; // omit offscale fretnote
+    // count how many covered fretnotes precede this fretnote
     let cover = 0;
-    if (this.isFrettedString(tString) && this.offscale === 'cover') {
-      if (this.isInScale[chromaticDegreeInKey] === false) return html``; // omit offscale fretnote
-      while (
-        tPosition > cover &&
-        !this.isInScale[(chromaticDegreeInKey - cover - 1 + 12) % 12]
-      ) {
-        cover += 1;
-      }
-    }
+    while (tPosition > cover && this.tCover[tString][tPosition - cover - 1])
+      cover += 1;
     return html` <zither-fretnote
       class="fretnote x${cover + 1}"
       .fretboard=${this}
       .freq=${freq}
       .note=${midiNote}
       .velocity=${this.velocity}
-      .isinscale=${this.isInScale[chromaticDegreeInKey]}
+      .isinscale=${this.isInScale(c)}
       .offscale=${this.offscale}
-      .text=${this.texts[chromaticDegreeInKey]}
+      .text=${this.text(c)}
       .fontSize=${this.fontSize}
-      .fillColor=${this.fillColors[chromaticDegreeInKey]}
-      .strokeColor=${this.strokeColors[chromaticDegreeInKey]}
-      .strokeWidth=${this.strokeWidths[chromaticDegreeInKey]}
-      .textColor=${this.textColors[chromaticDegreeInKey]}
+      .fillColor=${this.fillColor(c)}
+      .strokeColor=${this.strokeColor(c)}
+      .strokeWidth=${this.strokeWidth(c)}
+      .textColor=${this.textColor(c)}
     ></zither-fretnote>`;
   }
 
@@ -396,7 +441,6 @@ export class Fretboard extends LitElement {
   render() {
     this.processInputs();
     this.computeSizes();
-    this.computeArrays();
     return html`
       ${!this.isPortrait ? this.landscapeStyle : this.portraitStyle}
       <div class="buttons">

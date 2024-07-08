@@ -271,7 +271,7 @@ export class ZitherApp extends LitElement {
     /** @type {typeof AudioContext} */
     const AudioCtx = window.AudioContext; // || window.webkitAudioContext;
     const audioContext = new AudioCtx({ latencyHint: 0.00001 }); // , echoCancellation: false, autoGainControl: false, noiseSuppression: false
-    console.log(`create audioContext, state: ${audioContext.state}`);
+    // console.log(`create audioContext, state: ${audioContext.state}`);
     // audioContext.suspend();
     audioContext.destination.channelInterpretation = 'discrete';
     this.audioContext = audioContext;
@@ -360,7 +360,6 @@ export class ZitherApp extends LitElement {
           padding: ${this.top}px ${this.right}px ${this.bottom}px ${this.left}px;
         }
       </style>
-      <zither-splash .app=${this}></zither-splash>
       <zither-faust
         .app=${this}
         .audioContext=${this.audioContext}
