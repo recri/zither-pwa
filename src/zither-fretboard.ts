@@ -51,12 +51,39 @@ export class Fretboard extends LitElement {
   // the colors of the notes
   @property({ type: String }) colors!: string;
 
-  // the time since last key event
+  // whether the [Tune] button is displayed
   @state()
-  private lastKeyTime: number = 0;
+  private timeoutExpired: boolean = true;
 
-  @state()
-  private lastMouseTime: number = 0;
+  private timeoutIdentifier: number = 0;
+
+  private timeoutDelay = parseFloat(Constant.defaultValues.markkeytime) * 1000;
+
+  timeoutHandler() {
+    // console.log(`timeoutHandler this.tagName ${this.tagName} id ${this.timeoutIdentifier} exp ${this.timeoutExpired}`);
+    this.timeoutIdentifier = 0;
+    this.timeoutExpired = true;
+  }
+
+  handleTimeout = () => this.timeoutHandler();
+
+  markTimeout() {
+    // console.log(`markTimeout this.tagName ${this.tagName} id ${this.timeoutIdentifier} exp ${this.timeoutExpired}`);
+    window.clearTimeout(this.timeoutIdentifier);
+    this.timeoutExpired = false;
+    this.timeoutIdentifier = window.setTimeout(
+      this.handleTimeout,
+      this.timeoutDelay,
+    );
+  }
+
+  markMouseTime() {
+    this.markTimeout();
+  }
+
+  markKeyTime() {
+    this.markTimeout();
+  }
 
   static styles = css`
     :host {
@@ -81,38 +108,6 @@ export class Fretboard extends LitElement {
       margin: 20px;
     }
   `;
-
-  private intervalIdentifier = 0;
-
-  markMouseTime() {
-    this.lastMouseTime += 1;
-  }
-
-  markKeyTime() {
-    this.lastKeyTime = parseInt(Constant.defaultValues.markkeytime, 10);
-  }
-
-  intervalHandler() {
-    if (this.lastKeyTime > 0) {
-      this.lastKeyTime -= 1;
-      // console.log(`lastKeyTime = ${this.lastKeyTime}`);
-    }
-  }
-
-  /* eslint-disable wc/guard-super-call */
-  connectedCallback() {
-    super.connectedCallback();
-    this.intervalIdentifier = window.setInterval(
-      () => this.intervalHandler(),
-      1011,
-    );
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    window.clearInterval(this.intervalIdentifier);
-  }
-  /* eslint-enable wc/guard-super-call */
 
   // fretboard management
   tNotes: number[][] = [];
@@ -275,7 +270,7 @@ export class Fretboard extends LitElement {
   buttonStyle() {
     return css`
       div.buttons {
-        display: ${unsafeCSS(this.lastKeyTime > 0 ? 'none' : 'block')};
+        display: ${unsafeCSS(this.timeoutExpired ? 'block' : 'none')};
       }
     `;
   }
