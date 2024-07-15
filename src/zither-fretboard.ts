@@ -75,11 +75,13 @@ export class Fretboard extends LitElement {
   markMouseTime() {
     this.mouseCount += 1;
     this.timeoutCount = this.timeoutLength;
+    this.timeoutExpired = this.timeoutCount <= 0;
   }
 
   markKeyTime() {
     this.touchCount += 1;
     this.timeoutCount = this.timeoutLength;
+    this.timeoutExpired = this.timeoutCount <= 0;
   }
 
   /* eslint-disable wc/guard-super-call */
