@@ -95,18 +95,20 @@ export class Fretboard extends LitElement {
   /* eslint-enable wc/guard-super-call */
 
   touchLog(code: string, ev: TouchEvent) {
-    const tl = ev.changedTouches;
-    const n = tl.length;
-    const t = tl.item(0);
-    if (t) {
-      const i = t.identifier;
-      const x = t.clientX.toFixed(1);
-      const y = t.clientY.toFixed(1);
-      const rx = t.radiusX.toFixed(1);
-      const ry = t.radiusY.toFixed(1);
-      const ra = t.rotationAngle;
-      const f = t.force;
-      this.app.log(`${code} ${n} ${i} ${x} ${y} ${rx} ${ry} ${ra} ${f}`);
+    if (this.app.logTouch) {
+      const tl = ev.changedTouches;
+      const n = tl.length;
+      const t = tl.item(0);
+      if (t) {
+        const i = t.identifier;
+        const x = t.clientX.toFixed(1);
+        const y = t.clientY.toFixed(1);
+        const rx = t.radiusX.toFixed(1);
+        const ry = t.radiusY.toFixed(1);
+        const ra = t.rotationAngle;
+        const f = t.force;
+        this.app.log(`${code} ${n} ${i} ${x} ${y} ${rx} ${ry} ${ra} ${f}`);
+      }
     }
   }
 

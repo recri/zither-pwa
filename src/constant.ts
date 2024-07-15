@@ -496,6 +496,7 @@ const defaultValues: { [key: string]: string } = {
   right: '1',
   bottom: '1',
   left: '1',
+  logTouch: 'false',
 };
 
 export const Constant = {

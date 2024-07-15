@@ -8,7 +8,8 @@ import {
   getProp,
   putIntProp,
   getIntProp,
-  // putBoolProp, getBoolProp,
+  putBoolProp,
+  getBoolProp,
   putFloatProp,
   getFloatProp,
   observeUrl,
@@ -229,6 +230,15 @@ export class ZitherApp extends LitElement {
 
   get brightness() {
     return getFloatProp('brightness');
+  }
+
+  @property()
+  set logTouch(value: boolean) {
+    putBoolProp('logTouch', value);
+  }
+
+  get logTouch() {
+    return getBoolProp('logTouch');
   }
   /* eslint-enable class-methods-use-this */
 
