@@ -1,0 +1,19 @@
+* Dulcimer fretting and tuning
+* Fretting
+** Traditional fretting has 7 frets per octave
+** Common tuning from the 60's forward adds 6.5 fret
+** Chromatic tuning has 12 frets per octave
+* Tuning
+** Tunings are given from bass to melody.
+** The strings are reverse of a guitar, bass string farthest from the player
+** 3 String tuning Bass-Middle-Melody
+** 4 String adds another Melody string to the 3 string tuning
+	Bass-Middle-Melody-Melody
+** 5 String adds another Bass string to the 4 string tuning.
+	Bass-Bass-Middle-Melody-Melody
+* Specific tunings
+** D Ionian DAA - D below middle C, A below middle C, A below middle C
+** D Mixolydian DAD - D below middle C, A below middle C, D above middle C
+** Reverse D Ionian DGD - D below middle C, G below middle C, D above middle C
+** Aeolian DAC (minor from 1st fret)
+** Dorian DAG (minor from 4th fret)

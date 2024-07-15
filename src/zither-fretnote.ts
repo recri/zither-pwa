@@ -45,6 +45,7 @@ export class Fretnote extends LitElement {
     ev.preventDefault();
     this.fretboard.app.audioNode!.keyOn(1, this.note, this.velocity);
     this.fretboard.markKeyTime();
+    this.fretboard.touchLog('s', ev);
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -52,6 +53,7 @@ export class Fretnote extends LitElement {
     ev.preventDefault();
     const node = this.fretboard.app.audioNode;
     this.fretboard.markKeyTime();
+    this.fretboard.touchLog('m', ev);
   }
   /* eslint-enable @typescript-eslint/no-unused-vars */
 
@@ -59,6 +61,7 @@ export class Fretnote extends LitElement {
     ev.preventDefault();
     this.fretboard.app.audioNode!.keyOff(1, this.note, 0);
     this.fretboard.markKeyTime();
+    this.fretboard.touchLog('e', ev);
   }
 
   mousedown_handler(ev: MouseEvent) {

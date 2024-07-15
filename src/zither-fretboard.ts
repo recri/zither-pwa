@@ -55,34 +55,53 @@ export class Fretboard extends LitElement {
   @state()
   private timeoutExpired: boolean = true;
 
-  private timeoutIdentifier: number = 0;
+  private timeoutCount: number = 0;
 
-  private timeoutDelay = parseFloat(Constant.defaultValues.markkeytime) * 1000;
+  private timeoutLength: number = 5;
+
+  private timeoutIdentifier!: ReturnType<typeof setInterval>;
 
   timeoutHandler() {
-    // console.log(`timeoutHandler this.tagName ${this.tagName} id ${this.timeoutIdentifier} exp ${this.timeoutExpired}`);
-    this.timeoutIdentifier = 0;
-    this.timeoutExpired = true;
+    this.timeoutCount -= 1;
+    this.timeoutExpired = this.timeoutCount <= 0;
   }
 
   handleTimeout = () => this.timeoutHandler();
 
-  markTimeout() {
-    // console.log(`markTimeout this.tagName ${this.tagName} id ${this.timeoutIdentifier} exp ${this.timeoutExpired}`);
-    window.clearTimeout(this.timeoutIdentifier);
-    this.timeoutExpired = false;
-    this.timeoutIdentifier = window.setTimeout(
-      this.handleTimeout,
-      this.timeoutDelay,
-    );
-  }
-
   markMouseTime() {
-    this.markTimeout();
+    this.timeoutCount = this.timeoutLength;
   }
 
   markKeyTime() {
-    this.markTimeout();
+    this.timeoutCount = this.timeoutLength;
+  }
+
+  /* eslint-disable wc/guard-super-call */
+  connectedCallback() {
+    super.connectedCallback();
+    this.timeoutIdentifier = setInterval(this.handleTimeout, 1000);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.clearInterval(this.timeoutIdentifier);
+  }
+  /* eslint-enable wc/guard-super-call */
+
+  touchLog(code: string, ev: TouchEvent) {
+    const tl = ev.changedTouches;
+    const n = tl.length;
+    const t = tl.item(0);
+    if (t) {
+      const i = t.identifier;
+      const x = t.clientX.toFixed(1);
+      const y = t.clientY.toFixed(1);
+      const rx = t.radiusX.toFixed(1);
+      const ry = t.radiusY.toFixed(1);
+      const ra = t.rotationAngle;
+      const f = t.force;
+      this.app.log(`${code} ${n} ${i} ${x} ${y} ${rx} ${ry} ${ra} ${f}`);
+    }
   }
 
   static styles = css`
@@ -147,11 +166,11 @@ export class Fretboard extends LitElement {
   scale_degree_in_C(midiNote: number) {
     return (midiNote + 120 - Constant.notes.middle_C) % 12;
   }
+  /* eslint-enable class-methods-use-this */
 
   scale_degree_in_key(midiNote: number) {
     return ((midiNote % 12) - this.tonicNote + 12) % 12;
   }
-  /* eslint-enable class-methods-use-this */
 
   // scale degree is in the scale of our mode
   isInScale(c: number) {
@@ -237,7 +256,9 @@ export class Fretboard extends LitElement {
     for (let s = 0; s < tStrings; s += 1)
       if (this.isFrettedString(s) && this.offscale === 'cover')
         for (let p = 0; p < tPositions; p += 1)
-          this.tCover[s][p] = this.isInScale(this.tNotes[s][p]);
+          this.tCover[s][p] = !this.isInScale(
+            this.scale_degree_in_key(this.tNotes[s][p]),
+          );
 
     // implement 5 string banjo
     if (tFretting.match(/^b+$/)) {
@@ -248,13 +269,15 @@ export class Fretboard extends LitElement {
     if (tFretting.match(/^d+$/)) {
       for (let s = 0; s < tStrings; s += 1)
         for (let p = 0; p < tPositions; p += 1)
-          this.tCover[s][p] = [0, 2, 4, 5, 7, 9, 10, 11].includes(p % 12);
+          this.tCover[s][p] = ![0, 2, 4, 5, 7, 9, 10, 11, 12].includes(p % 12);
+      // console.log(`matched ^d+$ dulcimer`);
     }
     // implement traditional diatonic mountain dulcimer
     if (tFretting.match(/^t+$/)) {
       for (let s = 0; s < tStrings; s += 1)
         for (let p = 0; p < tPositions; p += 1)
-          this.tCover[s][p] = [0, 2, 4, 5, 7, 9, 10].includes(p % 12);
+          this.tCover[s][p] = ![0, 2, 4, 5, 7, 9, 10, 12].includes(p % 12);
+      // console.log(`matched ^t+$ dulcimer`);
     }
     // console.log(`processInputs colors=${this.colors}, palette=${this.palette}, textColor=${this.textColor}`);
   }
@@ -396,10 +419,12 @@ export class Fretboard extends LitElement {
 
     // if this fretnote is covered, omit
     if (this.tCover[tString][tPosition]) return html``; // omit offscale fretnote
+
     // count how many covered fretnotes precede this fretnote
     let cover = 0;
     while (tPosition > cover && this.tCover[tString][tPosition - cover - 1])
       cover += 1;
+    // console.log(`s ${tString} p ${tPosition} cover ${cover}`);
     return html` <zither-fretnote
       class="fretnote x${cover + 1}"
       .fretboard=${this}

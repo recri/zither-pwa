@@ -379,15 +379,15 @@ export class ZitherApp extends LitElement {
         .offscale=${this.offscale}
         .labels=${this.labels}
         .colors=${this.colors}
+        .top=${this.top}
+        .right=${this.right}
+        .bottom=${this.bottom}
+        .left=${this.left}
         .width=${this.width - this.left - this.right}
         .height=${this.height - this.top - this.bottom}
       ></zither-fretboard>
       <zither-ui
         .app=${this}
-        .dspNames=${Constant.dspNames}
-        .dspName=${this.dspName}
-        .poly=${this.poly}
-        .velocity=${this.velocity}
         .tuning=${this.tuning}
         .frets=${this.frets}
         .transpose=${this.transpose}
@@ -396,6 +396,10 @@ export class ZitherApp extends LitElement {
         .offscale=${this.offscale}
         .labels=${this.labels}
         .colors=${this.colors}
+        .dspNames=${Constant.dspNames}
+        .dspName=${this.dspName}
+        .poly=${this.poly}
+        .velocity=${this.velocity}
         .pickangle=${this.pickangle}
         .pickposition=${this.pickposition}
         .decaytime=${this.decaytime}
@@ -406,7 +410,6 @@ export class ZitherApp extends LitElement {
         .bottom=${this.bottom}
         .left=${this.left}
       ></zither-ui>
-      <zither-log .app=${this}></zither-log>
     `;
   }
 }

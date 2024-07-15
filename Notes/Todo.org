@@ -81,6 +81,16 @@
     hammered dulcimer is o12o13o13, o11o12o12, o14o15o15, o15o16o16
 [x] eliminate splash, go direct to fretboard, make ui fill screen
 [x] make a zither layout
+[x] line of green at bottom of fretboard, off by one?  On the IPad mini
+	eliminated splash
+[x] fretboard showing at bottom of splash, on the IPad Mini
+	eliminated splash
+[x] make a dulcimer layout
+[x] make the 5-string banjo work
+[x] if you're at B0 on a bass fretboard, there is no octave below.
+    Maybe transpose is the lowest midi note tuned, cannot go below 0, but we don't show that
+    we only allow +/- relative semitone adjustments of transpose, but we clamp the result to
+    a reasonable range.  Clamped the transposition to midi range.
 ------------------------------------------------------------------------
 [ ] may want a soft touch limit, might even be able to run a test to find it, virtual
 	tapping at various rates, record successful tests in the database, record the
@@ -92,11 +102,7 @@
 [ ] make sure that pwa builds from github, may have lost some of the copy logic
     required to recreate out-tsc and dist from scratch.
 [ ] Detect lack of touchscreen by seeing the corresponding mouse events.
-[ ] line of green at bottom of fretboard, off by one?  On the IPad mini
-[ ] fretboard showing at bottom of splash, on the IPad Mini
 ---
-[ ] make a dulcimer layout
-[ ] make the 5-string banjo work
 [ ] make an 8-string mandolin
 [ ] make a 12-string guitar
 [ ] make fretless instruments
@@ -115,6 +121,9 @@
 [ ] Redo muting/key ratio in the harps, more key less mute.
 [ ] hammered dulcimer can use multiple mutes of different banks of strings
 [ ] in general, selective mute could be used
+[ ] make the open string/harp notes a different shape than the fretted notes.
+[ ] resize the harp buttons, maybe tilt them from corner to corner to make
+    more space.
 ---
 [ ] A scrolling gesture can retune the fretboard, either by moving the nut up or down
 	or by side scrolling to change the strings.
@@ -125,12 +134,6 @@
 [ ] Send each note on its own channel, so it will have its own channel messages.
     Try and see if it works on the existing polyphony implementation, or make it
     work by loading multiple eks and allocating them to touches
-[ ] resize the harp buttons, maybe tilt them from corner to corner to make
-    more space.
-[ ] if you're at B0 on a bass fretboard, there is no octave below.
-    Maybe transpose is the lowest midi note tuned, cannot go below 0, but we don't show that
-    we only allow +/- relative semitone adjustments of transpose, but we clamp the result to
-    a reasonable range.
 ---
 [ ] make a preset tab panel which saves, edits, names, deletes, and runs urls
 	1) List of named urls.  Scrollable.
@@ -146,4 +149,8 @@
 ---
 [ ] Add more help text.
 [ ] write elf.org/zither/index.html to explain 
-[ ] but being able to twiddle fretnotes while twiddling controls is important
+[x] move the log into the zither-ui panels
+[ ] split the panels into own components
+[ ] make the ui panels scroll on overflow
+[ ] but being able to twiddle fretnotes while twiddling controls is important,
+    can't tune audio controls without playing notes.

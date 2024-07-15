@@ -28,15 +28,18 @@ export class Fretmute extends LitElement {
   start_handler(ev: TouchEvent) {
     ev.preventDefault();
     this.fretboard.app.audioNode!.allNotesOff(false);
+    this.fretboard.touchLog('s', ev);
   }
 
   /* eslint-disable class-methods-use-this */
   move_handler(ev: TouchEvent) {
     ev.preventDefault();
+    this.fretboard.touchLog('m', ev);
   }
 
   end_handler(ev: TouchEvent) {
     ev.preventDefault();
+    this.fretboard.touchLog('e', ev);
   }
   /* eslint-enable class-methods-use-this */
 

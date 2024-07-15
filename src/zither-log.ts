@@ -5,17 +5,20 @@ import { ZitherApp } from './zither-app.js';
 
 @customElement('zither-log')
 export class ZitherLog extends LitElement {
-  @property({ type: Object }) app!: ZitherApp;
+  @property() app!: ZitherApp;
 
-  @property({ type: Number }) nmessages: number = 0;
+  @property() messages: Array<string> = [];
 
-  @property({ type: Array }) messages: Array<string> = [];
+  @property() nmessages: number = 0;
 
   static styles = css`
     :host {
       display: block;
       border: none;
       padding: 0px;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
     }
   `;
 
@@ -38,12 +41,12 @@ export class ZitherLog extends LitElement {
 
   render() {
     return html`
-      Log ${this.nmessages} messages logged:
-      <pre id="log" style="border: 1px solid #ccc;">
-	  ${this.messages.map(a => html`${a}`)}
-	</pre
-      >
+      ${this.nmessages} messages
       <button @click=${this.clear}>Clear Log</button>
+      <pre id="log" style="border: 1px solid #ccc;">
+${this.messages.map(a => html`${a}`)}
+      </pre
+      >
     `;
   }
 }
