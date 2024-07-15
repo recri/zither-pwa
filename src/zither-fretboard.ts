@@ -61,6 +61,10 @@ export class Fretboard extends LitElement {
 
   private timeoutIdentifier!: ReturnType<typeof setInterval>;
 
+  private mouseCount: number = 0;
+
+  private touchCount: number = 0;
+
   timeoutHandler() {
     this.timeoutCount -= 1;
     this.timeoutExpired = this.timeoutCount <= 0;
@@ -69,10 +73,12 @@ export class Fretboard extends LitElement {
   handleTimeout = () => this.timeoutHandler();
 
   markMouseTime() {
+    this.mouseCount += 1;
     this.timeoutCount = this.timeoutLength;
   }
 
   markKeyTime() {
+    this.touchCount += 1;
     this.timeoutCount = this.timeoutLength;
   }
 

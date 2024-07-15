@@ -121,30 +121,29 @@ export class Fretnote extends LitElement {
       `;
 
     if (!this.isinscale && this.offscale === 'hide')
-      //           @touchmove=${this.move_handler}
-      // 	     @mousemove=${this.mousemove_handler}
       return html`
         ${style}
         <svg
           viewbox="0 0 100 100"
           preserveAspectRatio="none"
           @touchstart=${this.start_handler}
+          @touchmove=${this.move_handler}
           @touchend=${this.end_handler}
           @mousedown=${this.mousedown_handler}
+          @mousemove=${this.mousemove_handler}
           @mouseup=${this.mouseup_handler}
         ></svg>
       `;
-
-    //        @touchmove=${this.move_handler}
-    //        @mousemove=${this.mousemove_handler}
 
     return html` ${style}
       <svg
         viewbox="0 0 100 100"
         preserveAspectRatio="none"
         @touchstart=${this.start_handler}
+        @touchmove=${this.move_handler}
         @touchend=${this.end_handler}
         @mousedown=${this.mousedown_handler}
+        @mousemove=${this.mousemove_handler}
         @mouseup=${this.mouseup_handler}
       >
         <path
