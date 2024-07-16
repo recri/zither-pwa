@@ -91,6 +91,19 @@
     Maybe transpose is the lowest midi note tuned, cannot go below 0, but we don't show that
     we only allow +/- relative semitone adjustments of transpose, but we clamp the result to
     a reasonable range.  Clamped the transposition to midi range.
+[x] test whether touch contains shape information that might work for a barre.
+    Thus far the shape is always a circle, with a few quantized sizes which might
+    be parlayed into a crude velocity scale.
+[x] make sure that pwa builds from github, may have lost some of the copy logic
+    required to recreate out-tsc and dist from scratch.
+    No, it actually built quite neatly once I checked out the proper branch.
+[x] rewrote the github so that the current development branch is once again main.
+    There were a few places where I had to backtrack to recover functionality, and
+    the repo branch history is a mess as a result.  main0 branch is the original
+    start of development.
+[x] Enabled touch motion events with logging to the zither-log page.
+[x] made a touchLog property which can be set via url to enable touch event logging
+[x] move the log into the zither-ui panels
 ------------------------------------------------------------------------
 [ ] may want a soft touch limit, might even be able to run a test to find it, virtual
 	tapping at various rates, record successful tests in the database, record the
@@ -98,9 +111,6 @@
 [ ] recheck performance limits
 [ ] configure poly to the machine capabilities
 ---
-[ ] test whether touch contains shape information that might work for a barre.
-[ ] make sure that pwa builds from github, may have lost some of the copy logic
-    required to recreate out-tsc and dist from scratch.
 [ ] Detect lack of touchscreen by seeing the corresponding mouse events.
 ---
 [ ] make an 8-string mandolin
@@ -121,7 +131,7 @@
 [ ] Redo muting/key ratio in the harps, more key less mute.
 [ ] hammered dulcimer can use multiple mutes of different banks of strings
 [ ] in general, selective mute could be used
-[ ] make the open string/harp notes a different shape than the fretted notes.
+[ ] make the open string/harp fretnotes a different shape than the fretted fretnotes.
 [ ] resize the harp buttons, maybe tilt them from corner to corner to make
     more space.
 ---
@@ -143,14 +153,16 @@
 	5) "Move" selected up/down list.
 	6) "Edit" selected to modify url/name.
 	7) "Export" to upload list to where?
+        8) Embed anchors and links in the preset page
     need to use localStorage to store the presets, so need to separate preset
     storage from rest of localStorage usages, and separated param reset from
     complete localStorage.clear.
 ---
 [ ] Add more help text.
 [ ] write elf.org/zither/index.html to explain 
-[x] move the log into the zither-ui panels
 [ ] split the panels into own components
-[ ] make the ui panels scroll on overflow
+[ ] make the ui panels scroll on overflow.  The zither-log does, now, although
+    it's scrolling the whole zither-ui panel
+    work for the 
 [ ] but being able to twiddle fretnotes while twiddling controls is important,
     can't tune audio controls without playing notes.

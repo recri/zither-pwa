@@ -6,16 +6,23 @@ Zither is a stringed instrument that runs in a web page.
 
 The web app is built according to the recommendations of open-wc.org.
 
-The audio is built with https://faust.grame.fr/.
+The audio is built with https://faust.grame.fr
+
+The current build is available at https://zither.elf.org
+
+There will eventually be documentation at https://elf.org/zither/
 
 ### Recreating the project
+
+The following commands will fetch the current source, 
+install dependencies, build resources, launch a development server,
+and open the app in a browser page.
+
 ```
 git clone https://github.com/recri/zither-pwa.git
 cd zither-pwa
-git checkout main3
 npm install
-cd faust
-make
-cd ..
-make start
+make wasm
+make start 
 ```
+
