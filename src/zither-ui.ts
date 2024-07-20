@@ -306,6 +306,8 @@ export class ZitherUi extends LitElement {
             ${slTuning('f', 'D4,D4,A3,D3', 'dulcimer DADD (chromatic)')}
             ${slTuning('f', 'D4,D4,G3,D3', 'dulcimer DGDD (chromatic)')}
             <sl-divider></sl-divider>
+            <!-- Jacob Collier tuning -->
+            ${slTuning('f', 'D2,A2,E3,A3,D4', 'guitar 5')}
             ${slTuning('f', 'E2,A2,D3,G3,B3,E4', 'guitar 6')}
             ${slTuning('f', 'E2,A2,D3,G3,C4,F4', 'guitar 6 all fourths')}
             ${slTuning('f', 'E2,G♯2,C3,E3,G♯3,C4,E4', 'guitar 7 all thirds')}

@@ -15,10 +15,18 @@ import("effect.lib");   // levelfilter
 //==================== GUI SPECIFICATION ================
 
 // standard MIDI voice parameters:
+// augmented for bend, sustain, and volume control
 // NOTE: The labels MUST be "freq", "gain", and "gate" for faust2pd
-freq = nentry("[1]freq", 440, 20, 7040, 1);  // Hz
-gain = nentry("[2]gain", 1, 0, 10, 0.01);    // 0 to 1
-gate = button("[3]gate");                    // 0 or 1
+fbase = nentry("[1]freq", 440, 20, 7040, 1);  // Hz
+fbend = ba.semi2ratio(hslider("[2]bend[midi:pitchwheel]",0,-2,2,0.01)) : si.polySmooth(gate,0.999,1);
+freq = fbase * fbend;
+
+gain = nentry("[3]gain", 1, 0, 10, 0.01);    // 0 to 1
+master = hslider("master[mihhdi:ctrl 7]",0.5,0,1,0.01);
+
+gsust = hslider("sustain[midi:ctrl 64]",0,0,1,1);
+ggate = button("[4]gate");                    // 0 or 1
+gate = gsust+ggate : min(1);
 
 // Additional parameters (MIDI "controllers"):
 
@@ -72,6 +80,6 @@ stringloop = (+ : fdelay4(Pmax, P-2)) ~ (loopfilter);
 
 process = hgroup("EKS",
 	vgroup("[1]Excitation",filtered_excitation) : 
-	vgroup("[2]String",stringloop));
+	vgroup("[2]String",stringloop * master));
 
 effect = _ <: _,_;

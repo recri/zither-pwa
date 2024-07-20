@@ -7,7 +7,7 @@ import { Task } from '@lit/task';
 
 import { ZitherApp } from './zither-app.js';
 
-import './faust-ui.js';
+// import './faust-ui.js';
 
 /**
  * @typedef {import("./faust/types").FaustDspDistribution} FaustDspDistribution
