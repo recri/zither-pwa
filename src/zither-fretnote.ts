@@ -33,6 +33,12 @@ export class Fretnote extends LitElement {
 
   @property({ type: String }) text!: string;
 
+  @property() width: number = 0;
+
+  @property() height: number = 0;
+
+  @property() isPortrait: boolean = false;
+
   static styles = css`
     :host {
       background-color: var(--zither-app-background-color);

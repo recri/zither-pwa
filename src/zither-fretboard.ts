@@ -308,15 +308,19 @@ export class Fretboard extends LitElement {
     `;
   }
 
+    noteWidth: number = 0;
+
+    noteHeight: number = 0;
+    
   // compute sizes based on the array of strings and frets
   // construct the style sheets for portrait and landscape
   computeSizes() {
     const { width, height, tStrings, tPositions } = this;
     this.isPortrait = width < height;
     if (!this.isPortrait) {
-      const noteWidth = width / tPositions;
-      const noteHeight = height / tStrings;
-      this.fontSize = Math.min(noteHeight, noteWidth) * 0.5;
+      this.noteWidth = width / tPositions;
+      this.noteHeight = height / tStrings;
+      this.fontSize = Math.min(this.noteHeight, this.noteWidth) * 0.5;
       this.landscapeStyle = html`
         <style>
           ${this.buttonStyle()} div.fretboard {
@@ -326,33 +330,33 @@ export class Fretboard extends LitElement {
           }
           div.string {
             width: 100%;
-            height: ${noteHeight}px;
+            height: ${this.noteHeight}px;
             flex-direction: row;
           }
           zither-fretnote,
           zither-fretmute {
-            height: ${noteHeight}px;
+            height: ${this.noteHeight}px;
           }
           zither-fretnote.x1 {
-            width: ${1 * noteWidth}px;
+            width: ${1 * this.noteWidth}px;
           }
           zither-fretnote.x2 {
-            width: ${2 * noteWidth}px;
+            width: ${2 * this.noteWidth}px;
           }
           zither-fretnote.x3 {
-            width: ${3 * noteWidth}px;
+            width: ${3 * this.noteWidth}px;
           }
           zither-fretnote.x4 {
-            width: ${4 * noteWidth}px;
+            width: ${4 * this.noteWidth}px;
           }
           zither-fretnote.x5 {
-            width: ${5 * noteWidth}px;
+            width: ${5 * this.noteWidth}px;
           }
           zither-fretnote.x6 {
-            width: ${6 * noteWidth}px;
+            width: ${6 * this.noteWidth}px;
           }
           zither-fretnote.x7 {
-            width: ${7 * noteWidth}px;
+            width: ${7 * this.noteWidth}px;
           }
           zither-fretmute {
             width: ${width}px;
@@ -360,9 +364,9 @@ export class Fretboard extends LitElement {
         </style>
       `;
     } else {
-      const noteWidth = width / tStrings;
-      const noteHeight = height / tPositions;
-      this.fontSize = Math.min(noteHeight, noteWidth) * 0.5;
+      this.noteWidth = width / tStrings;
+      this.noteHeight = height / tPositions;
+      this.fontSize = Math.min(this.noteHeight, this.noteWidth) * 0.5;
       this.portraitStyle = html`
         <style>
           ${this.buttonStyle()} div.fretboard {
@@ -371,34 +375,34 @@ export class Fretboard extends LitElement {
             flex-direction: row;
           }
           div.string {
-            width: ${noteWidth}px;
+            width: ${this.noteWidth}px;
             height: ${height}px;
             flex-direction: column;
           }
           zither-fretnote,
           zither-fretmute {
-            width: ${noteWidth}px;
+            width: ${this.noteWidth}px;
           }
           zither-fretnote.x1 {
-            height: ${1 * noteHeight}px;
+            height: ${1 * this.noteHeight}px;
           }
           zither-fretnote.x2 {
-            height: ${2 * noteHeight}px;
+            height: ${2 * this.noteHeight}px;
           }
           zither-fretnote.x3 {
-            height: ${3 * noteHeight}px;
+            height: ${3 * this.noteHeight}px;
           }
           zither-fretnote.x4 {
-            height: ${4 * noteHeight}px;
+            height: ${4 * this.noteHeight}px;
           }
           zither-fretnote.x5 {
-            height: ${5 * noteHeight}px;
+            height: ${5 * this.noteHeight}px;
           }
           zither-fretnote.x6 {
-            height: ${6 * noteHeight}px;
+            height: ${6 * this.noteHeight}px;
           }
           zither-fretnote.x7 {
-            height: ${7 * noteHeight}px;
+            height: ${7 * this.noteHeight}px;
           }
           zither-fretmute {
             height: ${height}px;
@@ -449,6 +453,9 @@ export class Fretboard extends LitElement {
       .strokeColor=${this.strokeColor(c)}
       .strokeWidth=${this.strokeWidth(c)}
       .textColor=${this.textColor(c)}
+      .width=${this.isPortrait?this.noteWidth:this.noteWidth*(cover+1)}
+      .height=${this.isPortrait?this.noteHeight*(cover+1):this.noteHeight}
+      .isPortrait=${this.isPortrait}
     ></zither-fretnote>`;
   }
 
