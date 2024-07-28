@@ -509,12 +509,12 @@ export class ZitherUi extends LitElement {
             )}
             ${slTuning(
               'f',
-              'B♭3,E♭3,A♭2,C♯1,F♯1,B1,E1,A1,D2,G2,C3,F3',
+              'A♯3,D♯3,G♯2,C♯2,F♯1,B0,E1,A1,D2,G2,C3,F3',
               'stick 12 dual bass reciprocal',
             )}
             ${slTuning(
               'f',
-              'F3,C3,G2,D2,A1,E1,B1,E2,A2,D3,G3,C4',
+              'F3,C3,G2,D2,A1,E1,B0,E1,A1,D2,G2,C3',
               'stick 12 mirrored 4ths',
             )}
             <sl-divider></sl-divider>
@@ -525,15 +525,16 @@ export class ZitherUi extends LitElement {
             ${slTuning('f', 'G4,C4,E4,A4', 'ukelele 4 tenor')}
             ${slTuning('f', 'D3,G3,B3,E4', 'ukelele 4 baritone')}
             ${slTuning('f', 'E1,A1,D2,G2', 'ukelele 4 bass')}
-            <!-- pocket-alt {C5 F4 A4 D5}
-	    soprano-alt-1 {A4 D4 F♯4 B4}
-	    soprano-alt-2 {G3 C4 E4 A4}
-	    concert-alt {G3 C4 E4 A4}
-	    tenor-alt-1 {D4 G3 B3 E4}
-	    tenor-alt-2 {A3 D4 F♯4 }
-	    tenor-alt-3 {D3 G3 B3 E4}
-	    baritone-alt {C3 G3 B3 E4}
-	    bass-alt {D1 A1 D2 G2} -->
+            <sl-divider></sl-divider>
+            ${slTuning('f','C5,F4,A4,D5','ukelele 4 pocket-alt')}
+            ${slTuning('f','A4,D4,F♯4,B4','ukelele 4 soprano-alt-1')}
+            ${slTuning('f','G3,C4,E4,A4','ukelele 4 soprano-alt-2')}
+            ${slTuning('f','G3,C4,E4,A4','ukelele 4 concert-alt')}
+            ${slTuning('f','D4,G3,B3,E4','ukelele 4 tenor-alt-1')}
+            ${slTuning('f','A3,D4,F♯4,B4','ukelele 4 tenor-alt-2')}
+            ${slTuning('f','D3,G3,B3,E4','ukelele 4 tenor-alt-3')}
+            ${slTuning('f','C3,G3,B3,E4','ukelele 4 baritone-alt')}
+            ${slTuning('f','D1,A1,D2,G2','ukelele 4 bass-alt')}
             <!-- viola needs fretless -->
             <!-- violin needs fretless -->
             <sl-divider></sl-divider>

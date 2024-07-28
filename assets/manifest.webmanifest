@@ -1,12 +1,12 @@
 {
   "name": "Zither",
   "short_name": "Zither",
-  "description": "Band in your hand.",
+  "description": "Axe in your hand.",
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#070707",
   "background_color": "#070707",
-  "app_version": "20",
+  "app_version": "21",
   "icons": [
     {
       "src": "iconsvg",

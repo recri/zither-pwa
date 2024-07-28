@@ -22,13 +22,13 @@ all:: $(FILES)
 	mkdir -p $(TARGETDIR)/faustwasm
 	mkdir -p $(OUTTSCDIR)/faustwasm
 	mv $(TARGETDIR)/*.wasm $(TARGETDIR)/*.json $(ASSETDIR)
-	rm $(TARGETDIR)/*.js $(TARGETDIR)/*.html
+	rm -fr $(TARGETDIR)/*
 	# my server chokes on the delivered index.js
-	cp ./src/index.xx $(TARGETDIR)/faustwasm/index.js
+	# cp ./src/index.xx $(TARGETDIR)/faustwasm/index.js
 	# the typescript compiler complains about a type
-	cp ./src/index.d.xx $(TARGETDIR)/faustwasm/index.d.ts
+	# cp ./src/index.d.xx $(TARGETDIR)/faustwasm/index.d.ts
 	# the typescript compiler doesn't copy this
-	rsync -av $(TARGETDIR)/ $(OUTTSCDIR)/
+	# rsync -av $(TARGETDIR)/ $(OUTTSCDIR)/
 
 clean:: ; rm -rf $(TARGETDIR)/* $(ASSETDIR)/*
 

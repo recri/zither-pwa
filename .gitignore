@@ -23,7 +23,8 @@
 /out-tsc/
 /assets/faust/*
 /src/faust/
-
+/src/src
+/src/libfaust-wasm
 storybook-static
 custom-elements.json
 

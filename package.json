@@ -17,12 +17,16 @@
     "start": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds\""
   },
   "dependencies": {
-    "lit": "^3.1.4",
+    "@aws-crypto/sha256-js": "^5.2.0",
     "@lit/task": "^1.0.0",
-    "@shoelace-style/shoelace": "^2.15.1"
+    "@shoelace-style/shoelace": "^2.15.1",
+    "@webaudiomodules/api": "^2.0.0-alpha.6",
+    "@webaudiomodules/sdk-parammgr": "^0.0.13",
+    "lit": "^3.1.4"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.10.2",
+    "@grame/faustwasm": "^0.5.4",
     "@open-wc/eslint-config": "^12.0.3",
     "@open-wc/testing": "^4.0.0",
     "@rollup/plugin-babel": "^6.0.4",
@@ -47,8 +51,7 @@
     "rollup-plugin-esbuild": "^6.1.1",
     "rollup-plugin-workbox": "^8.1.0",
     "tslib": "^2.6.3",
-    "typescript": "^5.4.5",
-    "@grame/faustwasm": "^0.2.2"
+    "typescript": "^5.6.0-dev.20240727"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",

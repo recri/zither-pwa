@@ -18,3 +18,10 @@
    with { lpf = (x + x')/2; }
    and it started to make a difference with 3 concatenated
    lpf blocks.
+* I've updated to the latest @graem/faustwasm package
+  and I'm getting the undefined class error in the async
+  loading stream, where a series of classes are defined
+  into temporary names and then copied to their correct
+  global names.  Don't remember if I fixed that before of
+  if it just went away.
+  

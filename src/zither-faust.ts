@@ -17,7 +17,8 @@ import { ZitherApp } from './zither-app.js';
 
 // Import necessary Faust modules and data
 // import { FaustMonoDspGenerator, FaustPolyDspGenerator } from "./faustwasm/index.js";
-import { FaustPolyDspGenerator } from './faust/faustwasm/index.js';
+// import { FaustPolyDspGenerator } from './faust/faustwasm/index.js';
+import { FaustPolyDspGenerator } from './src/FaustDspGenerator';
 // import type { FaustDspMeta, FaustPolyAudioWorkletNode } from './faust/faustwasm/index.js';
 
 /**

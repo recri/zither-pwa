@@ -6,3 +6,14 @@
 ** rm src/faustwasm/FaustSvgDiagrams.ts
 ** rm src/faustwasm/exports.ts
 ** amend soundfiles: to soundfiles?: in types.ts
+* Second attempt
+** upgraded to latest faustwasm
+** amend types.ts to make soundfiles optional
+** using index.js resulted in the previously dodged error
+   where (I think) rollup got its temporary names messed up.
+** incorporate the unbundled typescript sources to dodge
+   the error
+** needed to alter node_modules/typescript/lib/lib.dom.d.ts
+   to define AudioParamMap to have a get() function.
+   totally mystified by the type definition there forEach of what?
+** needed to use strict: false to get it to compile.

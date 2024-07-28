@@ -1,7 +1,8 @@
 import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
-import type { FaustPolyAudioWorkletNode } from './faust/faustwasm/index.js';
+// import type { FaustPolyAudioWorkletNode } from './faust/faustwasm/index.js';
+import type { FaustPolyAudioWorkletNode } from './src/FaustAudioWorkletNode';
 
 import {
   putProp,
