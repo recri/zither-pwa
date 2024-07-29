@@ -1,0 +1,20 @@
+* pulled from https://en.wikipedia.org/wiki/Nashville_Number_System#:~:text=The%20Nashville%20Number%20System%20is,Williams%20in%201988.
+  and from https://en.wikipedia.org/wiki/Chord_notation#Chord_quality
+|---------------------------------------------------------+----------+------------------------------------------+----------+----------------------|
+| Major triad                                             | 0 4 7    | C   CM[b]  CΔ[a]  Cmaj[b]                | M3 P5    | C–E–G                |
+| Minor triad                                             | 0 3 7    | C−  Cm     Cmin                          | m3 P5    | C–E♭–G               |
+| Augmented triad (major triad sharp five)                | 0 4 8    | C+  Caug   CM♯5   CM+5                   | M3 A5    | C–E–G♯               |
+| Diminished triad (minor triad flat five)                | 0 3 6    | C°  Cdim   Cm♭5   Cm°5                   | m3 d5    | C–E♭–G♭              |
+|---------------------------------------------------------+----------+------------------------------------------+----------+----------------------|
+| Dominant seventh                                        | 0 4 7 10 | C7                                       | M3 P5 m7 | C–E–G–B♭             |
+| Major seventh                                           | 0 4 7 11 | CM7 CMa7 Cmaj7  CΔ7 CΔ[a] Cmaj7          | M3 P5 M7 | C–E–G–B              |
+| Minor-major seventh                                     | 0 3 7 11 | CmM7 Cm♯7 C−M7 C−Δ7  C−Δ Cminmaj7        | m3 P5 M7 | C–E♭–G–B             |
+| Minor seventh                                           | 0 3 7 10 | Cm7 C–7 Cmin7                            | m3 P5 m7 | C–E♭–G–B♭            |
+| Augmented-major seventh (major seventh sharp five)      | 0 4 8 11 | C+M7 C+Δ Caugmaj7 CM7♯5 CM7+5 CΔ♯5 CΔ+5  | M3 A5 M7 | C–E–G♯–B             |
+| Augmented seventh (dominant seventh sharp five)         | 0 4 8 10 | C+7 Caug7 C7♯5 C7+5                      | M3 A5 m7 | C–E–G♯–B♭            |
+| Half-diminished seventh (minor seventh flat five)       | 0 3 6 10 | Cø Cø7 Cmin7dim5 Cm7♭5 Cm7o5 C−7♭5 C−7o5 | m3 d5 m7 | C–E♭–G♭–B♭           |
+| Diminished seventh                                      | 0 3 6 9  | Co7 Cdim7                                | m3 d5 d7 | C–E♭–G♭–Bdouble flat |
+| Dominant seventh flat five (dominant seventh flat five) | 0 4 6 10 | C7♭5 C7dim5                              | M3 d5 m7 | C–E–G♭–B♭            |
+|---------------------------------------------------------+----------+------------------------------------------+----------+----------------------|
+
+
