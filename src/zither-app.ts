@@ -45,6 +45,15 @@ export class ZitherApp extends LitElement {
   // begin instrument properties
 
   /* eslint-disable class-methods-use-this */
+  @property() 
+  set fullscreen(value: boolean) {
+    putBoolProp('fullscreen', value);
+  }
+
+  get fullscreen() {
+    return getBoolProp('fullscreen');
+  }
+    
   @property()
   set tuning(value) {
     putProp('tuning', value);
@@ -328,16 +337,16 @@ export class ZitherApp extends LitElement {
   playHandler() {
     this.audioContext.resume();
     this.zitherState = 'play';
-    if (!document.fullscreenElement) {
-      // console.log(`requesting fullscreen`);
-      this.requestFullscreen();
+    if (this.fullscreen && !document.fullscreenElement) {
+        // console.log(`requesting fullscreen`);
+        this.requestFullscreen();
     }
   }
 
   tuneHandler() {
     this.audioContext.resume();
     this.zitherState = 'tune';
-    if (document.fullscreenElement) {
+    if (this.fullscreen && document.fullscreenElement) {
       // console.log(`relinquishing fullscreen`);
       document.exitFullscreen();
     }
@@ -399,6 +408,7 @@ export class ZitherApp extends LitElement {
       ></zither-fretboard>
       <zither-ui
         .app=${this}
+        .fullscreen=${this.fullscreen}
         .tuning=${this.tuning}
         .frets=${this.frets}
         .transpose=${this.transpose}

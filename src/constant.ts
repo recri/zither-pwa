@@ -472,6 +472,7 @@ const textForPalettes: { [key: string]: string } = {
 // default values
 
 const defaultValues: { [key: string]: string } = {
+  fullscreen: 'true', // draw fretboard in fullscreen
   frets: '13', // one octave to start
   transpose: '0', // in standard offset
   velocity: '114', // midi note on velocity

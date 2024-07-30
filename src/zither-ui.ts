@@ -11,6 +11,7 @@ import { ZitherApp } from './zither-app.js';
 // import './zither-style.js';
 import './zither-log.js';
 
+import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/tab/tab.js';
@@ -26,6 +27,8 @@ import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 @customElement('zither-ui')
 export class ZitherUi extends LitElement {
   @property() app!: ZitherApp;
+
+  @property() fullscreen: boolean = true;
 
   // mechanics of instrument
 
@@ -204,6 +207,10 @@ export class ZitherUi extends LitElement {
           break;
       }
     }
+  }
+
+  slChangeEventFullscreen() {
+      this.app.fullscreen = ! this.fullscreen;
   }
 
   playHandler() {
@@ -823,6 +830,15 @@ export class ZitherUi extends LitElement {
         </sl-tab-panel>
 
         <sl-tab-panel name="style">
+
+          <sl-switch 
+            label="fullscreen"
+            ${this.fullscreen===true?'checked':''}
+            @sl-change=${this.slChangeEventFullscreen}
+          >
+            Fullscreen fretboard
+          </sl-switch>
+
           <sl-range
             label="top"
             value="${this.top}"

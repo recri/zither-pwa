@@ -16,44 +16,43 @@ import './zither-fretmute.js';
 @customElement('zither-fretboard')
 export class Fretboard extends LitElement {
   // the zither app we're part of
-  @property({ type: Object }) app!: ZitherApp;
+  @property() app!: ZitherApp;
 
   // the width of the screen
-  @property({ type: Number }) width!: number;
+  @property() width!: number;
 
   // the height of the screen
-  @property({ type: Number }) height!: number;
+  @property() height!: number;
 
   // the velocity to sound at
-  @property({ type: Number }) velocity!: number;
+  @property() velocity!: number;
 
   // the tuning of the strings
-  @property({ type: String }) tuning!: string;
+  @property() tuning!: string;
 
   // the number of frets, ie chromatic notes, running across the fretboard
-  @property({ type: Number }) frets!: number;
+  @property() frets!: number;
 
   // the number of semitones to offset the fretboard
-  @property({ type: Number }) transpose!: number;
+  @property() transpose!: number;
 
   // the tonic note of the key we are playing
-  @property({ type: Number }) tonic!: string;
+  @property() tonic!: string;
 
   // the scale we are playing
-  @property({ type: Number }) scale!: string;
+  @property() scale!: string;
 
   // the treatment of offscale notes
-  @property({ type: String }) offscale!: string;
+  @property() offscale!: string;
 
   // the labels of the notes
-  @property({ type: String }) labels!: string;
+  @property() labels!: string;
 
   // the colors of the notes
-  @property({ type: String }) colors!: string;
+  @property() colors!: string;
 
   // whether the [Tune] button is displayed
-  @state()
-  private timeoutExpired: boolean = true;
+  @state() private timeoutExpired: boolean = true;
 
   private timeoutCount: number = 0;
 
@@ -274,6 +273,7 @@ export class Fretboard extends LitElement {
     if (tFretting.match(/^b+$/)) {
       for (let p = 0; p < 5; p += 1) this.tCover[0][p] = true;
     }
+
     // implement typical diatonic mountain dulcimer
     //     set dulcimer-frets {0 2 4 5 7 9 10 11 12}
     if (tFretting.match(/^d+$/)) {
@@ -282,6 +282,7 @@ export class Fretboard extends LitElement {
           this.tCover[s][p] = ![0, 2, 4, 5, 7, 9, 10, 11, 12].includes(p % 12);
       // console.log(`matched ^d+$ dulcimer`);
     }
+
     // implement traditional diatonic mountain dulcimer
     if (tFretting.match(/^t+$/)) {
       for (let s = 0; s < tStrings; s += 1)
@@ -289,6 +290,7 @@ export class Fretboard extends LitElement {
           this.tCover[s][p] = ![0, 2, 4, 5, 7, 9, 10, 12].includes(p % 12);
       // console.log(`matched ^t+$ dulcimer`);
     }
+
     // console.log(`processInputs colors=${this.colors}, palette=${this.palette}, textColor=${this.textColor}`);
   }
 
