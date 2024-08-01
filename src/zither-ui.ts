@@ -210,7 +210,7 @@ export class ZitherUi extends LitElement {
   }
 
   slChangeEventFullscreen() {
-      this.app.fullscreen = ! this.fullscreen;
+    this.app.fullscreen = !this.fullscreen;
   }
 
   playHandler() {
@@ -533,15 +533,15 @@ export class ZitherUi extends LitElement {
             ${slTuning('f', 'D3,G3,B3,E4', 'ukelele 4 baritone')}
             ${slTuning('f', 'E1,A1,D2,G2', 'ukelele 4 bass')}
             <sl-divider></sl-divider>
-            ${slTuning('f','C5,F4,A4,D5','ukelele 4 pocket-alt')}
-            ${slTuning('f','A4,D4,F♯4,B4','ukelele 4 soprano-alt-1')}
-            ${slTuning('f','G3,C4,E4,A4','ukelele 4 soprano-alt-2')}
-            ${slTuning('f','G3,C4,E4,A4','ukelele 4 concert-alt')}
-            ${slTuning('f','D4,G3,B3,E4','ukelele 4 tenor-alt-1')}
-            ${slTuning('f','A3,D4,F♯4,B4','ukelele 4 tenor-alt-2')}
-            ${slTuning('f','D3,G3,B3,E4','ukelele 4 tenor-alt-3')}
-            ${slTuning('f','C3,G3,B3,E4','ukelele 4 baritone-alt')}
-            ${slTuning('f','D1,A1,D2,G2','ukelele 4 bass-alt')}
+            ${slTuning('f', 'C5,F4,A4,D5', 'ukelele 4 pocket-alt')}
+            ${slTuning('f', 'A4,D4,F♯4,B4', 'ukelele 4 soprano-alt-1')}
+            ${slTuning('f', 'G3,C4,E4,A4', 'ukelele 4 soprano-alt-2')}
+            ${slTuning('f', 'G3,C4,E4,A4', 'ukelele 4 concert-alt')}
+            ${slTuning('f', 'D4,G3,B3,E4', 'ukelele 4 tenor-alt-1')}
+            ${slTuning('f', 'A3,D4,F♯4,B4', 'ukelele 4 tenor-alt-2')}
+            ${slTuning('f', 'D3,G3,B3,E4', 'ukelele 4 tenor-alt-3')}
+            ${slTuning('f', 'C3,G3,B3,E4', 'ukelele 4 baritone-alt')}
+            ${slTuning('f', 'D1,A1,D2,G2', 'ukelele 4 bass-alt')}
             <!-- viola needs fretless -->
             <!-- violin needs fretless -->
             <sl-divider></sl-divider>
@@ -830,10 +830,9 @@ export class ZitherUi extends LitElement {
         </sl-tab-panel>
 
         <sl-tab-panel name="style">
-
-          <sl-switch 
+          <sl-switch
             label="fullscreen"
-            ${this.fullscreen===true?'checked':''}
+            ${this.fullscreen === true ? 'checked' : ''}
             @sl-change=${this.slChangeEventFullscreen}
           >
             Fullscreen fretboard

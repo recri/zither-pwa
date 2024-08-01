@@ -1,6 +1,3 @@
-/* eslint-ignore @typescript-eslint/no-unused-vars */
-/* @typescript-eslint-ignore no-unused-vars */
-
 import { LitElement, html, css } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 import { Task } from '@lit/task';
@@ -16,10 +13,9 @@ import { ZitherApp } from './zither-app.js';
  */
 
 // Import necessary Faust modules and data
-// import { FaustMonoDspGenerator, FaustPolyDspGenerator } from "./faustwasm/index.js";
-// import { FaustPolyDspGenerator } from './faust/faustwasm/index.js';
+/* eslint-disable import/extensions */
 import { FaustPolyDspGenerator } from './src/FaustDspGenerator';
-// import type { FaustDspMeta, FaustPolyAudioWorkletNode } from './faust/faustwasm/index.js';
+/* eslint-enable import/extensions */
 
 /**
  * Creates a Faust audio node for use in the Web Audio API.
