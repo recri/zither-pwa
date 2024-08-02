@@ -10,15 +10,40 @@ import { Constant } from './constant.js';
 import { expand } from './tuning.js';
 import { noteToName, noteToSolfege, mtof } from './notes.js'; // , noteClamp, noteToNameOctave
 
+//
+// given an x and y coordinate in the window
+//   -> the s and p coordinate on the fretboard
+// given an s and p coordinate on the fretboard
+//   -> the midi note to play
+//   -> the s and p coordinate of the fretnote that covers this fretnote
+//   -> the x, y, width, and height in the window
+//   -> the residual x and y in the fretnote rectangle
+// given a midi note
+//   -> the frequency
+//   -> the chromatic scale degree
+//
+// the midi note only requires 7 bits, so there are lots of bits to signal
+//  muted, covered, tunebutton, etc.
+//
+
+// this is everything that I might keep,
+// but it's mostly not essential
 interface FretNote {
-  s: number; // string counted from closest to player
-  p: number; // fret position counted from nut
+  //  s: number; // string counted from closest to player
+  //  p: number; // fret position counted from nut
   note: number; // midi note
-  freq: number; // frequency of note in Hertz
-  c: number; // chromatic scale degree in key
-  isinscale: boolean; // is chromatic scale degree in key in the displayed scale
+  //  freq: number; // frequency of note in Hertz
+  //  c: number; // chromatic scale degree in key
+  //  isinscale: boolean; // is chromatic scale degree in key in the displayed scale
   iscovered: boolean; // is this fretnote covered by another fretnote
   ismuted: boolean; // is this fretnote muted
+  //  x: number; // x position of fret box
+  //  y: number; // y position of fret box
+  //  width: number; // width of fret box
+  //  height: number; // height of fret box
+}
+
+interface FretRect {
   x: number; // x position of fret box
   y: number; // y position of fret box
   width: number; // width of fret box
@@ -134,7 +159,7 @@ export class Fretboard extends LitElement {
     }
   }
 
-  decode_xy(x, y): FretNote {
+  decode_xy(x, y): number[] {
     const { isPortrait, left, top, noteWidth, noteHeight, height } = this;
     let s;
     let p;
@@ -147,17 +172,18 @@ export class Fretboard extends LitElement {
     }
     s = Math.min(this.fretNotes.length - 1, Math.max(0, s));
     p = Math.min(this.fretNotes[0].length - 1, Math.max(0, p));
-    const obj = this.fretNotes[s][p];
+    //    const obj = this.fretNotes[s][p];
     // console.log(`decode_xy(${x}, ${y}) yields ${obj}`);
-    return obj;
+    //    return obj;
+    return [s, p];
   }
 
-  touch_decode_xy(ev: TouchEvent) {
+  touch_decode_xy(ev: TouchEvent): number[] {
     const { clientX, clientY } = ev.changedTouches.item(0);
     return this.decode_xy(clientX, clientY);
   }
 
-  tuneLoc_decode(tuneLoc: string) {
+  tuneLoc_decode_xy(tuneLoc: string): number[] {
     const { width, height } = this;
     switch (tuneLoc) {
       case 'n':
@@ -181,22 +207,60 @@ export class Fretboard extends LitElement {
     }
   }
 
-  touch_handler(ev: TouchEvent, t: string, obj: FretNote) {
+  // compute the base coordinates for string s at position p
+  // optionally extend to cover adjacent frets
+  // this depends on the iscovered flag persisting
+  /* eslint-disable no-param-reassign */
+  encode_xy(s, p, docover): FretRect {
+    const { isPortrait, left, noteWidth, top, noteHeight, tStrings } = this;
+    if (docover) {
+      // advance p until it's an uncovered fretnote
+      while (this.fretNotes[s][p].iscovered && p < this.fretNotes[s].length)
+        p += 1;
+    }
+    let x = isPortrait ? left + noteWidth * s : top + noteHeight * p;
+    let y = isPortrait
+      ? top + noteHeight * p
+      : left + noteWidth * (tStrings - s - 1);
+    let width = isPortrait ? noteWidth : noteHeight;
+    let height = isPortrait ? noteHeight : noteWidth;
+    if (docover) {
+      // expand fretnote to cover preceding fretnotes
+      let cover = 0;
+      while (p - cover - 1 >= 0 && this.fretNotes[s][p - cover - 1].iscovered) {
+        cover += 1;
+        if (isPortrait) {
+          y -= noteHeight;
+          height += noteHeight;
+        } else {
+          x -= noteWidth;
+          width += noteWidth;
+        }
+      }
+    }
+    return { x, y, width, height };
+  }
+  /* eslint-enable no-param-reassign */
+
+  // the touch handler only needs the midi note,
+  // use negative midi notes to mark 'ismuted' or 'iscovered' or 'istunebutton'
+  touch_handler(ev: TouchEvent, t: string) {
     ev.preventDefault();
     this.markKeyTime();
     this.touchLog(t, ev);
+    const [s, p] = this.touch_decode_xy(ev);
     switch (t) {
       case 's':
-        if (obj.ismuted) return;
-        // console.log(`keyOn ${obj.note}`);
-        this.app.audioNode!.keyOn(1, obj.note, this.velocity);
+        if (this.ismuted(s, p)) return;
+        // console.log(`keyOn ${this.note(s,p)}`);
+        this.app.audioNode!.keyOn(1, this.note(s, p), this.velocity);
         break;
       case 'm':
         break;
       case 'e':
-        if (obj.ismuted) return;
-        // console.log(`keyOff ${obj.note}`);
-        this.app.audioNode!.keyOff(1, obj.note, 0);
+        if (this.ismuted(s, p)) return;
+        // console.log(`keyOff ${this.note(s,p)}`);
+        this.app.audioNode!.keyOff(1, this.note(s, p), 0);
         break;
       default:
         console.log(`uknown t '${t}' in touch_handler`);
@@ -205,15 +269,15 @@ export class Fretboard extends LitElement {
   }
 
   start_handler(ev: TouchEvent) {
-    this.touch_handler(ev, 's', this.touch_decode_xy(ev));
+    this.touch_handler(ev, 's');
   }
 
   move_handler(ev: TouchEvent) {
-    this.touch_handler(ev, 'm', this.touch_decode_xy(ev));
+    this.touch_handler(ev, 'm');
   }
 
   end_handler(ev: TouchEvent) {
-    this.touch_handler(ev, 'e', this.touch_decode_xy(ev));
+    this.touch_handler(ev, 'e');
   }
 
   static styles = css`
@@ -226,49 +290,44 @@ export class Fretboard extends LitElement {
   `;
 
   // fretboard management
-  // tNotes: number[][] = [];
-
-  // tCover: boolean[][] = [];
-
   tFretting: string = 'f';
 
   tStrings: number = 0;
 
   tPositions: number = 1;
 
-  // style issues
+  // key and scale issues
   tonicNote: number = 0;
 
   scaleNotes: Array<number> = [];
 
+  // presentation issues
   palette: Array<string> = [];
 
   theTextColor: string = 'white';
 
-  isFrettedString(string: number) {
-    return this.tFretting[string].match(/^[fb]/);
-  }
+  // predicates and properties of string number
+  isFrettedString = (string: number) => this.tFretting[string].match(/^[fb]/);
 
-  isOpenString(string: number) {
-    return this.tFretting[string] === 'o';
-  }
+  isOpenString = (string: number) => this.tFretting[string] === 'o';
 
+  // predicates and properties of midi note number
   // per FretNote data computed from midiNote
 
   /* eslint-disable class-methods-use-this */
-  scale_degree_in_C(midiNote: number) {
-    return (midiNote + 120 - Constant.notes.middle_C) % 12;
-  }
+  scale_degree_in_C = (midiNote: number) =>
+    (midiNote + 120 - Constant.notes.middle_C) % 12;
   /* eslint-enable class-methods-use-this */
 
-  scale_degree_in_key(midiNote: number) {
-    return ((midiNote % 12) - this.tonicNote + 12) % 12;
-  }
+  scale_degree_in_key = (midiNote: number) =>
+    ((midiNote % 12) - this.tonicNote + 12) % 12;
 
+  // predicates and properties of chromatic scale degree
   // scale degree is in the scale of our mode
-  isInScale(c: number) {
-    return this.scaleNotes.includes(c);
-  }
+  isInScale = (c: number) => this.scaleNotes.includes(c);
+
+  noteIsInScale = (note: number) =>
+    this.isInScale(this.scale_degree_in_key(note));
 
   // scale degree is the tonic of our key
   /* eslint-disable class-methods-use-this */
@@ -328,37 +387,54 @@ export class Fretboard extends LitElement {
 
   private noteHeight: number = 0;
 
-  makeNote(s: number, p: number, note: number) {
-    const { isPortrait, tStrings, offscale, left, top, noteWidth, noteHeight } =
-      this;
+  // note management, bridge to simplified
 
+  fretnote = (s, p) => this.fretNotes[s][p];
+
+  note = (s, p) => this.fretnote(s, p).note;
+
+  ismuted = (s, p) => this.fretnote(s, p).ismuted;
+
+  iscovered = (s, p) => this.fretnote(s, p).iscovered;
+
+  setNote = (s, p, val) => {
+    this.fretnote(s, p).note = val;
+  };
+
+  setIsmuted = (s, p, val) => {
+    this.fretnote(s, p).ismuted = val;
+  };
+
+  setIscovered = (s, p, val) => {
+    this.fretnote(s, p).iscovered = val;
+  };
+
+  makeNote(s: number, p: number, note: number) {
+    const { offscale } = this; // , left, top, noteWidth, noteHeight
+
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     const freq = mtof(note);
+    /* eslint-enable @typescript-eslint/no-unused-vars */
     const c = this.scale_degree_in_key(note);
     const isinscale = this.isInScale(c);
     const iscovered =
       offscale === 'cover' && this.isFrettedString(s) && !isinscale;
     const ismuted =
       offscale === 'mute' && this.isFrettedString(s) && !isinscale;
-    const x = isPortrait ? left + noteWidth * s : top + noteHeight * p;
-    const y = isPortrait
-      ? top + noteHeight * p
-      : left + noteWidth * (tStrings - s - 1);
-    const width = isPortrait ? noteWidth : noteHeight;
-    const height = isPortrait ? noteHeight : noteWidth;
-
+    // const { x, y, width, height } = this.encode_xy(s, p, true);
     const f: FretNote = {
-      s, // string number
-      p, // fret position
+      //      s, // string number
+      //      p, // fret position
       note, // midi note
-      freq, // the frequency to be keyed
-      c, // the chromatic note class for this note in the current key
-      isinscale, // is the chromatic note class in scale in the current
+      //      freq, // the frequency to be keyed
+      //      c, // the chromatic note class for this note in the current key
+      //      isinscale, // is the chromatic note class in scale in the current
       iscovered, // is note covered by another note because not in scale
       ismuted, // is note muted because not in scale
-      x, // the x position of note
-      y, // the y position of note
-      width, // the width of note
-      height, // the height of note
+      //      x, // the x position of note
+      //      y, // the y position of note
+      //      width, // the width of note
+      //      height, // the height of note
     };
 
     return f;
@@ -450,7 +526,7 @@ export class Fretboard extends LitElement {
       // console.log(`matched ^t+$ dulcimer`);
     }
 
-    const { isPortrait, noteWidth, noteHeight } = this;
+    //    const { isPortrait, noteWidth, noteHeight } = this;
 
     // grow the displayed notes to cover the covered notes
     // this happens for custom fretting as set up just above
@@ -460,47 +536,41 @@ export class Fretboard extends LitElement {
       if (this.isFrettedString(s)) {
         for (let p = 0; p < tPositions; p += 1) {
           // if it is a covered note, just skip it
-          /* eslint-disable no-continue */
-          if (this.fretNotes[s][p].iscovered) continue;
-          /* eslint-enable no-continue */
-          // count how many covered fretnotes precede this fretnote
-          // and cover them with this fretnote
-          let cover = 0;
-          while (p > cover && this.fretNotes[s][p - cover - 1].iscovered) {
-            // point the covered note to the covering note
-            this.fretNotes[s][p - cover - 1] = this.fretNotes[s][p];
-            // adjust the location and size of the covering note
-            if (isPortrait) {
-              this.fretNotes[s][p].y -= noteHeight;
-              this.fretNotes[s][p].height += noteHeight;
-            } else {
-              this.fretNotes[s][p].x -= noteWidth;
-              this.fretNotes[s][p].width += noteWidth;
+          if (this.fretNotes[s][p].iscovered) {
+            // count how many covered fretnotes precede this fretnote
+            // and cover them with this fretnote
+            let cover = 0;
+            while (p > cover && this.fretNotes[s][p - cover - 1].iscovered) {
+              // point the covered note to the covering note
+              this.fretNotes[s][p - cover - 1].note = this.fretNotes[s][p].note;
+              // adjust the location and size of the covering note
+              cover += 1;
             }
-            cover += 1;
           }
         }
       }
     }
   }
 
-  drawNote(obj) {
+  drawNote(s, p) {
     // if the obj is blank, make a blank
-    if (!obj) return svg``;
-
-    const { offscale } = this;
-
-    const { s, p, cover, isinscale, x, y, c, width, height } = obj;
+    // if (!obj) return svg``;
 
     // nothing if our column ended early,
     // not sure if this can ever happen
-    if (p >= this.fretNotes[s].length) return svg``;
+    // if (p >= this.fretNotes[s].length) return svg``;
 
     // if this fretnote is covered, omit
     // don't think this can happen either
-    if (cover) return svg``; // omit offscale fretnote
+    // if (obj.iscovered) return svg``; // omit offscale fretnote
 
-    if (!isinscale) {
+    const note = this.note(s, p);
+
+    const c = this.scale_degree_in_key(note);
+
+    const { offscale } = this;
+
+    if (!this.isInScale(c)) {
       switch (offscale) {
         case 'hide':
           return svg``;
@@ -512,6 +582,8 @@ export class Fretboard extends LitElement {
           break;
       }
     }
+
+    const { x, y, width, height } = this.encode_xy(s, p, true);
 
     return svg`
       <g transform="translate(${x}, ${y})" class="note d${c}">
@@ -526,8 +598,9 @@ export class Fretboard extends LitElement {
     this.app.tuneHandler();
   }
 
-  makeButton(obj, text) {
-    const { x, y, width, height } = obj;
+  makeButton(tuneLoc, text) {
+    const [s, p] = this.tuneLoc_decode_xy(tuneLoc);
+    const { x, y, width, height } = this.encode_xy(s, p, true);
     return svg`
       <g transform="translate(${x}, ${y})"
          class="note button"
@@ -546,6 +619,7 @@ export class Fretboard extends LitElement {
         }
         g.note rect {
           rx: 15;
+          ry: 15;
         }
         g.note text {
           text-anchor: middle;
@@ -586,11 +660,11 @@ export class Fretboard extends LitElement {
         @touchend=${this.end_handler}
       >
         <g transform="translate(${left},${top})">
-          ${this.fretNotes.map(str =>
-            str.map(fretnote => this.drawNote(fretnote)),
+          ${this.fretNotes.map((str, s) =>
+            str.map((_, p) => this.drawNote(s, p)),
           )}
           ${this.timeoutExpired
-            ? this.makeButton(this.tuneLoc_decode(this.tuneLoc), '\u2699')
+            ? this.makeButton(this.tuneLoc, '\u2699')
             : svg``}
         </g>
       </svg>
