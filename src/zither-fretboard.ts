@@ -218,12 +218,12 @@ export class Fretboard extends LitElement {
       while (this.fretNotes[s][p].iscovered && p < this.fretNotes[s].length)
         p += 1;
     }
-    let x = isPortrait ? left + noteWidth * s : top + noteHeight * p;
+    let x = isPortrait ? left + noteWidth * s : left + noteWidth * p;
     let y = isPortrait
       ? top + noteHeight * p
-      : left + noteWidth * (tStrings - s - 1);
-    let width = isPortrait ? noteWidth : noteHeight;
-    let height = isPortrait ? noteHeight : noteWidth;
+      : top + noteHeight * (tStrings - s - 1);
+    let width = noteWidth;
+    let height = noteHeight;
     if (docover) {
       // expand fretnote to cover preceding fretnotes
       let cover = 0;
@@ -526,8 +526,6 @@ export class Fretboard extends LitElement {
       // console.log(`matched ^t+$ dulcimer`);
     }
 
-    //    const { isPortrait, noteWidth, noteHeight } = this;
-
     // grow the displayed notes to cover the covered notes
     // this happens for custom fretting as set up just above
     // and when we're simplifying the fretboard to a specified
@@ -583,7 +581,12 @@ export class Fretboard extends LitElement {
       }
     }
 
-    const { x, y, width, height } = this.encode_xy(s, p, true);
+    let { x, y, width, height } = this.encode_xy(s, p, true);
+
+    x += 3;
+    y += 3;
+    width -= 6;
+    height -= 6;
 
     return svg`
       <g transform="translate(${x}, ${y})" class="note d${c}">
@@ -600,7 +603,13 @@ export class Fretboard extends LitElement {
 
   makeButton(tuneLoc, text) {
     const [s, p] = this.tuneLoc_decode_xy(tuneLoc);
-    const { x, y, width, height } = this.encode_xy(s, p, true);
+    let { x, y, width, height } = this.encode_xy(s, p, true);
+
+    x += 3;
+    y += 3;
+    width -= 6;
+    height -= 6;
+
     return svg`
       <g transform="translate(${x}, ${y})"
          class="note button"
