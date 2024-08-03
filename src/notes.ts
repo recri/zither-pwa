@@ -45,6 +45,22 @@ export const octaveToNote = (octave: number): number =>
 export const noteToNameOctave = (note: number, key: string = 'C') =>
   noteToName(note, key) + noteToOctave(note);
 
+export const noteToScaleDegreeInC = (note: number) =>
+    (note + 120 - Constant.notes.middle_C) % 12;
+
+export const noteToScaleDegreeInKey = (note: number, tonic: number) =>
+    ((note % 12) - tonic + 12) % 12;
+
+export const degreeIsTonic = (c: number) => c === 0;
+
+export const degreeIsInScale = (c: number, scaleNotes) =>
+    scaleNotes.includes(c);
+
+export const noteIsInScale = (note: number, tonic: number, scaleNotes: number[]) => 
+    degreeIsInScale(noteToScaleDegreeInKey(note, tonic), scaleNotes);
+
+export const noteIsTonic = (note: number, tonic: number) => (note%12)===(tonic%12);
+
 const noteRegExp = /^([A-G][♯♭#b]?)(-1|[0-9])$/;
 
 export function nameOctaveToNote(nameOctave: string): number {

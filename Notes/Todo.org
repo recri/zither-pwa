@@ -104,14 +104,18 @@
 [x] Enabled touch motion events with logging to the zither-log page.
 [x] made a touchLog property which can be set via url to enable touch event logging
 [x] move the log into the zither-ui panels
+---
+[-] Detect lack of touchscreen by seeing the corresponding mouse events.
+[x] Drop mouse support entirely, complication for no real benefit.
+[x] rewrote the fretboard to decode notes at the fretboard level in preparation
+    for bending and sliding notes.
+[x] integrated the faustwasm source directories to avoid multiple bundling mishaps.
 ------------------------------------------------------------------------
 [ ] may want a soft touch limit, might even be able to run a test to find it, virtual
 	tapping at various rates, record successful tests in the database, record the
 	start of unsuccessful tests in the database, choose boundaries from 
 [ ] recheck performance limits
 [ ] configure poly to the machine capabilities
----
-[ ] Detect lack of touchscreen by seeing the corresponding mouse events.
 ---
 [ ] make an 8-string mandolin
 [ ] make a 12-string guitar
@@ -134,6 +138,8 @@
 [ ] make the open string/harp fretnotes a different shape than the fretted fretnotes.
 [ ] resize the harp buttons, maybe tilt them from corner to corner to make
     more space.
+[ ] Try limiting the length of the excitation pulse to a nominal string length.
+[ ] There was something else about the length of the excitation pulse
 ---
 [ ] A scrolling gesture can retune the fretboard, either by moving the nut up or down
 	or by side scrolling to change the strings.
@@ -141,9 +147,11 @@
     by sliding the string.  Change the transpose by grabbing several strings and sliding them.
 [ ] A pinch to zoom gesture could change the number of strings, or adjust the fret spacing.
 ---
-[ ] Send each note on its own channel, so it will have its own channel messages.
+[-] Send each note on its own channel, so it will have its own channel messages.
     Try and see if it works on the existing polyphony implementation, or make it
-    work by loading multiple eks and allocating them to touches
+    work by loading multiple eks and allocating them to touches.  That isn't in
+    the existing polyphony.  Can extend to allocate voices manually and control
+    the voices.
 ---
 [ ] make a preset tab panel which saves, edits, names, deletes, and runs urls
 	1) List of named urls.  Scrollable.
@@ -162,7 +170,6 @@
 [ ] write elf.org/zither/index.html to explain 
 [ ] split the panels into own components
 [ ] make the ui panels scroll on overflow.  The zither-log does, now, although
-    it's scrolling the whole zither-ui panel
-    work for the 
+    it's scrolling the whole zither-ui panel, but maybe that works for everyone
 [ ] but being able to twiddle fretnotes while twiddling controls is important,
     can't tune audio controls without playing notes.

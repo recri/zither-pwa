@@ -1,9 +1,10 @@
 import { rangeFromZeroToLast } from './util.js';
-import { nameOctaveToNote, noteClamp } from './notes.js'; // , noteToNameOctave
+import { nameOctaveToNote, noteClamp } from './notes.js';
+import { FretNote } from './fretnote.js';
 
-const translate = (noteNamesAndOctaves: Array<string>): Array<number> =>
+const translate = (noteNamesAndOctaves: Array<string>): FretNote[] =>
   noteNamesAndOctaves.map(noteNameAndOctave =>
-    nameOctaveToNote(noteNameAndOctave),
+      new FretNote(nameOctaveToNote(noteNameAndOctave)),
   );
 
 /* make an array of chromatically fretted midi notes */
@@ -11,10 +12,9 @@ function makeString(
   rootMidi: number,
   frets: number,
   transpose: number,
-): number[] {
+): FretNote[] {
   return rangeFromZeroToLast(frets - 1).map(i =>
-    noteClamp(rootMidi + transpose + i),
-  );
+      new FretNote(noteClamp(rootMidi + transpose + i)));
 }
 
 //
@@ -30,7 +30,7 @@ export function expand(
   tuningName: string,
   frets: number,
   transpose: number,
-): [string, number[][], number, number] {
+): [string, FretNote[][], number, number] {
   const tuningList = tuningName.split(','); // tuning array of strings
   const [fretting] = tuningList; // the fretting descriptor
   const midiNotes = translate(tuningList.slice(1)); // array of midi notes
@@ -49,7 +49,7 @@ export function expand(
       console.log(`length mismatch ${f1} !==  ${midiNotes.length}`);
     return [
       'f'.repeat(midiNotes.length),
-      midiNotes.map(note => makeString(note, frets, transpose)),
+      midiNotes.map(note => makeString(note.note, frets, transpose)),
       midiNotes.length,
       frets,
     ];
@@ -64,7 +64,7 @@ export function expand(
       console.log(`length mismatch ${o1} !==  ${midiNotes.length}`);
     return [
       'o'.repeat(midiNotes.length),
-      [midiNotes.map(note => noteClamp(note + transpose))],
+	[midiNotes.map(note => new FretNote(noteClamp(note.note + transpose)))],
       1,
       midiNotes.length,
     ];
@@ -81,11 +81,11 @@ export function expand(
     return [
       'ooo',
       [
-        midiNotes.slice(0, o1).map(note => noteClamp(note + transpose)),
-        midiNotes.slice(o1, o1 + o2).map(note => noteClamp(note + transpose)),
+        midiNotes.slice(0, o1).map(note => new FretNote(noteClamp(note.note + transpose))),
+          midiNotes.slice(o1, o1 + o2).map(note => new FretNote(noteClamp(note.note + transpose))),
         midiNotes
           .slice(o1 + o2, o1 + o2 + o3)
-          .map(note => noteClamp(note + transpose)),
+            .map(note => new FretNote(noteClamp(note.note + transpose))),
       ],
       3,
       Math.max(o1, o2, o3),
@@ -110,7 +110,7 @@ export function expand(
       (o1 > 0 ? 1 : 0) + (o2 > 0 ? 1 : 0) + (o3 > 0 ? 1 : 0) + (o4 > 0 ? 1 : 0);
     const columns = midiNotes
       .slice(f1)
-      .map(note => makeString(note, frets, transpose));
+      .map(note => makeString(note.note, frets, transpose));
     if (o1 > 0) columns.push(midiNotes.slice(f1, f1 + o1));
     if (o2 > 0) columns.push(midiNotes.slice(f1 + o1, f1 + o1 + o2));
     if (o3 > 0) columns.push(midiNotes.slice(f1 + o1 + o2, f1 + o1 + o2 + o3));
@@ -133,7 +133,7 @@ export function expand(
       console.log(`length mismatch ${b1} !==  ${midiNotes.length}`);
     return [
       `${'b'.repeat(midiNotes.length)}`,
-      midiNotes.map(note => makeString(note, frets, transpose)),
+      midiNotes.map(note => makeString(note.note, frets, transpose)),
       midiNotes.length,
       frets,
     ];
@@ -149,7 +149,7 @@ export function expand(
       console.log(`length mismatch ${f1} !==  ${midiNotes.length}`);
     return [
       c1.repeat(midiNotes.length),
-      midiNotes.map(note => makeString(note, frets, transpose)),
+      midiNotes.map(note => makeString(note.note, frets, transpose)),
       midiNotes.length,
       frets,
     ];
