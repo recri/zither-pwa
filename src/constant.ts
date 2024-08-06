@@ -476,7 +476,7 @@ const defaultValues: { [key: string]: string } = {
   frets: '13', // one octave to start
   transpose: '0', // in standard offset
   velocity: '114', // midi note on velocity
-  poly: '10', // midi polyphony number of voices
+  poly: '48', // midi polyphony number of voices
   panangle: '0.5', //
   spatialwidth: '0.5', //
   dynamiclevel: '-10', // level for levelfilter

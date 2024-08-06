@@ -1,10 +1,10 @@
 import { rangeFromZeroToLast } from './util.js';
 import { nameOctaveToNote, noteClamp } from './notes.js';
-import { FretNote } from './fretnote.js';
+import { Fretnote } from './fretnote.js';
 
-const translate = (noteNamesAndOctaves: Array<string>): FretNote[] =>
-  noteNamesAndOctaves.map(noteNameAndOctave =>
-      new FretNote(nameOctaveToNote(noteNameAndOctave)),
+const translate = (noteNamesAndOctaves: Array<string>): Fretnote[] =>
+  noteNamesAndOctaves.map(
+    noteNameAndOctave => new Fretnote(nameOctaveToNote(noteNameAndOctave)),
   );
 
 /* make an array of chromatically fretted midi notes */
@@ -12,9 +12,10 @@ function makeString(
   rootMidi: number,
   frets: number,
   transpose: number,
-): FretNote[] {
-  return rangeFromZeroToLast(frets - 1).map(i =>
-      new FretNote(noteClamp(rootMidi + transpose + i)));
+): Fretnote[] {
+  return rangeFromZeroToLast(frets - 1).map(
+    i => new Fretnote(noteClamp(rootMidi + transpose + i)),
+  );
 }
 
 //
@@ -30,7 +31,7 @@ export function expand(
   tuningName: string,
   frets: number,
   transpose: number,
-): [string, FretNote[][], number, number] {
+): [string, Fretnote[][], number, number] {
   const tuningList = tuningName.split(','); // tuning array of strings
   const [fretting] = tuningList; // the fretting descriptor
   const midiNotes = translate(tuningList.slice(1)); // array of midi notes
@@ -64,7 +65,7 @@ export function expand(
       console.log(`length mismatch ${o1} !==  ${midiNotes.length}`);
     return [
       'o'.repeat(midiNotes.length),
-	[midiNotes.map(note => new FretNote(noteClamp(note.note + transpose)))],
+      [midiNotes.map(note => new Fretnote(noteClamp(note.note + transpose)))],
       1,
       midiNotes.length,
     ];
@@ -81,11 +82,15 @@ export function expand(
     return [
       'ooo',
       [
-        midiNotes.slice(0, o1).map(note => new FretNote(noteClamp(note.note + transpose))),
-          midiNotes.slice(o1, o1 + o2).map(note => new FretNote(noteClamp(note.note + transpose))),
+        midiNotes
+          .slice(0, o1)
+          .map(note => new Fretnote(noteClamp(note.note + transpose))),
+        midiNotes
+          .slice(o1, o1 + o2)
+          .map(note => new Fretnote(noteClamp(note.note + transpose))),
         midiNotes
           .slice(o1 + o2, o1 + o2 + o3)
-            .map(note => new FretNote(noteClamp(note.note + transpose))),
+          .map(note => new Fretnote(noteClamp(note.note + transpose))),
       ],
       3,
       Math.max(o1, o2, o3),

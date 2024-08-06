@@ -1,19 +1,64 @@
-export class FretNote {
-    constructor(note, ismuted=false, iscovered=false) {
-	this.packed = (iscovered ? 256 : 0) | (ismuted ? 128 : 0) | (note & 127);
-    }
+const notemask = 127;
+const covered = 128;
+const playable = 255;
+const muted = 256;
+const button = 512;
 
-    private packed: number = 0;
+export class Fretnote {
+  /* eslint-disable no-bitwise */
 
-    get note() { return this.packed&127; }
+  constructor(note, iscovered = false, ismuted = false, isbutton = false) {
+    this.packed =
+      (iscovered ? covered : 0) |
+      (ismuted ? muted : 0) |
+      (isbutton ? button : 0) |
+      (note & 127);
+  }
 
-    set note(val) { this.packed = (this.packed & ~127) | (val & 127); }
-		    
-    get ismuted() { return (this.packed & 128) !== 0; }
+  private packed: number = 0;
 
-    set ismuted(val) { this.packed = (this.packed & ~128) | (val ? 128 : 0); }
+  // is the fretnote playable?
+  isplayable() {
+    return this.packed <= playable;
+  }
 
-    get iscovered() { return (this.packed & 256) !== 0; }
+  // the midi note that this frenote sounds
+  get note() {
+    return this.packed & notemask;
+  }
 
-    set iscovered(val) { this.packed = (this.packed & ~256) | (val ? 256 : 0); }
+  set note(val) {
+    this.packed = (this.packed & ~notemask) | (val & notemask);
+  }
+
+  // is a fretnote which is not played
+  get ismuted() {
+    return (this.packed & muted) !== 0;
+  }
+
+  set ismuted(val) {
+    this.packed = (this.packed & ~muted) | (val ? muted : 0);
+  }
+
+  // is a fretnote which is covered by another fretnote
+  get iscovered() {
+    return (this.packed & covered) !== 0;
+  }
+
+  set iscovered(val) {
+    this.packed = (this.packed & ~covered) | (val ? covered : 0);
+  }
+
+  11;
+
+  // is a button sometimes displayed in place of the fret note
+  get isbutton() {
+    return (this.packed & button) !== 0;
+  }
+
+  set isbutton(val) {
+    this.packed = (this.packed & ~button) | (val ? button : 0);
+  }
+
+  /* eslint-enable no-bitwise */
 }

@@ -3,26 +3,16 @@ import { property, state, customElement } from 'lit/decorators.js';
 
 import { ZitherApp } from './zither-app.js';
 import { Constant } from './constant.js';
-import { FretNote } from './fretnote.js';
+import { Fretnote } from './fretnote.js';
+import { TouchVoice } from './touchvoice.js';
 import { expand } from './tuning.js';
-import { noteToName, noteToSolfege, mtof } from './notes.js'; // , noteClamp, noteToNameOctave
-import { degreeIsTonic, degreeIsInScale, noteToScaleDegreeInKey } from './notes.js';
-
-//
-// given an x and y coordinate in the window
-//   -> the s and p coordinate on the fretboard
-// given an s and p coordinate on the fretboard
-//   -> the midi note to play
-//   -> the s and p coordinate of the fretnote that covers this fretnote
-//   -> the x, y, width, and height in the window
-//   -> the residual x and y in the fretnote rectangle
-// given a midi note
-//   -> the frequency
-//   -> the chromatic scale degree
-//
-// the midi note only requires 7 bits, so there are lots of bits to signal
-//  muted, covered, tunebutton, etc.
-//
+import {
+  noteToName,
+  noteToSolfege,
+  degreeIsTonic,
+  degreeIsInScale,
+  noteToScaleDegreeInKey,
+} from './notes.js';
 
 interface FretRect {
   x: number; // x position of fret box
@@ -87,28 +77,49 @@ export class Fretboard extends LitElement {
   // whether the [Tune] button is displayed
   @state() private timeoutExpired: boolean = true;
 
-  private fretNotes: FretNote[][] = [];
+  //
+  // non-property non-state properties
+  //
 
+  // the notes on the fretboard
+  private fretNotes: Fretnote[][] = [];
+
+  fretnote(s, p) {
+    return this.fretNotes[s][p];
+  }
+
+  // managing the timeout which enables the return
+  // to setting button appearing on the fretboard
+
+  // the counter counted down on each timeout
   private timeoutCount: number = 0;
 
+  // the counter value just after a fretboard note interaction
   private timeoutLength: number = 5; // 5 second timeout shows tune button
 
+  // the timeout identifier returned by setInterval()
   private timeoutIdentifier!: ReturnType<typeof setInterval>;
 
-  private touchCount: number = 0;
-
+  // the timeout interval handler
   timeoutHandler() {
     this.timeoutCount -= 1;
     this.timeoutExpired = this.timeoutCount <= 0;
   }
 
+  // the timeout interval indirect handler
   handleTimeout = () => this.timeoutHandler();
 
+  // mark that a fret was played by a touch event
   markKeyTime() {
-    this.touchCount += 1;
     this.timeoutCount = this.timeoutLength;
     this.timeoutExpired = this.timeoutCount <= 0;
   }
+
+  //
+  // managing the connected state of the fretboard
+  // install the interval timeout on connect
+  // destroy the interval timeout on disconnect
+  //
 
   /* eslint-disable wc/guard-super-call */
   connectedCallback() {
@@ -122,6 +133,7 @@ export class Fretboard extends LitElement {
   }
   /* eslint-enable wc/guard-super-call */
 
+  // log a touch event
   touchLog(code: string, ev: Event) {
     if (this.app.logTouch && ev instanceof TouchEvent) {
       const tl = ev.changedTouches;
@@ -140,27 +152,36 @@ export class Fretboard extends LitElement {
     }
   }
 
+  // decode an xy coordinate to a sp (string position) coordinate
   decode_xy(x, y): number[] {
     const { isPortrait, left, top, noteWidth, noteHeight, height } = this;
     let s;
     let p;
+    let dx;
+    let dy;
     if (isPortrait) {
       s = Math.floor((x - left) / noteWidth);
       p = Math.floor((y - top) / noteHeight);
+      dx = (x - left) % noteWidth;
+      dy = (y - top) % noteHeight;
     } else {
       s = Math.floor((height - y - 1 - top) / noteHeight);
       p = Math.floor((x - left) / noteWidth);
+      dx = (height - y - 1 - top) % noteHeight;
+      dy = (x - left) % noteWidth;
     }
     s = Math.min(this.fretNotes.length - 1, Math.max(0, s));
     p = Math.min(this.fretNotes[0].length - 1, Math.max(0, p));
-    return [s, p];
+    return [s, p, dx, dy];
   }
 
+  // decode the xy coordinate of a touch event into an sp coordinate
   touch_decode_xy(ev: TouchEvent): number[] {
     const { clientX, clientY } = ev.changedTouches.item(0);
     return this.decode_xy(clientX, clientY);
   }
 
+  // decode eight directions into an sp coordinate
   tuneLoc_decode_xy(tuneLoc: string): number[] {
     const { width, height } = this;
     switch (tuneLoc) {
@@ -190,11 +211,18 @@ export class Fretboard extends LitElement {
   // this depends on the iscovered flag persisting
   /* eslint-disable no-param-reassign */
   encode_xy(s, p, docover): FretRect {
-    const { isPortrait, left, noteWidth, top, noteHeight, tStrings, fretNotes } = this;
+    const {
+      isPortrait,
+      left,
+      noteWidth,
+      top,
+      noteHeight,
+      tStrings,
+      fretNotes,
+    } = this;
     if (docover) {
       // advance p until it's an uncovered fretnote
-      while (p < fretNotes[s].length && fretNotes[s][p].iscovered)
-        p += 1;
+      while (p < fretNotes[s].length && fretNotes[s][p].iscovered) p += 1;
     }
     let x = left + (isPortrait ? noteWidth * s : noteWidth * p);
     let y =
@@ -219,42 +247,25 @@ export class Fretboard extends LitElement {
   }
   /* eslint-enable no-param-reassign */
 
-  // the touch handler only needs the midi note,
-  // use negative midi notes to mark 'ismuted' or 'iscovered' or 'istunebutton'
-  touch_handler(ev: TouchEvent, t: string) {
+  start_handler(ev: TouchEvent) {
     ev.preventDefault();
     this.markKeyTime();
-    this.touchLog(t, ev);
-    const [s, p] = this.touch_decode_xy(ev);
-    switch (t) {
-      case 's':
-        if (this.fretNotes[s][p].ismuted) return;
-        // console.log(`keyOn ${this.note(s,p)}`);
-        this.app.audioNode!.keyOn(1, this.fretNotes[s][p].note, this.velocity);
-        break;
-      case 'm':
-        break;
-      case 'e':
-        if (this.fretNotes[s][p].ismuted) return;
-        // console.log(`keyOff ${this.note(s,p)}`);
-        this.app.audioNode!.keyOff(1, this.fretNotes[s][p].note, 0);
-        break;
-      default:
-        console.log(`uknown t '${t}' in touch_handler`);
-        break;
-    }
-  }
-
-  start_handler(ev: TouchEvent) {
-    this.touch_handler(ev, 's');
+    this.touchLog('s', ev);
+    TouchVoice.touch_start(ev, this);
   }
 
   move_handler(ev: TouchEvent) {
-    this.touch_handler(ev, 'm');
+    ev.preventDefault();
+    this.markKeyTime();
+    this.touchLog('m', ev);
+    TouchVoice.touch_move(ev);
   }
 
   end_handler(ev: TouchEvent) {
-    this.touch_handler(ev, 'e');
+    ev.preventDefault();
+    this.markKeyTime();
+    this.touchLog('e', ev);
+    TouchVoice.touch_end(ev);
   }
 
   static styles = css`
@@ -263,6 +274,7 @@ export class Fretboard extends LitElement {
       border: none;
       padding: 0px;
       margin: none;
+      touch-action: none;
     }
   `;
 
@@ -350,7 +362,7 @@ export class Fretboard extends LitElement {
     } = this;
 
     // expand tuning
-      [this.tFretting, this.fretNotes, this.tStrings, this.tPositions] = expand(
+    [this.tFretting, this.fretNotes, this.tStrings, this.tPositions] = expand(
       tuning,
       frets,
       transpose,
@@ -380,15 +392,17 @@ export class Fretboard extends LitElement {
     // expand tNotes into fretNotes
     for (let s = 0; s < this.fretNotes.length; s += 1) {
       for (let p = 0; p < this.fretNotes[s].length; p += 1) {
-	  const note = this.fretNotes[s][p].note;
-	  // const freq = mtof(note);
-	  const c = noteToScaleDegreeInKey(note, this.tonicNote);
-	  const isinscale = degreeIsInScale(c, this.scaleNotes);
-	  this.fretNotes[s][p].iscovered = this.isFrettedString(s) && !isinscale && this.offscale === 'cover';
-	  this.fretNotes[s][p].ismuted = this.isFrettedString(s) && !isinscale && this.offscale === 'mute';
-	  this.fretNotes[s][p].note = note;
+        const { note } = this.fretNotes[s][p];
+        // const freq = mtof(note);
+        const c = noteToScaleDegreeInKey(note, this.tonicNote);
+        const isinscale = degreeIsInScale(c, this.scaleNotes);
+        this.fretNotes[s][p].iscovered =
+          this.isFrettedString(s) && !isinscale && this.offscale === 'cover';
+        this.fretNotes[s][p].ismuted =
+          this.isFrettedString(s) && !isinscale && this.offscale === 'mute';
+        this.fretNotes[s][p].note = note;
       }
-   }
+    }
 
     // hack the iscovered field to implement unusual frettings
 
@@ -427,7 +441,7 @@ export class Fretboard extends LitElement {
       if (this.isFrettedString(s)) {
         for (let p = 0; p < this.tPositions; p += 1) {
           // if it is a covered note, just skip it
-          if ( ! this.fretNotes[s][p].iscovered) {
+          if (!this.fretNotes[s][p].iscovered) {
             // count how many covered fretnotes precede this fretnote
             // and cover them with this fretnote
             let cover = 0;
@@ -444,14 +458,13 @@ export class Fretboard extends LitElement {
   }
 
   drawNote(s, p) {
-
-    const note = this.fretNotes[s][p].note;
+    const { note } = this.fretNotes[s][p];
 
     const c = noteToScaleDegreeInKey(note, this.tonicNote);
 
     const { offscale } = this;
 
-    if ( ! degreeIsInScale(c, this.scaleNotes)) {
+    if (!degreeIsInScale(c, this.scaleNotes)) {
       switch (offscale) {
         case 'hide':
           return svg``;
@@ -544,7 +557,7 @@ export class Fretboard extends LitElement {
   render() {
     this.makeNotes();
     const { width, height } = this;
-      console.log(`render ${this.tStrings} by ${this.tPositions}`);
+    console.log(`render ${this.tStrings} by ${this.tPositions}`);
     return html`
       ${this.makeStyle()}
       <svg

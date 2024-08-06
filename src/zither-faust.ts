@@ -30,7 +30,7 @@ import { FaustPolyDspGenerator } from './src/FaustDspGenerator';
 const createFaustNode = async (
   audioContext: AudioContext,
   dspName = 'template',
-  voices = 16,
+  voices = 32,
 ) => {
   // Load DSP metadata from JSON
   /** @type {FaustDspMeta} */
@@ -94,7 +94,7 @@ export class ZitherFaust extends LitElement {
 
   @property({ type: String }) dspName!: string;
 
-  @property({ type: Number }) poly: number = 16;
+  @property({ type: Number }) poly: number = 32;
 
   static styles = css`
     :host {
