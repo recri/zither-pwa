@@ -155,24 +155,21 @@ export class Fretboard extends LitElement {
   // decode an xy coordinate to a sp (string position) coordinate
   decode_xy(x, y): number[] {
     const { isPortrait, left, top, noteWidth, noteHeight, height } = this;
-    let s;
-    let p;
-    let dx;
-    let dy;
+    let sf;
+    let pf;
     if (isPortrait) {
-      s = Math.floor((x - left) / noteWidth);
-      p = Math.floor((y - top) / noteHeight);
-      dx = (x - left) % noteWidth;
-      dy = (y - top) % noteHeight;
+      sf = (x - left) / noteWidth;
+      pf = (y - top) / noteHeight;
     } else {
-      s = Math.floor((height - y - 1 - top) / noteHeight);
-      p = Math.floor((x - left) / noteWidth);
-      dx = (height - y - 1 - top) % noteHeight;
-      dy = (x - left) % noteWidth;
+      sf = (height - y - 1 - top) / noteHeight;
+      pf = (x - left) / noteWidth;
     }
-    s = Math.min(this.fretNotes.length - 1, Math.max(0, s));
-    p = Math.min(this.fretNotes[0].length - 1, Math.max(0, p));
-    return [s, p, dx, dy];
+    const s = Math.min(this.fretNotes.length - 1, Math.max(0, Math.floor(sf)));
+    const p = Math.min(
+      this.fretNotes[0].length - 1,
+      Math.max(0, Math.floor(pf)),
+    );
+    return [s, p, sf, pf];
   }
 
   // decode the xy coordinate of a touch event into an sp coordinate
