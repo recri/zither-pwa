@@ -2,7 +2,8 @@ const notemask = 127;
 const covered = 128;
 const playable = 255;
 const muted = 256;
-const button = 512;
+const fretted = 512;
+const button = 1024;
 
 export class Fretnote {
   /* eslint-disable no-bitwise */
@@ -49,7 +50,14 @@ export class Fretnote {
     this.packed = (this.packed & ~covered) | (val ? covered : 0);
   }
 
-  11;
+  // is a fretnote on a fretted, as opposed to open, string
+  get isfretted() {
+    return (this.packed & fretted) !== 0;
+  }
+
+  set isfretted(val) {
+    this.packed = (this.packed & ~fretted) | (val ? fretted : 0);
+  }
 
   // is a button sometimes displayed in place of the fret note
   get isbutton() {

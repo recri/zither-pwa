@@ -95,14 +95,11 @@ export class TouchVoice {
         );
       }
     }
-    if (sf !== this.sf) {
-      this.fretboard.app.audioNode.pitchWheel(
-        1,
-        Math.min(
-          0x1fff,
-          Math.max(0, Math.floor(Math.abs(sf - this.sf) * 0x1fff)),
-        ),
-      );
+    if (this.fretnote.isfretted && sf !== this.sf) {
+      const dsf = Math.abs(sf - this.sf);
+      const bend = 0x2000 + Math.min(0x1fff, Math.floor(dsf * 0.5 * 0x1fff));
+      // console.log(`dsf ${dsf} bend ${bend}`);
+      this.fretboard.app.audioNode.pitchWheel(1, bend);
     }
   }
 
@@ -136,6 +133,7 @@ export class TouchVoice {
     }
     const [s, p, sf, pf] = fretboard.touch_decode_xy(ev);
     const fretnote = fretboard.fretnote(s, p);
+    if (!fretnote) return;
     const touchvoice = new TouchVoice(touch, fretboard, fretnote, s, p, sf, pf);
     if (!touchvoice) {
       TouchVoice.notouchvoice(ev);
@@ -157,6 +155,7 @@ export class TouchVoice {
     }
     const [s, p, sf, pf] = touchvoice.fretboard.touch_decode_xy(ev);
     const fretnote = touchvoice.fretboard.fretnote(s, p);
+    if (!fretnote) return;
     touchvoice.tv_move(touch, fretnote, s, p, sf, pf);
   }
 
@@ -173,6 +172,7 @@ export class TouchVoice {
     }
     const [s, p, sf, pf] = touchvoice.fretboard.touch_decode_xy(ev);
     const fretnote = touchvoice.fretboard.fretnote(s, p);
+    if (!fretnote) return;
     touchvoice.tv_end(touch, fretnote, s, p, sf, pf);
     // console.log(`keyOff ${this.note(s,p)}`);
   }

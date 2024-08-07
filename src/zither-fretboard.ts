@@ -217,7 +217,7 @@ export class Fretboard extends LitElement {
       tStrings,
       fretNotes,
     } = this;
-    if (docover) {
+    if (docover && this.isFrettedString(s)) {
       // advance p until it's an uncovered fretnote
       while (p < fretNotes[s].length && fretNotes[s][p].iscovered) p += 1;
     }
@@ -226,7 +226,7 @@ export class Fretboard extends LitElement {
       top + (isPortrait ? noteHeight * p : noteHeight * (tStrings - s - 1));
     let width = noteWidth;
     let height = noteHeight;
-    if (docover) {
+    if (docover && this.isFrettedString(s)) {
       // expand fretnote to cover preceding fretnotes
       let cover = 0;
       while (p - cover - 1 >= 0 && fretNotes[s][p - cover - 1].iscovered) {
@@ -293,7 +293,8 @@ export class Fretboard extends LitElement {
   theTextColor: string = 'white';
 
   // predicates and properties of string number
-  isFrettedString = (string: number) => this.tFretting[string].match(/^[fb]/);
+  isFrettedString = (string: number) =>
+    this.tFretting[string].match(/^[fbdt]$/) !== null;
 
   isOpenString = (string: number) => this.tFretting[string] === 'o';
 
@@ -388,15 +389,17 @@ export class Fretboard extends LitElement {
 
     // expand tNotes into fretNotes
     for (let s = 0; s < this.fretNotes.length; s += 1) {
+      const isfretted = this.isFrettedString(s);
       for (let p = 0; p < this.fretNotes[s].length; p += 1) {
         const { note } = this.fretNotes[s][p];
         // const freq = mtof(note);
         const c = noteToScaleDegreeInKey(note, this.tonicNote);
         const isinscale = degreeIsInScale(c, this.scaleNotes);
+        this.fretNotes[s][p].isfretted = isfretted;
         this.fretNotes[s][p].iscovered =
-          this.isFrettedString(s) && !isinscale && this.offscale === 'cover';
+          isfretted && !isinscale && this.offscale === 'cover';
         this.fretNotes[s][p].ismuted =
-          this.isFrettedString(s) && !isinscale && this.offscale === 'mute';
+          isfretted && !isinscale && this.offscale === 'mute';
         this.fretNotes[s][p].note = note;
       }
     }
@@ -455,13 +458,14 @@ export class Fretboard extends LitElement {
   }
 
   drawNote(s, p) {
-    const { note } = this.fretNotes[s][p];
+    const fretnote = this.fretNotes[s][p];
+    const { note } = fretnote;
 
     const c = noteToScaleDegreeInKey(note, this.tonicNote);
 
     const { offscale } = this;
 
-    if (!degreeIsInScale(c, this.scaleNotes)) {
+    if (this.isFrettedString(s) && !degreeIsInScale(c, this.scaleNotes)) {
       switch (offscale) {
         case 'hide':
           return svg``;
