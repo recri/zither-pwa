@@ -6,7 +6,7 @@
   "display": "standalone",
   "theme_color": "#070707",
   "background_color": "#070707",
-  "manifest_version": "33",
+  "manifest_version": "35",
   "icons": [
     {
       "src": "iconsvg",
@@ -14,22 +14,22 @@
       "type": "image/svg"
     },
     {
-      "src": "icon16x16.png",
+      "src": "icon-16x16.png",
       "sizes": "16x16",
       "type": "image/png"
     },
     {
-      "src": "icon20x20.png",
+      "src": "icon-20x20.png",
       "sizes": "20x20",
       "type": "image/png"
     },
     {
-      "src": "icon24x24.png",
+      "src": "icon-24x24.png",
       "sizes": "24x24",
       "type": "image/png"
     },
     {
-      "src": "icon30x30.png",
+      "src": "icon-30x30.png",
       "sizes": "30x30",
       "type": "image/png"
     },
@@ -39,7 +39,7 @@
       "type": "image/png"
     },
     {
-      "src": "icon36x36.png",
+      "src": "icon-36x36.png",
       "sizes": "36x36",
       "type": "image/png"
     },
@@ -49,22 +49,22 @@
       "type": "image/png"
     },
     {
-      "src": "icon48x48.png",
+      "src": "icon-48x48.png",
       "sizes": "48x48",
       "type": "image/png"
     },
     {
-      "src": "icon60x60.png",
+      "src": "icon-60x60.png",
       "sizes": "60x60",
       "type": "image/png"
     },
     {
-      "src": "icon64x64.png",
+      "src": "icon-64x64.png",
       "sizes": "64x64",
       "type": "image/png"
     },
     {
-      "src": "icon72x72.png",
+      "src": "icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png"
     },

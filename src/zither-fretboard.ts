@@ -558,7 +558,7 @@ export class Fretboard extends LitElement {
   render() {
     this.makeNotes();
     const { width, height } = this;
-    console.log(`render ${this.tStrings} by ${this.tPositions}`);
+    // console.log(`render ${this.tStrings} by ${this.tPositions}`);
     return html`
       ${this.makeStyle()}
       <svg

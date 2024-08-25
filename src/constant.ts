@@ -486,11 +486,13 @@ const defaultValues: { [key: string]: string } = {
   pickposition: '0.13', // pick position
   markkeytime: '5', // seconds of inactivity before tune button reappears
   //  defaultTuning: 'f,E2,A2,D3,G3,C4,F4', // all fourths tuning
-  tuning: 'f,B0,E1,A1,D2,G2,C3,F3,A♯3', // 'bass 8 low'
+  //  defaultTuning: 'f,E2,A2,D3,G3,B3,E4', // guitar tuning
+  //  defaultTuning: 'f,B0,E1,A1,D2,G2,C3,F3,A♯3', // 'bass 8 low'
+  tuning: 'f,E2,A2,D3,G3,B3,E4', // guitar tuning
   tonic: 'C', // key of C
   scale: 'ionian', // C Major scale
   colors: 'gray',
-  offscale: 'show',
+  offscale: 'cover',
   labels: 'note',
   dspName: 'eks', // extended karplus strong from freeaxe
   top: '1',
