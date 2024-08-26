@@ -32,24 +32,25 @@ export const findPrefixed = (prefix: string): string[] => {
   return presets;
 };
 
+
 // default values for props, used when nothing stored in localStorage.
 let defaults: { [key: string]: string } = {};
 
 // props prefix
-const propsPrefix = 'prop:';
-
+const propPrefix = 'prop:';
+ 
 // clear all props
-export const resetProps = () => resetPrefixed(propsPrefix);
+export const resetProp = () => resetPrefixed(propPrefix);
 
 // is there a property with the given name
 export const hasProp = (name: string): boolean =>
-  hasPrefixed(propsPrefix, name);
+  hasPrefixed(propPrefix, name);
 
 export const getProp = (name: string): string =>
-  hasProp(name) ? getPrefixed(propsPrefix, name) : defaults[name];
+  hasProp(name) ? getPrefixed(propPrefix, name) : defaults[name];
 
 export const putProp = (name: string, value: string) =>
-  putPrefixed(propsPrefix, name, value);
+  putPrefixed(propPrefix, name, value);
 
 export const getIntProp = (name: string): number =>
   parseInt(getProp(name)!, 10);
@@ -68,27 +69,7 @@ export const getBoolProp = (name: string): boolean => getProp(name) === 'true';
 export const putBoolProp = (name: string, value: boolean) =>
   putProp(name, `${value}`);
 
-export const observeUrl = (defaultValues: { [key: string]: string }) => {
-  defaults = defaultValues;
-  let oldHref = document.location.href;
-  const update = () => {
-    oldHref = document.location.href;
-    for (const [key, value] of new URL(oldHref).searchParams.entries()) {
-      if (key === 'reset') resetProps();
-      else putProp(key, value);
-    }
-  };
-  update();
-  const body = document.querySelector('body');
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  const observer = new MutationObserver(mutations => {
-    if (oldHref !== document.location.href) update();
-  });
-  /* eslint-enable @typescript-eslint/no-unused-vars */
-  observer.observe(body!, { childList: true, subtree: true });
-};
-
-export const exportProps = (reset: boolean) => {
+export const exportProp = (reset: boolean) => {
   const items = [];
   if (reset) items.push('reset');
   Object.keys(defaults).forEach(key => {
@@ -97,7 +78,7 @@ export const exportProps = (reset: boolean) => {
   });
 
   const location = `${window.location.protocol}//${window.location.host}/?${items.join('&')}`;
-  // console.log(`exportProps(${reset}) returns ${location}`);
+  // console.log(`exportProp(${reset}) returns ${location}`);
   return location;
 };
 
@@ -121,3 +102,30 @@ export const getPreset = (name: string): string =>
 
 export const putPreset = (name: string, value: string) =>
   putPrefixed(presetPrefix, name, value);
+
+// just clean everything up
+export const resetAll = () => window.localStorage.clear();
+
+// monitor url changes
+export const observeUrl = (defaultValues: { [key: string]: string }) => {
+  defaults = defaultValues;
+  let oldHref = document.location.href;
+  const update = () => {
+    oldHref = document.location.href;
+    for (const [key, value] of new URL(oldHref).searchParams.entries()) {
+      if (key === 'reset') resetAll();
+      else if (key === 'resetprop') resetProp();
+      else if (key === 'resetpreset') resetPreset();
+      else putProp(key, value);
+    }
+  };
+  update();
+  const body = document.querySelector('body');
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  const observer = new MutationObserver(mutations => {
+    if (oldHref !== document.location.href) update();
+  });
+  /* eslint-enable @typescript-eslint/no-unused-vars */
+  observer.observe(body!, { childList: true, subtree: true });
+};
+

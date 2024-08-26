@@ -14,8 +14,9 @@ import {
   putFloatProp,
   getFloatProp,
   observeUrl,
-  resetProps,
-  exportProps,
+  resetProp,
+  exportProp,
+  resetAll,
 } from './props.js';
 
 import { Constant } from './constant.js';
@@ -354,11 +355,11 @@ export class ZitherApp extends LitElement {
 
   /* eslint-disable class-methods-use-this */
   exportHandler() {
-    navigator.clipboard.writeText(exportProps(true));
+    navigator.clipboard.writeText(exportProp(true));
   }
 
   resetHandler() {
-    resetProps();
+    resetAll();
     window.location.assign(
       `${window.location.protocol}//${window.location.host}/`,
     );
