@@ -114,13 +114,14 @@ export function expand(
     const openColumns =
       (o1 > 0 ? 1 : 0) + (o2 > 0 ? 1 : 0) + (o3 > 0 ? 1 : 0) + (o4 > 0 ? 1 : 0);
     const columns = midiNotes
-      .slice(f1)
+      .slice(0,f1)
       .map(note => makeString(note.note, frets, transpose));
     if (o1 > 0) columns.push(midiNotes.slice(f1, f1 + o1));
     if (o2 > 0) columns.push(midiNotes.slice(f1 + o1, f1 + o1 + o2));
     if (o3 > 0) columns.push(midiNotes.slice(f1 + o1 + o2, f1 + o1 + o2 + o3));
     if (o4 > 0)
       columns.push(midiNotes.slice(f1 + o1 + o2 + o3, f1 + o1 + o2 + o3 + o4));
+      if (columns.length !== frettedColumns+openColumns) console.log(`bad zither`);
     return [
       `${'f'.repeat(frettedColumns)}${'o'.repeat(openColumns)}`,
       columns,

@@ -571,14 +571,19 @@ export class ZitherUi extends LitElement {
               'munich zither',
             )}
             ${slTuning(
-              'f5o12o12',
-              'A4,D4,G4,G3,C3,A♭4,E♭4,B♭3,F4,C4,G4,D4,A3,E4,B3,F♯4,C♯4,G♯3,E♭2,B♭2,F2,C3,G2,D2,A2,E2,B2,F♯2,C♯2',
-              'viennese zither',
-            )}
-            ${slTuning(
               'f5o12o12o6',
               'A4,A4,D4,G3,C3,E♭4,B♭3,F4,C4,G3,D4,A3,E4,B3,F♯3,C♯4,G♯3,E♭3,B♭2,F3,C3,G2,D3,A2,E3,B2,F♯2,C♯3,G♯2,F2,E2,E♭2,D2,C♯2,C2',
               'munich concert zither',
+            )}
+            ${slTuning(
+              'f5o12o12o13',
+              'A4,A4,D4,G3,C3,E♭4,B♭3,F4,C4,G3,D4,A3,E4,B3,F♯3,C♯4,G♯3,E♭3,B♭2,F3,C3,G2,D3,A2,E3,B2,F♯2,C♯3,G♯2,F2,E2,E♭2,D2,C♯2,C2,B1,B♭1,A1,G♯1,G1,F♯1,F1',
+              'munich alpine zither',
+            )}
+            ${slTuning(
+              'f5o12o12',
+              'A4,D4,G4,G3,C3,A♭4,E♭4,B♭3,F4,C4,G4,D4,A3,E4,B3,F♯4,C♯4,G♯3,E♭2,B♭2,F2,C3,G2,D2,A2,E2,B2,F♯2,C♯2',
+              'viennese zither',
             )}
             ${slTuning(
               'f5o12o12o6',
@@ -586,14 +591,9 @@ export class ZitherUi extends LitElement {
               'viennese concert zither',
             )}
             ${slTuning(
-              'f5o12o12o6o3',
+              'f5o12o12o9',
               'A4,D4,G4,G3,C3,A♭4,E♭4,B♭3,F4,C4,G4,D4,A3,E4,B3,F♯4,C♯4,G♯3,E♭2,B♭2,F2,C3,G2,D2,A2,E2,B2,F♯2,C♯2,G♯2,C2,B1,B♭1,A1,G♯1,G1,F♯1,F1',
               'viennese alpine zither',
-            )}
-            ${slTuning(
-              'f5o12o12o6o6',
-              'A4,A4,D4,G3,C3,E♭4,B♭3,F4,C4,G3,D4,A3,E4,B3,F♯3,C♯4,G♯3,E♭3,B♭2,F3,C3,G2,D3,A2,E3,B2,F♯2,C♯3,G♯2,F2,E2,E♭2,D2,C♯2,C2,B1,B♭1,A1,G♯1,G1,F♯1,F1',
-              'munich alpine zither',
             )}
           </sl-select>
 

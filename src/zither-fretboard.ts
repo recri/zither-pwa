@@ -388,6 +388,7 @@ export class Fretboard extends LitElement {
     this.fontSize = Math.min(this.noteHeight, this.noteWidth) * 0.5;
 
     // expand tNotes into fretNotes
+    //  console.log(`makeNotes: this.fretNotes.length ${this.fretNotes.length}, this.tFretting.length ${this.tFretting.length}`);
     for (let s = 0; s < this.fretNotes.length; s += 1) {
       const isfretted = this.isFrettedString(s);
       for (let p = 0; p < this.fretNotes[s].length; p += 1) {
