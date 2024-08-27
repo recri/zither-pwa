@@ -14,7 +14,6 @@ import {
   putFloatProp,
   getFloatProp,
   observeUrl,
-  resetProp,
   exportProp,
   resetAll,
 } from './props.js';

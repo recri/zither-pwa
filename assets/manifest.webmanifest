@@ -6,7 +6,7 @@
   "display": "standalone",
   "theme_color": "#070707",
   "background_color": "#070707",
-  "manifest_version": "35",
+  "manifest_version": "36",
   "icons": [
     {
       "src": "iconsvg",

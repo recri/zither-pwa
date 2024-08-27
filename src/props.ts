@@ -32,19 +32,17 @@ export const findPrefixed = (prefix: string): string[] => {
   return presets;
 };
 
-
 // default values for props, used when nothing stored in localStorage.
 let defaults: { [key: string]: string } = {};
 
 // props prefix
 const propPrefix = 'prop:';
- 
+
 // clear all props
 export const resetProp = () => resetPrefixed(propPrefix);
 
 // is there a property with the given name
-export const hasProp = (name: string): boolean =>
-  hasPrefixed(propPrefix, name);
+export const hasProp = (name: string): boolean => hasPrefixed(propPrefix, name);
 
 export const getProp = (name: string): string =>
   hasProp(name) ? getPrefixed(propPrefix, name) : defaults[name];
@@ -128,4 +126,3 @@ export const observeUrl = (defaultValues: { [key: string]: string }) => {
   /* eslint-enable @typescript-eslint/no-unused-vars */
   observer.observe(body!, { childList: true, subtree: true });
 };
-
